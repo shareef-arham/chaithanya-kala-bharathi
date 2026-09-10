@@ -1,0 +1,18 @@
+{
+  "intro": "CKB is a registered society and holds the statutory approvals below. Each certificate can be opened here.",
+  "certificates": [
+    { "icon": "📜", "title": "Registration",        "sub": "Society registration certificate",        "file": "Registration.pdf" },
+    { "icon": "🧾", "title": "12A",                 "sub": "Income-tax exemption",                    "file": "12A.pdf" },
+    { "icon": "💠", "title": "80G",                 "sub": "Tax deduction for donors",                "file": "80G.pdf" },
+    { "icon": "🏢", "title": "CSR",                 "sub": "CSR registration",                        "file": "CSR.pdf" },
+    { "icon": "🌍", "title": "FCRA",                "sub": "Foreign contribution approval",           "file": "FCRA.pdf" },
+    { "icon": "🆔", "title": "Unique ID",           "sub": "NGO Darpan unique identity",              "file": "UniqueID.pdf" },
+    { "icon": "🗂️", "title": "PAN",                 "sub": "Permanent account number",                "file": "PAN.pdf" }
+  ],
+  "documents": [
+    { "icon": "🎯", "title": "Vision & Mission",     "sub": "What we set out to do",                   "file": "VisionMission.pdf" },
+    { "icon": "👥", "title": "Board Members",        "sub": "Who governs the organisation",            "file": "BoardMembers.pdf" },
+    { "icon": "📘", "title": "Organization Profile", "sub": "A full profile of CKB",                   "file": "OrganizationProfile.pdf" },
+    { "icon": "🤲", "title": "Our Supporters",       "sub": "Partners and funders",                    "file": "OurSupporters.pdf" }
+  ]
+}

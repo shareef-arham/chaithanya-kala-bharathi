@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — CKB</title>
+<link rel="icon" href="assets/logo-sm.png" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet" />
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f4faf5;--bg2:#eaf5ec;--fg:#1d3226;--fg2:#55705f;
+  --green:#2f7d4f;--green-d:#1f5c39;--sun:#e9a020;
+  --card:#fff;--border:rgba(47,125,79,.16);--shadow:0 2px 12px rgba(31,92,57,.08);
+  --radius:10px;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--fg);min-height:100vh}
+.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2.5rem;max-width:380px;width:100%;box-shadow:var(--shadow);text-align:center}
+.login-box h1{font-size:1.3rem;margin-bottom:.3rem}
+.login-box p{font-size:.85rem;color:var(--fg2);margin-bottom:1.5rem}
+.brand-mark{display:block;height:64px;width:auto;margin:0 auto 1rem;object-fit:contain}
+.field{margin-bottom:1rem;text-align:left}
+.field label{display:block;font-size:.8rem;font-weight:600;margin-bottom:.3rem;color:var(--fg2)}
+.field input,.field textarea{width:100%;padding:.55rem .8rem;border:1px solid var(--border);border-radius:6px;font:inherit;font-size:.9rem;background:var(--bg)}
+.field textarea{min-height:70px;resize:vertical}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--green)}
+.login-err{color:#c0392b;font-size:.82rem;margin-bottom:.8rem;min-height:1.2em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.55rem 1.3rem;border:none;border-radius:6px;font:inherit;font-size:.86rem;font-weight:600;cursor:pointer;transition:.2s}
+.btn-primary{background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-sm{padding:.38rem .85rem;font-size:.8rem}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--fg)}
+.btn-outline:hover{border-color:var(--green);color:var(--green)}
+.btn-danger{background:#e74c3c;color:#fff}
+.dashboard{display:none}
+.topbar{background:linear-gradient(135deg,var(--bg),var(--bg2));border-bottom:1px solid var(--border);padding:.7rem 1.5rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:10}
+.topbar img{height:36px;width:auto}
+.topbar h1{font-size:1rem;flex:1}
+.tabs{display:flex;flex-wrap:wrap;border-bottom:2px solid var(--border);padding:0 1rem;background:var(--card)}
+.tab{padding:.65rem 1rem;font-size:.83rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--fg2);border-bottom:2px solid transparent;margin-bottom:-2px}
+.tab:hover{color:var(--fg)}
+.tab.active{color:var(--green);border-bottom-color:var(--green)}
+.panel{display:none;padding:1.4rem;max-width:1000px;margin:0 auto}
+.panel.active{display:block}
+.panel h2{font-size:1.1rem;margin-bottom:.4rem}
+.panel h3{font-size:.9rem;margin:1.3rem 0 .5rem;color:var(--fg2);text-transform:uppercase;letter-spacing:.04em}
+.hint{font-size:.83rem;color:var(--fg2);margin-bottom:1rem}
+.saverow{display:flex;gap:.5rem;margin:1rem 0;align-items:center}
+.saverow .msg{font-size:.83rem;color:#1e824c}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+.data-table{width:100%;border-collapse:collapse;font-size:.84rem;margin-top:.4rem}
+.data-table th{text-align:left;padding:.45rem .55rem;font-weight:600;color:var(--fg2);font-size:.74rem;text-transform:uppercase;border-bottom:2px solid var(--border)}
+.data-table td{padding:.45rem .55rem;border-bottom:1px solid var(--border);vertical-align:top}
+.data-table .acts{white-space:nowrap;display:flex;gap:.3rem}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal{background:var(--card);border-radius:var(--radius);padding:1.4rem;max-width:540px;width:92%;max-height:86vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.18)}
+.modal h3{font-size:1rem;margin-bottom:.9rem;text-transform:none;letter-spacing:0;color:var(--fg)}
+.modal-acts{display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem}
+.file-item{display:flex;gap:.6rem;padding:.4rem .5rem;border-bottom:1px solid var(--border);font-size:.82rem;align-items:center}
+.file-item .k{flex:1;word-break:break-all}
+.file-item .s{color:var(--fg2)}
+</style>
+</head>
+<body>
+
+<div id="liveBanner" style="display:none;background:#fff9e6;border-bottom:1px solid var(--sun);color:#6b4e12;font-size:.82rem;padding:.6rem 1rem;text-align:center">
+  You are editing the <b>live website</b>. Changes appear within about 30 seconds — no redeploy needed.
+</div>
+
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <img class="brand-mark" src="assets/logo-sm.png" alt="CKB" onerror="this.style.display='none'" />
+    <h1>CKB Admin</h1>
+    <p>Edit the website content and upload reports, certificates and photographs.</p>
+    <div id="loginErr" class="login-err"></div>
+    <div class="field"><label>Password</label><input id="loginPass" type="password" autocomplete="current-password" /></div>
+    <button class="btn btn-primary" style="width:100%" id="loginBtn" onclick="doLogin()">Log In</button>
+    <a href="index.html" style="display:block;margin-top:1rem;font-size:.85rem;color:var(--green)">&larr; Back to the website</a>
+  </div>
+</div>
+
+<div class="dashboard" id="dashboard">
+  <div class="topbar">
+    <img src="assets/logo-sm.png" alt="CKB" onerror="this.style.display='none'" />
+    <h1>CKB Admin</h1>
+    <a class="btn btn-outline btn-sm" href="index.html" target="_blank" rel="noopener">View Website &#8599;</a>
+    <button class="btn btn-outline btn-sm" id="changePassBtn" style="display:none" onclick="openChangePassword()">Change Password</button>
+    <button class="btn btn-outline btn-sm" onclick="logout()">Log Out</button>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="home">Home</button>
+    <button class="tab" data-tab="org">Organisation</button>
+    <button class="tab" data-tab="programs">Programs</button>
+    <button class="tab" data-tab="legal">Legal &amp; Governance</button>
+    <button class="tab" data-tab="reports">Reports</button>
+    <button class="tab" data-tab="photos">Photos</button>
+    <button class="tab" data-tab="contact">Contact &amp; Banks</button>
+    <button class="tab" data-tab="files">Files</button>
+  </div>
+
+  <!-- HOME -->
+  <div class="panel active" id="panel-home">
+    <h2>Home page</h2>
+    <p class="hint">The hero, the "Who we are" block and the heading above the four programme cards.</p>
+    <div class="saverow"><button class="btn btn-primary btn-sm" onclick="saveHome()">Save Home</button><span class="msg" id="msg-home"></span></div>
+    <h3>Hero</h3>
+    <div class="field"><label>Small line above the title</label><input id="h_badge" /></div>
+    <div class="grid2">
+      <div class="field"><label>Title — first part</label><input id="h_lead" /></div>
+      <div class="field"><label>Title — highlighted part</label><input id="h_accent" /></div>
+    </div>
+    <div class="field"><label>Intro paragraph</label><textarea id="h_lede"></textarea></div>
+    <div class="field"><label>Hero image</label><input id="h_image" /></div>
+    <h3>Who we are</h3>
+    <div class="grid2">
+      <div class="field"><label>Eyebrow</label><input id="w_eyebrow" /></div>
+      <div class="field"><label>Heading</label><input id="w_title" /></div>
+    </div>
+    <div class="field"><label>Paragraph 1</label><textarea id="w_body"></textarea></div>
+    <div class="field"><label>Paragraph 2</label><textarea id="w_body2"></textarea></div>
+    <div class="field"><label>Points (one per line)</label><textarea id="w_points"></textarea></div>
+    <div class="field"><label>Image</label><input id="w_image" /></div>
+    <h3>Programme section heading</h3>
+    <div class="grid2">
+      <div class="field"><label>Eyebrow</label><input id="f_eyebrow" /></div>
+      <div class="field"><label>Heading</label><input id="f_title" /></div>
+    </div>
+    <div class="field"><label>Intro</label><textarea id="f_lede"></textarea></div>
+  </div>
+
+  <!-- ORG -->
+  <div class="panel" id="panel-org">
+    <h2>Organisation</h2>
+    <p class="hint">Name, tagline, the four headline numbers on the home page, and the four impact figures.</p>
+    <div class="saverow"><button class="btn btn-primary btn-sm" onclick="saveOrg()">Save Organisation</button><span class="msg" id="msg-org"></span></div>
+    <div class="grid2">
+      <div class="field"><label>Name</label><input id="o_name" /></div>
+      <div class="field"><label>Tagline</label><input id="o_tagline" /></div>
+    </div>
+    <div class="field"><label>Logo image</label><input id="o_logo" /></div>
+    <h3>Headline numbers</h3><div id="o_stats"></div>
+    <h3>Impact figures</h3><div id="o_impact"></div>
+  </div>
+
+  <!-- PROGRAMS -->
+  <div class="panel" id="panel-programs">
+    <h2>Programs &amp; interventions</h2>
+    <p class="hint">Each row is a card on the Home and Programs pages. Add a row, then use the <b>Upload…</b> button beside its filename box to attach the report PDF.</p>
+    <div class="saverow"><button class="btn btn-primary btn-sm" onclick="savePrograms()">Save Programs</button><span class="msg" id="msg-programs"></span></div>
+    <div class="field"><label>Intro paragraph</label><textarea id="p_intro"></textarea></div>
+    <h3>Interventions</h3><div id="p_items"></div>
+  </div>
+
+  <!-- LEGAL -->
+  <div class="panel" id="panel-legal">
+    <h2>Legal status &amp; governance</h2>
+    <p class="hint">Certificates and governance documents shown on the About and Reports pages.</p>
+    <div class="saverow"><button class="btn btn-primary btn-sm" onclick="saveLegal()">Save Legal &amp; Governance</button><span class="msg" id="msg-legal"></span></div>
+    <div class="field"><label>Intro paragraph</label><textarea id="l_intro"></textarea></div>
+    <h3>Governance documents</h3><div id="l_docs"></div>
+    <h3>Statutory certificates</h3><div id="l_certs"></div>
+  </div>
+
+  <!-- REPORTS -->
+  <div class="panel" id="panel-reports">
+    <h2>Reports page</h2>
+    <p class="hint">The featured activity report and the photo gallery PDF.</p>
+    <div class="saverow"><button class="btn btn-primary btn-sm" onclick="saveReports()">Save Reports</button><span class="msg" id="msg-reports"></span></div>
+    <div class="field"><label>Intro paragraph</label><textarea id="r_intro"></textarea></div>
+    <h3>Featured activity report</h3>
+    <div class="grid2">
+      <div class="field"><label>PDF filename</label><input id="r_f_file" /></div>
+      <div class="field"><label>Title</label><input id="r_f_title" /></div>
+    </div>
+    <div class="field"><label>Sub-line</label><input id="r_f_sub" /></div>
+    <h3>Photo gallery PDF</h3>
+    <div class="grid2">
+      <div class="field"><label>PDF filename</label><input id="r_g_file" /></div>
+      <div class="field"><label>Title</label><input id="r_g_title" /></div>
+    </div>
+    <div class="field"><label>Sub-line</label><input id="r_g_sub" /></div>
+  </div>
+
+
+  <!-- PHOTOS -->
+  <div class="panel" id="panel-photos">
+    <h2>Photos</h2>
+    <p class="hint">Every photograph on the website. Use the <b>Upload…</b> button beside a box to replace a picture with a real one — the file uploads and its name is filled in for you. Then press Save.</p>
+    <div class="saverow"><button class="btn btn-primary btn-sm" onclick="savePhotos()">Save Photos</button><span class="msg" id="msg-photos"></span></div>
+
+    <h3>Home page</h3>
+    <div class="field"><label>Hero photo (top of the home page)</label><input id="ph_hero" /></div>
+    <div class="field"><label>&ldquo;Who we are&rdquo; photo</label><input id="ph_who" /></div>
+
+    <h3>Other pages</h3>
+    <div class="field"><label>About Us photo</label><input id="ph_about" /></div>
+    <div class="field"><label>Donate page photo</label><input id="ph_donate" /></div>
+    <div class="field"><label>Get Involved photo</label><input id="ph_involved" /></div>
+
+    <h3>Logo</h3>
+    <div class="field"><label>Logo image</label><input id="ph_logo" /></div>
+
+    <h3>Gallery page</h3>
+    <p class="hint">The grid of photographs on the Gallery page. Add a row, upload the picture, and give it a caption.</p>
+    <div class="field"><label>Gallery intro paragraph</label><textarea id="ph_intro"></textarea></div>
+    <div id="ph_photos"></div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="panel" id="panel-contact">
+    <h2>Contact &amp; bank details</h2>
+    <p class="hint">Shown on the Contact and Donate pages, and in the footer of every page.</p>
+    <div class="saverow"><button class="btn btn-primary btn-sm" onclick="saveContact()">Save Contact</button><span class="msg" id="msg-contact"></span></div>
+    <div class="field"><label>Intro paragraph</label><textarea id="c_intro"></textarea></div>
+    <h3>Office</h3>
+    <div class="field"><label>Label</label><input id="c_name" /></div>
+    <div class="field"><label>Address (one line per box — separate with new lines)</label><textarea id="c_addr"></textarea></div>
+    <div class="grid2">
+      <div class="field"><label>Phone</label><input id="c_phone" /></div>
+      <div class="field"><label>Emails (comma separated)</label><input id="c_emails" /></div>
+    </div>
+    <div class="field"><label>Chief functionary</label><input id="c_chief" /></div>
+    <div class="field"><label>Donation note</label><textarea id="c_note"></textarea></div>
+    <h3>Bank accounts</h3>
+    <p class="hint">Each account is a card on the Donate page. Use the row editor — label on the left, value on the right.</p>
+    <div id="c_banks"></div>
+  </div>
+
+  <!-- FILES -->
+  <div class="panel" id="panel-files">
+    <h2>Uploaded files</h2>
+    <p class="hint">Everything in <code>uploads/</code> — useful for checking what is already there. Files are added with the <b>Upload…</b> button beside each filename box on the other tabs.</p>
+    <button class="btn btn-outline btn-sm" onclick="loadFiles()">Refresh</button>
+    <div id="fileList" style="margin-top:.8rem"></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modalBg"><div class="modal" id="modalContent"></div></div>
+
+<script>
+(function(){
+  var D = {};
+  var host = location.hostname;
+  var LOCAL = (host === "localhost" || host === "127.0.0.1" || host === "");
+  if (!LOCAL) {
+    document.getElementById("liveBanner").style.display = "block";
+    document.getElementById("changePassBtn").style.display = "";
+  }
+
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+  function val(id){ var e=document.getElementById(id); return e? e.value.trim() : ""; }
+  function setv(id,v){ var e=document.getElementById(id); if(e) e.value = v==null? "" : v; }
+  function lines(s){ return String(s||"").split("\n").map(function(x){return x.trim();}).filter(Boolean); }
+  function csv(v){ return Array.isArray(v)? v.join(", ") : (v||""); }
+  function fromCsv(s){ return String(s||"").split(",").map(function(x){return x.trim();}).filter(Boolean); }
+  function fmtBytes(b){ if(b<1024)return b+" B"; if(b<1048576)return (b/1024).toFixed(1)+" KB"; return (b/1048576).toFixed(1)+" MB"; }
+
+  /* ---- login: same flow locally and live. Live checks a hashed password
+         and sets an httpOnly session cookie the browser returns on saves. ---- */
+  window.doLogin = function(){
+    var btn=document.getElementById("loginBtn"), err=document.getElementById("loginErr");
+    err.textContent=""; btn.disabled=true; btn.textContent="Logging in…";
+    fetch("api/login",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({password:document.getElementById("loginPass").value})})
+      .then(function(r){ return r.json().then(function(d){ return {ok:r.ok,d:d}; }); })
+      .then(function(res){
+        btn.disabled=false; btn.textContent="Log In";
+        if(res.ok && res.d && res.d.ok){ sessionStorage.setItem("ckb_auth","1"); showDash(); }
+        else err.textContent=(res.d && res.d.error) || "Invalid password.";
+      })
+      .catch(function(){ btn.disabled=false; btn.textContent="Log In"; err.textContent="Could not reach the server."; });
+  };
+  document.getElementById("loginPass").addEventListener("keydown",function(e){ if(e.key==="Enter") window.doLogin(); });
+  window.logout=function(){ sessionStorage.removeItem("ckb_auth"); fetch("api/logout",{method:"POST"}).catch(function(){}).then(function(){ location.reload(); }); };
+
+  window.openChangePassword=function(){
+    openModal('<h3>Change password</h3>'+
+      '<div class="field"><label>Current password</label><input id="m_cur" type="password"></div>'+
+      '<div class="field"><label>New password</label><input id="m_new" type="password"></div>'+
+      '<div class="field"><label>Repeat new password</label><input id="m_rep" type="password"></div>'+
+      '<div class="msg" id="m_msg" style="font-size:.83rem;min-height:1.2em"></div>'+
+      '<div class="modal-acts"><button class="btn btn-outline" data-cancel>Cancel</button><button class="btn btn-primary" id="m_go">Change</button></div>');
+    document.getElementById("m_go").onclick=function(){
+      var m=document.getElementById("m_msg");
+      if(val("m_new").length<8){ m.style.color="#c0392b"; m.textContent="Use at least 8 characters."; return; }
+      if(val("m_new")!==val("m_rep")){ m.style.color="#c0392b"; m.textContent="The new passwords do not match."; return; }
+      fetch("api/change-password",{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({current:val("m_cur"),next:val("m_new")})})
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          if(d && d.ok){ m.style.color="#1e824c"; m.textContent="Changed."; setTimeout(closeModal,1200); }
+          else { m.style.color="#c0392b"; m.textContent=(d && d.error) || "Could not change the password."; }
+        }).catch(function(){ m.style.color="#c0392b"; m.textContent="Could not reach the server."; });
+    };
+  };
+
+  function showDash(){
+    document.getElementById("loginScreen").style.display="none";
+    document.getElementById("dashboard").style.display="block";
+    loadAll();
+  }
+  if(sessionStorage.getItem("ckb_auth")==="1") showDash();
+
+  document.getElementById("tabs").addEventListener("click",function(e){
+    var t=e.target.closest(".tab"); if(!t)return;
+    document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});
+    document.querySelectorAll(".panel").forEach(function(x){x.classList.remove("active");});
+    t.classList.add("active");
+    document.getElementById("panel-"+t.dataset.tab).classList.add("active");
+    if(t.dataset.tab==="files") loadFiles();
+  });
+
+  /* ---- modal ---- */
+  var _ok=null;
+  function openModal(html){
+    document.getElementById("modalContent").innerHTML=html;
+    document.getElementById("modalBg").classList.add("open");
+    /* every filename field in a modal gets its own Upload… button */
+    document.querySelectorAll("#modalContent input[id]").forEach(function(el){
+      if(/file|image|photo|logo/i.test(el.id)) wireInlineUpload(el);
+    });
+  }
+  window.closeModal=function(){ document.getElementById("modalBg").classList.remove("open"); _ok=null; };
+  function closeModalI(){ window.closeModal(); }
+  function modalOK(fn){ _ok=fn; }
+  document.getElementById("modalBg").addEventListener("click",function(e){
+    if(e.target.id==="modalBg" || e.target.hasAttribute("data-cancel")) closeModalI();
+    if(e.target.hasAttribute("data-ok") && _ok) _ok();
+  });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeModalI(); });
+
+  function fieldHTML(c,v){
+    if(c.type==="textarea") return '<div class="field"><label>'+esc(c.label)+'</label><textarea id="m_'+c.key+'">'+esc(v==null?"":v)+'</textarea></div>';
+    return '<div class="field"><label>'+esc(c.label)+'</label><input id="m_'+c.key+'" value="'+esc(v==null?"":v)+'"></div>';
+  }
+  function readRow(cols){
+    var o={}; cols.forEach(function(c){ var e=document.getElementById("m_"+c.key); if(e) o[c.key]=e.value.trim(); }); return o;
+  }
+  /* Row editor: a small table with Add / Edit / Move up / Delete. */
+  function editor(mountId,arr,cols,label){
+    var mount=document.getElementById(mountId); if(!mount)return;
+    function render(){
+      var head=cols.map(function(c){return "<th>"+esc(c.label)+"</th>";}).join("")+"<th></th>";
+      var rows=arr.map(function(it,i){
+        var tds=cols.map(function(c){ return "<td>"+esc(String(it[c.key]==null?"":it[c.key])).slice(0,70)+"</td>"; }).join("");
+        return "<tr>"+tds+'<td class="acts"><button class="btn btn-outline btn-sm" data-e="'+i+'">Edit</button>'+
+          '<button class="btn btn-outline btn-sm" data-u="'+i+'">&uarr;</button>'+
+          '<button class="btn btn-danger btn-sm" data-d="'+i+'">Del</button></td></tr>';
+      }).join("");
+      mount.innerHTML='<table class="data-table"><thead><tr>'+head+"</tr></thead><tbody>"+rows+"</tbody></table>"+
+        '<button class="btn btn-primary btn-sm" data-add="1" style="margin-top:.5rem">+ Add</button>';
+    }
+    function open(i){
+      var it = i<0 ? {} : arr[i];
+      openModal("<h3>"+(i<0?"Add":"Edit")+" — "+esc(label)+"</h3>"+
+        cols.map(function(c){return fieldHTML(c,it[c.key]);}).join("")+
+        '<div class="modal-acts"><button class="btn btn-outline" data-cancel>Cancel</button><button class="btn btn-primary" data-ok>Save</button></div>');
+      modalOK(function(){
+        var o=readRow(cols);
+        if(i<0) arr.push(o); else cols.forEach(function(c){ arr[i][c.key]=o[c.key]; });
+        render(); closeModalI();
+      });
+    }
+    mount.onclick=function(e){
+      var b=e.target.closest("button"); if(!b)return;
+      if(b.dataset.add!=null) open(-1);
+      else if(b.dataset.e!=null) open(+b.dataset.e);
+      else if(b.dataset.u!=null){ var i=+b.dataset.u; if(i>0){ var t=arr[i-1];arr[i-1]=arr[i];arr[i]=t; render(); } }
+      else if(b.dataset.d!=null){ if(confirm("Delete this item?")){ arr.splice(+b.dataset.d,1); render(); } }
+    };
+    render();
+  }
+
+  /* ---- load / save ---- */
+  function getJSON(n){ return fetch("data/"+n+"?"+Date.now()).then(function(r){return r.json();}).catch(function(){return {};}); }
+  function saveP(name,obj){
+    return fetch("api/data/"+name,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(obj)})
+      .then(function(r){return r.json();}).then(function(d){return !!(d&&d.ok);}).catch(function(){return false;});
+  }
+  function msg(id,txt){ var e=document.getElementById(id); if(e){ e.textContent=txt; setTimeout(function(){e.textContent="";},4000); } }
+  function save(name,obj,msgId){
+    saveP(name,obj).then(function(ok){
+      msg(msgId, ok ? "Saved." : (LOCAL ? "Save failed — is the local server running?" : "Save failed — try logging in again."));
+    });
+  }
+
+  function loadAll(){
+    Promise.all(["home.json","org.json","programs.json","legal.json","reports.json","contact.json","gallery.json","pages.json"].map(getJSON))
+      .then(function(a){
+        D.home=a[0]||{}; D.org=a[1]||{}; D.programs=a[2]||{}; D.legal=a[3]||{}; D.reports=a[4]||{}; D.contact=a[5]||{};
+        D.gallery=a[6]||{}; D.pages=a[7]||{};
+        bindHome(); bindOrg(); bindPrograms(); bindLegal(); bindReports(); bindContact(); bindPhotos();
+      });
+  }
+
+  /* ---- HOME ---- */
+  function bindHome(){
+    var h=D.home; h.hero=h.hero||{}; h.whoWeAre=h.whoWeAre||{}; h.focus=h.focus||{};
+    setv("h_badge",h.hero.badge); setv("h_lead",h.hero.titleLead); setv("h_accent",h.hero.titleAccent);
+    setv("h_lede",h.hero.lede); setv("h_image",h.hero.image);
+    setv("w_eyebrow",h.whoWeAre.eyebrow); setv("w_title",h.whoWeAre.title);
+    setv("w_body",h.whoWeAre.body); setv("w_body2",h.whoWeAre.body2);
+    setv("w_points",(h.whoWeAre.points||[]).join("\n")); setv("w_image",h.whoWeAre.image);
+    setv("f_eyebrow",h.focus.eyebrow); setv("f_title",h.focus.title); setv("f_lede",h.focus.lede);
+    wireInlineUpload(document.getElementById("h_image"),{prefix:"uploads/"});
+    wireInlineUpload(document.getElementById("w_image"),{prefix:"uploads/"});
+  }
+  window.saveHome=function(){
+    var h=D.home;
+    h.hero={badge:val("h_badge"),titleLead:val("h_lead"),titleAccent:val("h_accent"),lede:val("h_lede"),image:val("h_image")};
+    h.whoWeAre={eyebrow:val("w_eyebrow"),title:val("w_title"),body:val("w_body"),body2:val("w_body2"),
+      points:lines(val("w_points")),image:val("w_image")};
+    h.focus={eyebrow:val("f_eyebrow"),title:val("f_title"),lede:val("f_lede")};
+    save("home.json",h,"msg-home");
+  };
+
+  /* ---- ORG ---- */
+  function bindOrg(){
+    var o=D.org; o.stats=o.stats||[]; o.impact=o.impact||[];
+    setv("o_name",o.name); setv("o_tagline",o.tagline); setv("o_logo",o.logo);
+    wireInlineUpload(document.getElementById("o_logo"));
+    editor("o_stats",o.stats,[{key:"n",label:"Number"},{key:"l",label:"Label"}],"Headline number");
+    editor("o_impact",o.impact,[{key:"icon",label:"Icon (emoji)"},{key:"n",label:"Figure"},{key:"l",label:"Label"}],"Impact figure");
+  }
+  window.saveOrg=function(){
+    var o=D.org; o.name=val("o_name"); o.tagline=val("o_tagline"); o.logo=val("o_logo");
+    save("org.json",o,"msg-org");
+  };
+
+  /* ---- PROGRAMS ---- */
+  function bindPrograms(){
+    var p=D.programs; p.items=p.items||[];
+    setv("p_intro",p.intro);
+    editor("p_items",p.items,[
+      {key:"icon",label:"Icon (emoji)"},{key:"title",label:"Title"},{key:"sub",label:"Sub-line"},
+      {key:"desc",label:"Description",type:"textarea"},{key:"file",label:"Report PDF filename"}
+    ],"Intervention");
+  }
+  window.savePrograms=function(){ var p=D.programs; p.intro=val("p_intro"); save("programs.json",p,"msg-programs"); };
+
+  /* ---- LEGAL ---- */
+  function bindLegal(){
+    var l=D.legal; l.documents=l.documents||[]; l.certificates=l.certificates||[];
+    setv("l_intro",l.intro);
+    var cols=[{key:"icon",label:"Icon"},{key:"title",label:"Title"},{key:"sub",label:"Sub-line"},{key:"file",label:"PDF filename"}];
+    editor("l_docs",l.documents,cols,"Governance document");
+    editor("l_certs",l.certificates,cols,"Certificate");
+  }
+  window.saveLegal=function(){ var l=D.legal; l.intro=val("l_intro"); save("legal.json",l,"msg-legal"); };
+
+  /* ---- REPORTS ---- */
+  function bindReports(){
+    var r=D.reports; r.featured=r.featured||{}; r.gallery=r.gallery||{};
+    setv("r_intro",r.intro);
+    setv("r_f_file",r.featured.file); setv("r_f_title",r.featured.title); setv("r_f_sub",r.featured.sub);
+    setv("r_g_file",r.gallery.file); setv("r_g_title",r.gallery.title); setv("r_g_sub",r.gallery.sub);
+    wireInlineUpload(document.getElementById("r_f_file"));
+    wireInlineUpload(document.getElementById("r_g_file"));
+  }
+  window.saveReports=function(){
+    var r=D.reports;
+    r.intro=val("r_intro");
+    r.featured={file:val("r_f_file"),title:val("r_f_title"),sub:val("r_f_sub")};
+    r.gallery={file:val("r_g_file"),title:val("r_g_title"),sub:val("r_g_sub")};
+    save("reports.json",r,"msg-reports");
+  };
+
+  /* ---- CONTACT ---- */
+  function bindContact(){
+    var c=D.contact; c.office=c.office||{}; c.banks=c.banks||[];
+    setv("c_intro",c.intro); setv("c_name",c.office.name);
+    setv("c_addr",(c.office.address||[]).join("\n"));
+    setv("c_phone",c.office.phone); setv("c_emails",csv(c.office.emails));
+    setv("c_chief",c.office.chief); setv("c_note",c.note);
+    renderBanks();
+  }
+  function renderBanks(){
+    var c=D.contact, wrap=document.getElementById("c_banks");
+    wrap.innerHTML=c.banks.map(function(b,i){
+      return '<div style="border:1px solid var(--border);border-radius:9px;padding:.8rem;margin:.6rem 0">'+
+        "<b>"+esc(b.name||"(account)")+"</b> "+
+        '<button class="btn btn-outline btn-sm" data-rn="'+i+'">Rename</button> '+
+        '<button class="btn btn-danger btn-sm" data-bd="'+i+'">Delete</button>'+
+        '<div id="bank_'+i+'" style="margin-top:.5rem"></div></div>';
+    }).join("")+'<button class="btn btn-primary btn-sm" data-badd="1">+ Add account</button>';
+    c.banks.forEach(function(b,i){
+      b.rows=b.rows||[];
+      editor("bank_"+i,b.rows,[{key:"k",label:"Label"},{key:"v",label:"Value"}],"Detail");
+    });
+    wrap.onclick=function(e){
+      var btn=e.target.closest("button"); if(!btn)return;
+      if(btn.dataset.badd!=null){ c.banks.push({name:"New account",rows:[]}); renderBanks(); }
+      else if(btn.dataset.bd!=null){ if(confirm("Delete this account?")){ c.banks.splice(+btn.dataset.bd,1); renderBanks(); } }
+      else if(btn.dataset.rn!=null){
+        var b=c.banks[+btn.dataset.rn];
+        openModal("<h3>Rename account</h3>"+fieldHTML({key:"bn",label:"Name"},b.name)+
+          '<div class="modal-acts"><button class="btn btn-outline" data-cancel>Cancel</button><button class="btn btn-primary" data-ok>Save</button></div>');
+        modalOK(function(){ b.name=val("m_bn"); renderBanks(); closeModalI(); });
+      }
+    };
+  }
+  window.saveContact=function(){
+    var c=D.contact;
+    c.intro=val("c_intro"); c.note=val("c_note");
+    c.office={name:val("c_name"),address:lines(val("c_addr")),phone:val("c_phone"),
+      emails:fromCsv(val("c_emails")),chief:val("c_chief")};
+    save("contact.json",c,"msg-contact");
+  };
+
+
+  /* ---- PHOTOS ----
+     One tab covering every image on the site, so a picture can be replaced
+     without touching any page. Each box has its own Upload... button; the
+     paths carry the uploads/ prefix because they render straight into an
+     <img src>. */
+  function bindPhotos(){
+    var h=D.home; h.hero=h.hero||{}; h.whoWeAre=h.whoWeAre||{};
+    var pg=D.pages; pg.about=pg.about||{}; pg.donate=pg.donate||{}; pg.getInvolved=pg.getInvolved||{};
+    var g=D.gallery; g.photos=g.photos||[];
+
+    setv("ph_hero",h.hero.image); setv("ph_who",h.whoWeAre.image);
+    setv("ph_about",pg.about.image); setv("ph_donate",pg.donate.image);
+    setv("ph_involved",pg.getInvolved.image);
+    setv("ph_logo",D.org.logo); setv("ph_intro",g.intro);
+
+    ["ph_hero","ph_who","ph_about","ph_donate","ph_involved","ph_logo"].forEach(function(id){
+      wireInlineUpload(document.getElementById(id),{prefix:"uploads/"});
+    });
+    editor("ph_photos",g.photos,[
+      {key:"file",label:"Photo"},{key:"caption",label:"Caption"}
+    ],"Gallery photo");
+  }
+  window.savePhotos=function(){
+    var h=D.home; h.hero.image=val("ph_hero"); h.whoWeAre.image=val("ph_who");
+    var pg=D.pages;
+    pg.about={image:val("ph_about")}; pg.donate={image:val("ph_donate")}; pg.getInvolved={image:val("ph_involved")};
+    D.org.logo=val("ph_logo");
+    D.gallery.intro=val("ph_intro");
+    Promise.all([saveP("home.json",h),saveP("pages.json",pg),saveP("org.json",D.org),saveP("gallery.json",D.gallery)])
+      .then(function(r){
+        msg("msg-photos", r.every(Boolean) ? "Saved." : "Some photos did not save - try logging in again.");
+      });
+  };
+
+  /* ---- upload ----
+     api/upload only accepts letters, digits, dot, underscore, hyphen and
+     space in a name. A file taken straight off a phone rarely obliges, so
+     the name is normalised here to something the server will accept. */
+  function safeName(name){
+    var n=String(name||"").replace(/^.*[\\\/]/,"");
+    var dot=n.lastIndexOf(".");
+    var ext=dot>0 ? n.slice(dot+1).toLowerCase().replace(/[^a-z0-9]/g,"") : "";
+    var base=(dot>0? n.slice(0,dot) : n)
+      .replace(/[^\w.\- ]+/g,"-").replace(/[-\s]+/g,"-").replace(/^[-.]+|[-.]+$/g,"");
+    if(!base) base="file";
+    return ext ? base+"."+ext : base;
+  }
+  function doUpload(file,key,onProgress){
+    return new Promise(function(resolve,reject){
+      if(LOCAL){
+        var fd=new FormData(); fd.append("file",file); fd.append("key",key);
+        var xhr=new XMLHttpRequest(); xhr.open("POST","api/upload");
+        xhr.upload.onprogress=function(e){ if(e.lengthComputable&&onProgress) onProgress(Math.round(e.loaded/e.total*90)); };
+        xhr.onload=function(){ (xhr.status>=200&&xhr.status<300)? resolve(key) : reject(new Error(xhr.statusText||"Upload failed")); };
+        xhr.onerror=function(){ reject(new Error("is the local server running?")); };
+        xhr.send(fd);
+      } else {
+        import("https://esm.sh/@vercel/blob@2.8.0/client").then(function(mod){
+          return mod.upload("uploads/"+key,file,{access:"public",handleUploadUrl:"api/upload",
+            onUploadProgress:function(p){ if(onProgress) onProgress(Math.round(p.percentage*0.9)); }});
+        }).then(function(){ resolve(key); }).catch(reject);
+      }
+    });
+  }
+  /* An Upload… button beside a filename field: pick a file, it uploads under
+     its own (cleaned) name and that name is written into the box. opts.prefix
+     is for fields holding a path rather than a bare filename. */
+  function wireInlineUpload(inputEl,opts){
+    var prefix=(opts&&opts.prefix)||"";
+    if(!inputEl||inputEl._wired) return;
+    inputEl._wired=true;
+    var wrap=document.createElement("div");
+    wrap.style.cssText="display:flex;align-items:center;gap:.4rem;margin-top:.35rem";
+    var btn=document.createElement("button");
+    btn.type="button"; btn.className="btn btn-outline btn-sm"; btn.textContent="Upload…";
+    var status=document.createElement("small"); status.style.color="var(--fg2)";
+    var picker=document.createElement("input");
+    picker.type="file"; picker.accept=".pdf,.jpg,.jpeg,.png,.webp,.mp4,.webm"; picker.style.display="none";
+    wrap.appendChild(btn); wrap.appendChild(status); wrap.appendChild(picker);
+    inputEl.insertAdjacentElement("afterend",wrap);
+    btn.addEventListener("click",function(){ picker.click(); });
+    picker.addEventListener("change",function(){
+      if(!picker.files.length) return;
+      var file=picker.files[0];
+      btn.disabled=true; status.textContent="Uploading…";
+      doUpload(file,safeName(file.name),function(p){ status.textContent="Uploading… "+p+"%"; })
+        .then(function(key){
+          inputEl.value=prefix+key;
+          inputEl.dispatchEvent(new Event("input"));
+          var renamed = key!==file.name;
+          status.textContent = renamed ? "Uploaded as "+key : "Uploaded ✓";
+          setTimeout(function(){ status.textContent=""; }, renamed?8000:3000);
+        })
+        .catch(function(err){ status.textContent="Failed: "+((err&&err.message)||err); })
+        .then(function(){ btn.disabled=false; picker.value=""; });
+    });
+  }
+
+  /* ---- files ---- */
+  window.loadFiles=function(){
+    var el=document.getElementById("fileList");
+    el.innerHTML='<p class="hint">Loading…</p>';
+    fetch("api/filelist?"+Date.now()).then(function(r){return r.json();}).then(function(d){
+      var items=d.files||[];
+      el.innerHTML = items.length ? items.map(function(i){
+        return '<div class="file-item"><span class="k">'+esc(i.key)+'</span><span class="s">'+fmtBytes(i.size)+"</span>"+
+          '<button class="btn btn-outline btn-sm" data-copy="'+esc(i.key)+'">Copy name</button></div>';
+      }).join("") : '<p class="hint">No files uploaded yet.</p>';
+    }).catch(function(){ el.innerHTML='<p class="hint">Could not list files'+(LOCAL?" (is the local server running?)":" — try logging in again")+".</p>"; });
+  };
+  document.getElementById("fileList").addEventListener("click",function(e){
+    var b=e.target.closest("[data-copy]"); if(!b)return;
+    if(navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy);
+    b.textContent="Copied"; setTimeout(function(){b.textContent="Copy name";},1500);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Document Viewer — CKB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;background:#efe8d8;color:#16251d;
+       display:flex;flex-direction:column;overflow:hidden}
+
+  .vh{flex:0 0 auto;background:linear-gradient(135deg,#f6f2e8,#efe8d8);border-bottom:1px solid rgba(22,37,29,.12);
+      padding:.55rem 1rem;display:flex;align-items:center;gap:.8rem;z-index:5}
+  .vh h1{font-family:"Bricolage Grotesque","Inter",sans-serif;font-size:.95rem;font-weight:700;flex:1;line-height:1.25;
+         min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .vh h1 small{display:block;font-size:.76rem;font-weight:400;opacity:.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pginfo{flex:0 0 auto;font-size:.76rem;opacity:.55;white-space:nowrap}
+  .act{flex:0 0 auto;display:inline-flex;align-items:center;gap:.35rem;font-size:.8rem;font-weight:650;
+       text-decoration:none;color:#fff;background:linear-gradient(135deg,#0c4632,#12684a);
+       padding:.45rem .85rem;border-radius:999px;white-space:nowrap;border:0;cursor:pointer;font-family:inherit}
+  .act:hover{filter:brightness(1.1)}
+  .act.ghost{background:transparent;color:#12684a;border:1.5px solid rgba(22,37,29,.18)}
+  .act.ghost:hover{border-color:#12684a;filter:none}
+
+  .stage{flex:1 1 auto;position:relative;min-height:0;background:#efe8d8}
+
+  .pages{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
+         display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1.4rem 1rem 3rem}
+  .page{position:relative;max-width:100%;line-height:0;
+        box-shadow:0 2px 18px rgba(12,40,26,.12),0 0 0 1px rgba(22,37,29,.06);border-radius:4px;background:#fff}
+  .page canvas{display:block;max-width:100%;height:auto!important;border-radius:4px}
+  .annot-layer{position:absolute;inset:0}
+  .annot-layer a{position:absolute;display:block;border-radius:3px;
+                 background:rgba(18,104,74,.001);transition:background .15s}
+  .annot-layer a[data-kind="video"]{box-shadow:0 0 0 2px rgba(18,104,74,.0)}
+  .annot-layer a:hover{background:rgba(240,177,0,.22);box-shadow:0 0 0 2px rgba(240,177,0,.55)}
+
+  /* native-PDF fallback frame */
+  .stage > iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+
+  .loader{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+          gap:.9rem;background:#efe8d8;z-index:6;transition:opacity .4s}
+  .loader.done{opacity:0;pointer-events:none}
+  .spin{width:30px;height:30px;border:3px solid rgba(18,104,74,.16);border-top-color:#12684a;border-radius:50%;
+        animation:sp .8s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .loader span{font-size:.85rem;opacity:.6}
+  .msg{text-align:center;padding:3rem 1.5rem;font-size:.95rem;opacity:.72;line-height:1.6;max-width:38ch;margin:0 auto}
+
+  /* in-page video modal */
+  .vmodal{position:fixed;inset:0;z-index:50;background:rgba(9,20,15,.86);backdrop-filter:blur(4px);
+          display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;padding:2.2rem 1rem 1rem}
+  .vmodal[hidden]{display:none}
+  .vmodal-frame{width:min(92vw,1100px);aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;
+                box-shadow:0 24px 70px rgba(0,0,0,.5)}
+  .vmodal-frame iframe{width:100%;height:100%;border:0}
+  .vmodal-cap{color:#f4efe3;font-size:.85rem;max-width:70ch;text-align:center;opacity:.9}
+  .vmodal-x{position:absolute;top:1rem;right:1.1rem;width:40px;height:40px;border-radius:50%;border:0;cursor:pointer;
+            background:rgba(255,255,255,.12);color:#fff;font-size:1.3rem;line-height:1;display:grid;place-items:center}
+  .vmodal-x:hover{background:rgba(255,255,255,.24)}
+
+  @media (max-width:640px){ .vh h1 small{display:none} .act{padding:.42rem .7rem;font-size:.76rem} .act .lbl{display:none} }
+</style>
+</head>
+<body>
+  <div class="vh">
+    <h1 id="title">Document</h1>
+    <span class="pginfo" id="pginfo"></span>
+    <a class="act" id="openTab" href="#" target="_blank" rel="noopener">Open&nbsp;<span class="lbl">in new tab&nbsp;</span>↗</a>
+    <a class="act ghost" id="dl" href="#" download>Download</a>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="pages" id="pages"></div>
+    <div class="loader" id="loader"><div class="spin"></div><span>Opening document…</span></div>
+  </div>
+
+  <div class="vmodal" id="vmodal" hidden>
+    <button class="vmodal-x" id="vmodalX" aria-label="Close">&times;</button>
+    <div class="vmodal-frame"><iframe id="vmodalFrame" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+    <div class="vmodal-cap" id="vmodalCap"></div>
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function () {
+  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+  var p     = new URLSearchParams(location.search);
+  var file  = p.get("file") || "";
+  var title = p.get("title") || "";
+  var sub   = p.get("sub") || "";
+
+  var loader = document.getElementById("loader");
+  var pagesEl = document.getElementById("pages");
+  var pginfo = document.getElementById("pginfo");
+
+  if (!file) { loader.classList.add("done"); pagesEl.innerHTML = '<p class="msg">No document specified.</p>'; return; }
+
+  document.getElementById("title").innerHTML = esc(title || file) + (sub ? "<small>" + esc(sub) + "</small>" : "");
+
+  var fileUrl = "uploads/" + encodeURIComponent(file);
+  document.getElementById("openTab").href = fileUrl;
+  document.getElementById("dl").href = fileUrl;
+  /* dev server also serves the same file at /pdf/<name> */
+  var pdfUrl = "pdf/" + encodeURIComponent(file);
+
+  /* ---------- link handling ---------- */
+  var YT = /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|v\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/;
+
+  function youTubeId(url){
+    var m = String(url).match(YT);
+    if (m) return m[1];
+    /* old wrapper: ...LinkVideos?...&link=https://www.youtube.com/embed/ID... */
+    var m2 = String(url).match(/[?&]link=[^&]*embed(?:%2F|\/)([A-Za-z0-9_-]{11})/i);
+    return m2 ? m2[1] : "";
+  }
+  function crossPdf(url){
+    /* old wrappers: OpenReports?...&filename=X.pdf  /  ProjectsLink?filename=X.pdf */
+    var m = String(url).match(/[?&]filename=([^&]+\.pdf)/i);
+    if (m) return decodeURIComponent(m[1].replace(/\+/g, " ")).trim();
+    /* a direct .pdf link on our own uploads */
+    var m2 = String(url).match(/\/uploads\/([^?#]+\.pdf)/i) || String(url).match(/\/pdf\/([^?#]+\.pdf)/i);
+    return m2 ? decodeURIComponent(m2[1]) : "";
+  }
+  function reportTitle(url){
+    var m = String(url).match(/[?&]report=([^&]+)/i);
+    return m ? decodeURIComponent(m[1].replace(/\+/g, " ")).trim() : "";
+  }
+
+  var vmodal = document.getElementById("vmodal");
+  var vframe = document.getElementById("vmodalFrame");
+  var vcap   = document.getElementById("vmodalCap");
+  function openVideo(id, caption){
+    vframe.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id) +
+      "?autoplay=1&rel=0&modestbranding=1&playsinline=1";
+    vcap.textContent = caption || "";
+    vmodal.hidden = false;
+  }
+  function closeVideo(){ vmodal.hidden = true; vframe.src = "about:blank"; }
+  document.getElementById("vmodalX").addEventListener("click", closeVideo);
+  vmodal.addEventListener("click", function(e){ if (e.target === vmodal) closeVideo(); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && !vmodal.hidden) closeVideo(); });
+
+  function handleLink(url){
+    if (!url) return;
+    var id = youTubeId(url);
+    if (id) { openVideo(id, ""); return; }
+    /* a link to this same viewer (rewritten PDF cross-links) — stay in place */
+    var pv = String(url).match(/pdfviewer\.html\?(.+)$/i);
+    if (pv) { location.href = "pdfviewer.html?" + pv[1]; return; }
+    var xf = crossPdf(url);
+    if (xf) {
+      var q = "?file=" + encodeURIComponent(xf);
+      var rt = reportTitle(url);
+      if (rt) q += "&title=" + encodeURIComponent(rt);
+      location.href = "pdfviewer.html" + q;
+      return;
+    }
+    if (/^mailto:/i.test(url)) { location.href = url; return; }
+    window.open(url, "_blank", "noopener");
+  }
+
+  /* ---------- render ---------- */
+  var pdfjsLib = window.pdfjsLib;
+
+  function nativeFallback(reason){
+    loader.classList.add("done");
+    pagesEl.remove();
+    var ifr = document.createElement("iframe");
+    ifr.title = title || "Document";
+    ifr.src = fileUrl + "#view=FitH&navpanes=0&pagemode=none";
+    document.getElementById("stage").appendChild(ifr);
+  }
+
+  var fellBack = false;
+  function nativeFallbackOnce(reason){ if (fellBack) return; fellBack = true; nativeFallback(reason); }
+
+  /* Watchdog: if the canvas renderer hasn't shown anything in time, hand the
+     document to the browser's own PDF plug-in instead of leaving a stuck spinner. */
+  var watchdog = setTimeout(function(){ nativeFallbackOnce("watchdog"); }, 9000);
+
+  function withTimeout(promise, ms){
+    return Promise.race([
+      promise,
+      new Promise(function(_, rej){ setTimeout(function(){ rej(new Error("timeout")); }, ms); })
+    ]);
+  }
+
+  if (!pdfjsLib || !pdfjsLib.getDocument) { clearTimeout(watchdog); nativeFallbackOnce("no pdfjs"); return; }
+  try {
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  } catch (e) {}
+
+  function linkLayer(pg, wrap, vpCss){
+    return pg.getAnnotations({ intent: "display" }).then(function(annots){
+      var links = (annots || []).filter(function (a) { return a.subtype === "Link" && (a.url || a.unsafeUrl); });
+      if (!links.length) return;
+      var layer = document.createElement("div");
+      layer.className = "annot-layer";
+      links.forEach(function (a) {
+        var url = a.url || a.unsafeUrl;
+        var r = pdfjsLib.Util.normalizeRect(vpCss.convertToViewportRectangle(a.rect));
+        var el = document.createElement("a");
+        el.href = url;
+        el.style.left = Math.min(r[0], r[2]) + "px";
+        el.style.top = Math.min(r[1], r[3]) + "px";
+        el.style.width = Math.abs(r[2] - r[0]) + "px";
+        el.style.height = Math.abs(r[3] - r[1]) + "px";
+        var pvm = String(url).match(/[?&](?:file|filename)=([^&]+\.pdf)/i);
+        if (youTubeId(url) || /LinkVideos/i.test(url)) { el.setAttribute("data-kind", "video"); el.title = "Play video"; }
+        else if (pvm || crossPdf(url)) { el.title = "Open document"; }
+        el.addEventListener("click", function (ev) { ev.preventDefault(); handleLink(url); });
+        layer.appendChild(el);
+      });
+      wrap.appendChild(layer);
+    }).catch(function(){});
+  }
+
+  function renderPage(pdf, i, dpr, maxW){
+    return pdf.getPage(i).then(function(pg){
+      var base = pg.getViewport({ scale: 1 });
+      var s = maxW / base.width;
+      var vpCss = pg.getViewport({ scale: s });
+      var vp = pg.getViewport({ scale: s * dpr });
+
+      var wrap = document.createElement("div");
+      wrap.className = "page";
+      wrap.style.width = vpCss.width + "px";
+      var canvas = document.createElement("canvas");
+      canvas.width = Math.round(vp.width);
+      canvas.height = Math.round(vp.height);
+      canvas.style.width = vpCss.width + "px";
+      canvas.style.height = vpCss.height + "px";
+      wrap.appendChild(canvas);
+      pagesEl.appendChild(wrap);
+
+      return pg.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise
+        .then(function(){ return linkLayer(pg, wrap, vpCss); });
+    });
+  }
+
+  (async function () {
+    var pdf;
+    try {
+      pdf = await withTimeout(pdfjsLib.getDocument({ url: pdfUrl, isEvalSupported: false }).promise, 9000);
+    } catch (e1) {
+      try { pdf = await withTimeout(pdfjsLib.getDocument({ url: fileUrl, isEvalSupported: false }).promise, 9000); }
+      catch (e2) { clearTimeout(watchdog); nativeFallbackOnce("load failed"); return; }
+    }
+    if (fellBack) return;
+
+    var n = pdf.numPages;
+    pginfo.textContent = n + (n === 1 ? " page" : " pages");
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    /* The column can still be mid-layout here — measuring too early once produced
+       an 8px-wide render. Give it a couple of frames, but never wait on
+       requestAnimationFrame alone: in a background tab it never fires, and the
+       watchdog would drop us into the native fallback. Belt and braces below. */
+    await new Promise(function (r) {
+      var done = false;
+      var fin = function () { if (!done) { done = true; r(); } };
+      requestAnimationFrame(function () { requestAnimationFrame(fin); });
+      setTimeout(fin, 150);
+    });
+    var maxW = Math.min(Math.max(pagesEl.clientWidth - 24, 320), 960);
+
+    /* page 1 gates the fallback decision */
+    try {
+      await withTimeout(renderPage(pdf, 1, dpr, maxW), 8000);
+    } catch (e) {
+      clearTimeout(watchdog); nativeFallbackOnce("page 1 failed"); return;
+    }
+    if (fellBack) return;
+    clearTimeout(watchdog);
+    loader.classList.add("done");
+
+    /* remaining pages, best-effort, one at a time */
+    for (var i = 2; i <= n; i++) {
+      try { await renderPage(pdf, i, dpr, maxW); } catch (e) { /* skip bad page */ }
+    }
+  })();
+})();
+</script>
+</body>
+</html>

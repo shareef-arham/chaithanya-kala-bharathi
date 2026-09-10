@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donate — CKB</title>
+  <meta name="description" content="Support Chaithanya Kala Bharathi. Bank details for Indian donations (80G eligible) and for foreign contributions through our FCRA account." />
+  <link rel="icon" href="assets/logo-sm.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=1" />
+</head>
+<body data-page="donate">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="crumbs"><a href="index.html">Home</a> / <span>Donate</span></div>
+        <span class="eyebrow">Compassion in action</span>
+        <h1>Support our work</h1>
+        <p class="lede" style="margin-top:.7rem" id="dNote"></p>
+      </div>
+    </section>
+
+    <section style="padding-top:1.4rem">
+      <div class="wrap">
+        <div class="split" data-reveal style="margin-bottom:2.4rem">
+          <img id="dImg" src="" alt="Families supported by CKB programmes" />
+          <div>
+            <h2>Where your support goes</h2>
+            <ul class="points" style="margin-top:1rem">
+              <li>Bringing out-of-school children back into classrooms through Badi Bata</li>
+              <li>Nutrition and immunisation support for mothers and infants</li>
+              <li>Health, dental and eye check-up camps in villages</li>
+              <li>Livelihood support for smallholder farming families</li>
+            </ul>
+            <p class="lede" style="margin-top:1.1rem">Indian donations are eligible for deduction under Section 80G. Foreign contributions must be made only to our FCRA account.</p>
+          </div>
+        </div>
+
+        <h2>Bank details</h2>
+        <p class="lede" style="margin:.4rem 0 1.2rem">Please quote your name and contact details in the transfer reference so we can send a receipt.</p>
+        <div class="grid grid-3" id="banks" data-reveal></div>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="band" data-reveal>
+          <h2>Questions before you give?</h2>
+          <p>We are glad to explain exactly how a contribution will be used, and to share our reports and statutory approvals.</p>
+          <a href="contact.html" class="btn btn-sun">Talk to us</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/js/site.js?v=1"></script>
+  <script>
+  (function () {
+    var esc = window.CKB_esc;
+    Promise.all([CKB_get("contact.json"), CKB_get("pages.json")]).then(function (r) {
+      var c = r[0] || {}, pg = r[1] || {};
+      if (pg.donate && pg.donate.image) document.getElementById("dImg").src = pg.donate.image;
+      document.getElementById("dNote").textContent = c.note || "";
+      document.getElementById("banks").innerHTML = (c.banks || []).map(function (b) {
+        var rows = (b.rows || []).map(function (r) {
+          return '<div class="row"><span>' + esc(r.k) + "</span><span>" + esc(r.v) + "</span></div>";
+        }).join("");
+        return '<div class="bank"><h4>' + esc(b.name) + "</h4>" + rows + "</div>";
+      }).join("");
+      CKB_reveals();
+    });
+  })();
+  </script>
+</body>
+</html>

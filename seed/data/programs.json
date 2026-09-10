@@ -1,0 +1,33 @@
+{
+  "intro": "CKB works across four core interventions in Kurnool and Nandyal districts. Each has a published report, opened directly on the page.",
+  "items": [
+    {
+      "icon": "🏫",
+      "title": "School & Education",
+      "sub": "Badi Bata — \"Back to School\" and child rights",
+      "desc": "Enrolment drives that bring out-of-school children back into classrooms, supported by child-rights awareness in villages and follow-up with families and teachers.",
+      "file": "SchoolEducation.pdf"
+    },
+    {
+      "icon": "🤝",
+      "title": "Community Welfare",
+      "sub": "Tribal communities, Dalits and people with disabilities",
+      "desc": "Support for the most marginalised households in the operational area, including access to entitlements, awareness and community organisation.",
+      "file": "CommunityWelfare.pdf"
+    },
+    {
+      "icon": "🩺",
+      "title": "Health & Nutrition",
+      "sub": "Mother and child health, immunisation, fluorosis care",
+      "desc": "Nutrition and immunisation support for mothers and infants, safe-delivery awareness, and dental, eye and general health check-up camps.",
+      "file": "HealthNutrition.pdf"
+    },
+    {
+      "icon": "🌾",
+      "title": "Economic Empowerment",
+      "sub": "Livelihoods, farmer collectives and skills",
+      "desc": "Livelihood support for marginalised families — skills, collective formation and market linkage for smallholder farmers.",
+      "file": "EconomicEmpowerment.pdf"
+    }
+  ]
+}

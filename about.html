@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us &amp; Legal Status — CKB</title>
+  <meta name="description" content="Chaithanya Kala Bharathi: who we are, our vision and mission, board members, organisation profile and statutory registrations (12A, 80G, CSR, FCRA)." />
+  <link rel="icon" href="assets/logo-sm.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=1" />
+</head>
+<body data-page="about">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="crumbs"><a href="index.html">Home</a> / <span>About Us</span></div>
+        <span class="eyebrow">Since 1992</span>
+        <h1>About Chaithanya Kala Bharathi</h1>
+        <p class="lede" style="margin-top:.7rem" id="aLede"></p>
+      </div>
+    </section>
+
+    <section style="padding-top:1.4rem">
+      <div class="wrap">
+        <div class="split" data-reveal>
+          <img id="aImg" src="uploads/about-team.jpg" alt="The CKB team in the field" />
+          <div>
+            <h2 id="aTitle"></h2>
+            <p class="lede" id="aBody" style="margin-top:.8rem"></p>
+            <p class="lede" id="aBody2" style="margin-top:.8rem"></p>
+            <ul class="points" id="aPoints"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="center" data-reveal>
+          <span class="eyebrow">Governance</span>
+          <h2>Who we are, on the record</h2>
+          <p class="lede center" style="margin:.6rem auto 0">Our vision, our board and our full organisational profile — open each document below.</p>
+        </div>
+        <div class="grid grid-4" id="docs" style="margin-top:2rem" data-reveal></div>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="center" data-reveal>
+          <span class="eyebrow">Legal status</span>
+          <h2>Registrations &amp; approvals</h2>
+          <p class="lede center" id="lLede" style="margin:.6rem auto 0"></p>
+        </div>
+        <div class="grid grid-4" id="certs" style="margin-top:2rem" data-reveal></div>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="band" data-reveal>
+          <h2>Want the detail?</h2>
+          <p>Every programme we run has a published report, and every statutory approval is available to read.</p>
+          <a href="reports.html" class="btn btn-sun">Go to Reports</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/js/site.js?v=1"></script>
+  <script>
+  (function () {
+    var esc = window.CKB_esc;
+    function tile(d) {
+      return '<div class="doc-card" role="button" tabindex="0" data-doc="' + esc(d.file) +
+        '" data-title="' + esc(d.title) + '" data-sub="' + esc(d.sub || "") + '">' +
+        '<div class="doc-ico">' + esc(d.icon || "📄") + "</div>" +
+        "<b>" + esc(d.title) + "</b><small>" + esc(d.sub || "") + "</small>" +
+        '<span class="open">Open &rarr;</span></div>';
+    }
+    Promise.all([CKB_get("home.json"), CKB_get("legal.json"), CKB_get("pages.json")]).then(function (r) {
+      var h = r[0] || {}, l = r[1] || {}, pg = r[2] || {};
+      if (pg.about && pg.about.image) document.getElementById("aImg").src = pg.about.image;
+      var w = h.whoWeAre || {};
+      document.getElementById("aLede").textContent = (h.hero && h.hero.lede) || "";
+      document.getElementById("aTitle").textContent = w.title || "Who we are";
+      document.getElementById("aBody").textContent = w.body || "";
+      document.getElementById("aBody2").textContent = w.body2 || "";
+      document.getElementById("aPoints").innerHTML = (w.points || []).map(function (x) {
+        return "<li>" + esc(x) + "</li>";
+      }).join("");
+
+      document.getElementById("lLede").textContent = l.intro || "";
+      document.getElementById("docs").innerHTML  = (l.documents || []).map(tile).join("");
+      document.getElementById("certs").innerHTML = (l.certificates || []).map(tile).join("");
+      CKB_reveals();
+    });
+  })();
+  </script>
+</body>
+</html>

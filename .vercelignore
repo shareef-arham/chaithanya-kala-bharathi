@@ -1,0 +1,13 @@
+.vercel
+
+# data/ and uploads/ are served from Blob through api/content and api/media
+# (see vercel.json). Shipping them as static files would shadow those
+# rewrites, and the site would show a stale snapshot instead of live edits.
+/data/
+/uploads/
+
+node_modules/
+.git/
+server.py
+start.bat
+*.bak

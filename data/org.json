@@ -1,0 +1,49 @@
+{
+  "name": "Chaithanya Kala Bharathi",
+  "short": "CKB",
+  "tagline": "Compassion in Action",
+  "established": "1992",
+  "stats": [
+    {
+      "n": "1992",
+      "l": "Established"
+    },
+    {
+      "n": "30+",
+      "l": "Years of impact"
+    },
+    {
+      "n": "2",
+      "l": "Districts served"
+    },
+    {
+      "n": "4",
+      "l": "Core interventions"
+    }
+  ],
+  "impact": [
+    {
+      "icon": "📚",
+      "n": "10,000+",
+      "l": "Children enrolled (Badi Bata)"
+    },
+    {
+      "icon": "👶",
+      "n": "5,000+",
+      "l": "Mothers and infants supported"
+    },
+    {
+      "icon": "🏥",
+      "n": "100+",
+      "l": "Health and nutrition camps"
+    },
+    {
+      "icon": "🌾",
+      "n": "30+",
+      "l": "Years of continuous service"
+    }
+  ],
+  "strapline": "Serving communities in Andhra Pradesh since 1992",
+  "logo": "assets/logo.png",
+  "logoSmall": "assets/logo-sm.png"
+}

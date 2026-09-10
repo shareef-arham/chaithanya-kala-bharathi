@@ -1,0 +1,46 @@
+{
+  "intro": "Write, call or visit — we are glad to hear from supporters, partners and the communities we serve.",
+  "office": {
+    "name": "Head Office, Nandyal",
+    "address": [
+      "D.No. 29/178-22H, S.B.I. Colony",
+      "Opp. Ramalayam Temple",
+      "Nandyal - 518 501",
+      "Nandyal District, Andhra Pradesh, India"
+    ],
+    "phone": "+91 9440464877",
+    "emails": ["ckb_ndl@yahoo.com"],
+    "chief": "Mr. V. Vijaya Bhaskar, Chief Functionary / Executive Secretary"
+  },
+  "note": "Donations to CKB are eligible for deduction under 80G. Foreign contributions must be sent to the FCRA account only.",
+  "banks": [
+    {
+      "name": "Indian donations — State Bank of India",
+      "rows": [
+        { "k": "Account name",   "v": "CHAITHANYA KALA BHARATHI" },
+        { "k": "Account no.",    "v": "30861193442" },
+        { "k": "Branch",         "v": "Main Branch, Nandyal, Andhra Pradesh" },
+        { "k": "IFSC",           "v": "SBIN000883" }
+      ]
+    },
+    {
+      "name": "Indian donations — Syndicate Bank",
+      "rows": [
+        { "k": "Account name",   "v": "CHAITHANYA KALA BHARATHI" },
+        { "k": "Account no.",    "v": "3374-22000-75141" },
+        { "k": "Branch",         "v": "Main Branch, Nandyal" },
+        { "k": "IFSC",           "v": "SYNB0003374" }
+      ]
+    },
+    {
+      "name": "Foreign donations — FCRA account (State Bank of India)",
+      "rows": [
+        { "k": "Account name",   "v": "CHAITHANYA KALA BHARATHI" },
+        { "k": "Account no.",    "v": "40117327176" },
+        { "k": "Branch",         "v": "11 Sansad Marg, New Delhi - 110 001" },
+        { "k": "IFSC",           "v": "SBIN0000691" },
+        { "k": "SWIFT",          "v": "SBININBB104" }
+      ]
+    }
+  ]
+}

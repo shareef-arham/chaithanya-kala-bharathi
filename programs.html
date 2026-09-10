@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programs &amp; Interventions — CKB</title>
+  <meta name="description" content="CKB's four core interventions: School &amp; Education (Badi Bata), Community Welfare, Health &amp; Nutrition, and Economic Empowerment." />
+  <link rel="icon" href="assets/logo-sm.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=1" />
+</head>
+<body data-page="programs">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="crumbs"><a href="index.html">Home</a> / <span>Programs</span></div>
+        <span class="eyebrow">Our work</span>
+        <h1>Programs &amp; interventions</h1>
+        <p class="lede" style="margin-top:.7rem" id="pIntro"></p>
+      </div>
+    </section>
+
+    <section style="padding-top:1.4rem">
+      <div class="wrap">
+        <div class="grid grid-2" id="items" data-reveal></div>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="band" data-reveal>
+          <h2>Partner with us</h2>
+          <p>Institutions, CSR partners and individual supporters all have a place in this work. We hold 12A, 80G, CSR and FCRA approvals.</p>
+          <div class="hero-cta" style="justify-content:center">
+            <a href="get-involved.html" class="btn btn-sun">Get involved</a>
+            <a href="contact.html" class="btn btn-ghost" style="background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.5);color:#fff">Contact us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/js/site.js?v=1"></script>
+  <script>
+  (function () {
+    var esc = window.CKB_esc;
+    CKB_get("programs.json").then(function (p) {
+      document.getElementById("pIntro").textContent = p.intro || "";
+      document.getElementById("items").innerHTML = (p.items || []).map(function (i) {
+        return '<div class="card" role="button" tabindex="0" data-doc="' + esc(i.file) +
+          '" data-title="' + esc(i.title) + '" data-sub="' + esc(i.sub || "") + '">' +
+          '<div class="ico">' + esc(i.icon || "") + "</div>" +
+          "<h3>" + esc(i.title) + "</h3>" +
+          '<div class="sub">' + esc(i.sub || "") + "</div>" +
+          "<p>" + esc(i.desc || "") + "</p>" +
+          '<span class="open">Open the report &rarr;</span></div>';
+      }).join("");
+      CKB_reveals();
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us — CKB</title>
+  <meta name="description" content="Contact Chaithanya Kala Bharathi — head office in Nandyal, Andhra Pradesh. Phone, email and postal address." />
+  <link rel="icon" href="assets/logo-sm.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=1" />
+</head>
+<body data-page="contact">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="crumbs"><a href="index.html">Home</a> / <span>Contact</span></div>
+        <span class="eyebrow">Get in touch</span>
+        <h1>Contact us</h1>
+        <p class="lede" style="margin-top:.7rem" id="cIntro"></p>
+      </div>
+    </section>
+
+    <section style="padding-top:1.4rem">
+      <div class="wrap">
+        <div class="grid grid-2" data-reveal>
+          <div class="card">
+            <div class="ico">📍</div>
+            <h3 id="oName">Head Office</h3>
+            <p id="oAddr" style="margin-top:.5rem;white-space:pre-line"></p>
+            <p id="oChief" style="margin-top:.8rem;font-weight:600;color:var(--green-d)"></p>
+          </div>
+          <div class="card">
+            <div class="ico">✉️</div>
+            <h3>Reach us directly</h3>
+            <p style="margin-top:.6rem"><strong>Phone</strong><br /><a id="oPhone" href="#" style="color:var(--green);font-weight:650"></a></p>
+            <p style="margin-top:.7rem"><strong>Email</strong><br /><span id="oMails"></span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="band" data-reveal>
+          <h2>Supporting our work</h2>
+          <p id="cNote"></p>
+          <a href="donate.html" class="btn btn-sun">See donation details</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/js/site.js?v=1"></script>
+  <script>
+  (function () {
+    var esc = window.CKB_esc;
+    CKB_get("contact.json").then(function (c) {
+      var o = c.office || {};
+      document.getElementById("cIntro").textContent = c.intro || "";
+      document.getElementById("oName").textContent  = o.name || "Head Office";
+      document.getElementById("oAddr").textContent  = (o.address || []).join("\n");
+      document.getElementById("oChief").textContent = o.chief || "";
+      var ph = document.getElementById("oPhone");
+      if (o.phone) { ph.textContent = o.phone; ph.href = "tel:" + o.phone.replace(/\s/g, ""); }
+      document.getElementById("oMails").innerHTML = (o.emails || []).map(function (e) {
+        return '<a href="mailto:' + esc(e) + '" style="color:var(--green);font-weight:650">' + esc(e) + "</a>";
+      }).join("<br />");
+      document.getElementById("cNote").textContent = c.note || "";
+      CKB_reveals();
+    });
+  })();
+  </script>
+</body>
+</html>

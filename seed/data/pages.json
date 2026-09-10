@@ -1,0 +1,5 @@
+{
+  "about":       { "image": "uploads/about-team.jpg" },
+  "donate":      { "image": "uploads/donate-impact.jpg" },
+  "getInvolved": { "image": "uploads/gallery-volunteer.jpg" }
+}

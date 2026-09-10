@@ -1,0 +1,8 @@
+{
+  "intro": "Moments from our work with schools, mothers and infants, health camps and farming families.",
+  "photos": [
+    { "file": "uploads/hero-education.jpg",     "caption": "School education — Badi Bata enrolment drive" },
+    { "file": "uploads/programs-community.jpg", "caption": "Community welfare and women's groups" },
+    { "file": "uploads/gallery-volunteer.jpg",  "caption": "Volunteers in the field" }
+  ]
+}

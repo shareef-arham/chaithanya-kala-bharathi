@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reports &amp; Certificates — CKB</title>
+  <meta name="description" content="CKB's activity reports, programme reports, governance documents and statutory certificates — 12A, 80G, CSR, FCRA, PAN and registration." />
+  <link rel="icon" href="assets/logo-sm.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=1" />
+</head>
+<body data-page="reports">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="crumbs"><a href="index.html">Home</a> / <span>Reports</span></div>
+        <span class="eyebrow">Transparency</span>
+        <h1>Reports &amp; certificates</h1>
+        <p class="lede" style="margin-top:.7rem" id="rIntro"></p>
+      </div>
+    </section>
+
+    <section style="padding-top:1.4rem">
+      <div class="wrap">
+        <div id="featured" data-reveal></div>
+
+        <h2 style="margin-top:2.4rem">Programme reports</h2>
+        <p class="lede" style="margin:.4rem 0 1.2rem">One report for each of our four interventions.</p>
+        <div class="grid grid-4" id="progs" data-reveal></div>
+
+        <h2 style="margin-top:2.6rem">Governance</h2>
+        <p class="lede" style="margin:.4rem 0 1.2rem">Vision and mission, the board, our full profile and our supporters.</p>
+        <div class="grid grid-4" id="docs" data-reveal></div>
+
+        <h2 style="margin-top:2.6rem">Statutory certificates</h2>
+        <p class="lede" style="margin:.4rem 0 1.2rem">Registration and approvals, available to read in full.</p>
+        <div class="grid grid-4" id="certs" data-reveal></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/js/site.js?v=1"></script>
+  <script>
+  (function () {
+    var esc = window.CKB_esc;
+    function tile(d, icon) {
+      return '<div class="doc-card" role="button" tabindex="0" data-doc="' + esc(d.file) +
+        '" data-title="' + esc(d.title) + '" data-sub="' + esc(d.sub || "") + '">' +
+        '<div class="doc-ico">' + esc(d.icon || icon || "📄") + "</div>" +
+        "<b>" + esc(d.title) + "</b><small>" + esc(d.sub || "") + "</small>" +
+        '<span class="open">Open &rarr;</span></div>';
+    }
+    Promise.all([CKB_get("reports.json"), CKB_get("programs.json"), CKB_get("legal.json")])
+      .then(function (r) {
+        var rep = r[0] || {}, p = r[1] || {}, l = r[2] || {};
+        document.getElementById("rIntro").textContent = rep.intro || "";
+
+        var f = rep.featured || {};
+        document.getElementById("featured").innerHTML = f.file
+          ? '<div class="card" role="button" tabindex="0" style="max-width:520px" data-doc="' + esc(f.file) +
+            '" data-title="' + esc(f.title) + '" data-sub="' + esc(f.sub || "") + '">' +
+            '<div class="ico">📘</div><h3>' + esc(f.title) + "</h3>" +
+            '<div class="sub">' + esc(f.sub || "") + "</div>" +
+            '<span class="open">Open the report &rarr;</span></div>'
+          : "";
+
+        document.getElementById("progs").innerHTML = (p.items || []).map(function (i) {
+          return tile({ file: i.file, title: i.title, sub: i.sub, icon: i.icon }, "📄");
+        }).join("");
+        document.getElementById("docs").innerHTML  = (l.documents || []).map(function (d) { return tile(d, "📘"); }).join("");
+        document.getElementById("certs").innerHTML = (l.certificates || []).map(function (d) { return tile(d, "📜"); }).join("");
+        CKB_reveals();
+      });
+  })();
+  </script>
+</body>
+</html>

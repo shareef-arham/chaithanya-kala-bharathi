@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chaithanya Kala Bharathi (CKB) — Nandyal, Andhra Pradesh</title>
+  <meta name="description" content="Chaithanya Kala Bharathi (CKB) is a registered NGO founded in 1992 in Nandyal, Andhra Pradesh (12A, 80G, CSR, FCRA). School education, mother and child health, nutrition and livelihoods." />
+  <link rel="icon" href="assets/logo-sm.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=1" />
+</head>
+<body data-page="home">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <span class="eyebrow" id="hBadge">Since 1992</span>
+            <h1 id="hTitle">Chaithanya Kala <span class="accent">Bharathi</span></h1>
+            <p class="lede" id="hLede"></p>
+            <div class="hero-cta">
+              <a href="donate.html" class="btn btn-sun">Support our work</a>
+              <a href="about.html" class="btn btn-ghost">Our 30-year journey</a>
+            </div>
+          </div>
+          <div class="hero-media"><img id="hImg" src="uploads/hero-education.jpg" alt="Children at school in Andhra Pradesh" /></div>
+        </div>
+        <div class="stats" id="stats"></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="split" data-reveal>
+          <div>
+            <span class="eyebrow" id="wEyebrow">Who we are</span>
+            <h2 id="wTitle"></h2>
+            <p class="lede" id="wBody" style="margin-top:.8rem"></p>
+            <p class="lede" id="wBody2" style="margin-top:.8rem"></p>
+            <ul class="points" id="wPoints"></ul>
+          </div>
+          <img id="wImg" src="uploads/programs-community.jpg" alt="Community and women's welfare work" />
+        </div>
+      </div>
+    </section>
+
+    <section style="padding-top:1rem">
+      <div class="wrap">
+        <div class="center" data-reveal>
+          <span class="eyebrow" id="fEyebrow">Our work</span>
+          <h2 id="fTitle"></h2>
+          <p class="lede center" id="fLede" style="margin:.6rem auto 0"></p>
+        </div>
+        <div class="grid grid-4" id="focus" style="margin-top:2rem" data-reveal></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="grid grid-4" id="impact" data-reveal></div>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="band" data-reveal>
+          <h2>Compassion in action, since 1992</h2>
+          <p>Every contribution supports education, health and livelihoods for families across Kurnool and Nandyal districts. Donations are eligible for deduction under 80G.</p>
+          <div class="hero-cta" style="justify-content:center">
+            <a href="donate.html" class="btn btn-sun">Donate</a>
+            <a href="reports.html" class="btn btn-ghost" style="background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.5);color:#fff">Read our reports</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/js/site.js?v=1"></script>
+  <script>
+  (function () {
+    var esc = window.CKB_esc;
+    Promise.all([CKB_get("home.json"), CKB_get("org.json"), CKB_get("programs.json")])
+      .then(function (r) {
+        var h = r[0] || {}, o = r[1] || {}, p = r[2] || {};
+        var hero = h.hero || {}, w = h.whoWeAre || {}, f = h.focus || {};
+
+        if (hero.badge) document.getElementById("hBadge").textContent = hero.badge;
+        if (hero.titleLead || hero.titleAccent) {
+          document.getElementById("hTitle").innerHTML =
+            esc(hero.titleLead || "") + ' <span class="accent">' + esc(hero.titleAccent || "") + "</span>";
+        }
+        document.getElementById("hLede").textContent = hero.lede || "";
+        if (hero.image) document.getElementById("hImg").src = hero.image;
+
+        document.getElementById("stats").innerHTML = (o.stats || []).map(function (s) {
+          return '<div class="stat"><div class="n">' + esc(s.n) + '</div><div class="l">' + esc(s.l) + "</div></div>";
+        }).join("");
+
+        document.getElementById("wEyebrow").textContent = w.eyebrow || "Who we are";
+        document.getElementById("wTitle").textContent = w.title || "";
+        document.getElementById("wBody").textContent = w.body || "";
+        document.getElementById("wBody2").textContent = w.body2 || "";
+        if (w.image) document.getElementById("wImg").src = w.image;
+        document.getElementById("wPoints").innerHTML = (w.points || []).map(function (x) {
+          return "<li>" + esc(x) + "</li>";
+        }).join("");
+
+        document.getElementById("fEyebrow").textContent = f.eyebrow || "Our work";
+        document.getElementById("fTitle").textContent = f.title || "";
+        document.getElementById("fLede").textContent = f.lede || "";
+
+        /* the four interventions, each opening its own report */
+        document.getElementById("focus").innerHTML = (p.items || []).map(function (i) {
+          return '<div class="card" role="button" tabindex="0" data-doc="' + esc(i.file) +
+            '" data-title="' + esc(i.title) + '" data-sub="' + esc(i.sub || "") + '">' +
+            '<div class="ico">' + esc(i.icon || "") + "</div>" +
+            "<h3>" + esc(i.title) + "</h3>" +
+            '<div class="sub">' + esc(i.sub || "") + "</div>" +
+            "<p>" + esc(i.desc || "") + "</p>" +
+            '<span class="open">Open report &rarr;</span></div>';
+        }).join("");
+
+        document.getElementById("impact").innerHTML = (o.impact || []).map(function (i) {
+          return '<div class="card center"><div class="ico">' + esc(i.icon || "") + "</div>" +
+            '<h3 style="color:var(--green-d)">' + esc(i.n) + "</h3>" +
+            "<p>" + esc(i.l) + "</p></div>";
+        }).join("");
+
+        CKB_reveals();
+      });
+  })();
+  </script>
+</body>
+</html>

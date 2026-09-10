@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=6" />
+  <link rel="stylesheet" href="assets/css/style.css?v=7" />
 </head>
 <body data-page="reports">
   <div id="site-header"></div>
@@ -46,7 +46,8 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/site.js?v=6"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="assets/js/site.js?v=7"></script>
   <script>
   (function () {
     var esc = window.CKB_esc;
@@ -54,7 +55,8 @@
     function tile(d, icon) {
       return '<div class="doc-card" role="button" tabindex="0" data-doc="' + esc(d.file) +
         '" data-title="' + esc(d.title) + '" data-sub="' + esc(d.sub || "") + '">' +
-        '<div class="doc-ico">' + esc(d.icon || icon || "📄") + "</div>" +
+        '<span class="pdf-cover" data-cover="' + esc(d.file) + '"><span class="fb">' +
+        esc(d.icon || icon || "📄") + "</span><canvas></canvas></span>" +
         "<b>" + esc(d.title) + "</b><small>" + esc(d.sub || "") + "</small>" +
         '<span class="open">Open &rarr;</span></div>';
     }
@@ -81,7 +83,8 @@
           return '<div class="rtl-card ' + side + '" role="button" tabindex="0" data-doc="' + esc(x.file) +
             '" data-title="' + esc(x.title) + '" data-sub="' + esc(x.sub || "") + '">' +
             (side === "left" && x.latest ? '<span class="rtl-badge">Latest</span>' : "") +
-            '<span class="rtl-ico">' + glyph + "</span>" +
+            '<span class="pdf-cover" data-cover="' + esc(x.file) + '"><span class="fb">' + glyph +
+            "</span><canvas></canvas></span>" +
             '<span class="tx"><b>' + esc(x.title) + "</b><small>" + esc(x.sub || "") + "</small>" +
             '<span class="open">' + verb + " &rarr;</span></span></div>";
         }
@@ -103,7 +106,8 @@
         document.getElementById("mediaRow").innerHTML = m.file
           ? '<div class="doc-card" role="button" tabindex="0" data-doc="' + esc(m.file) +
             '" data-title="' + esc(m.title) + '" data-sub="' + esc(m.sub || "") + '">' +
-            '<div class="doc-ico">📰</div><b>' + esc(m.title) + "</b><small>" + esc(m.sub || "") + "</small>" +
+            '<span class="pdf-cover" data-cover="' + esc(m.file) + '"><span class="fb">📰</span><canvas></canvas></span>' +
+            "<b>" + esc(m.title) + "</b><small>" + esc(m.sub || "") + "</small>" +
             '<span class="open">Open &rarr;</span></div>'
           : "";
 
@@ -112,6 +116,7 @@
         }).join("");
 
         CKB_reveals();
+        if (window.CKB_renderCovers) window.CKB_renderCovers("main");
       });
   })();
   </script>

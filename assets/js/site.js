@@ -128,6 +128,62 @@
   }
   window.CKB_reveals = reveals;
 
+
+  /* ---- PDF cover thumbnails ----
+     Draws the first page of each PDF into a small canvas, so a report is
+     shown by its own cover rather than a generic icon. Lazy: a cover is
+     only rendered once it is near the viewport, because each one fetches
+     and decodes a multi-megabyte PDF. The emoji stays underneath as the
+     fallback when pdf.js is unavailable or a file fails to load. */
+  window.CKB_pdfURL = function (file) { return "pdf/" + encodeURIComponent(file); };
+
+  window.CKB_renderCovers = function (rootSel) {
+    var lib = window.pdfjsLib;
+    if (!lib) return;
+    try {
+      lib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    } catch (e) {}
+    var root = document.querySelector(rootSel || "body");
+    if (!root) return;
+    var covers = [].slice.call(root.querySelectorAll(".pdf-cover[data-cover]"));
+    if (!covers.length) return;
+
+    function render(el) {
+      if (el.dataset.done) return;
+      el.dataset.done = "1";
+      var file = el.getAttribute("data-cover");
+      var canvas = el.querySelector("canvas");
+      if (!file || !canvas) return;
+      lib.getDocument(window.CKB_pdfURL(file)).promise
+        .then(function (pdf) { return pdf.getPage(1); })
+        .then(function (page) {
+          var dpr = Math.min(window.devicePixelRatio || 1, 2);
+          var w = el.getBoundingClientRect().width || 56;
+          var base = page.getViewport({ scale: 1 });
+          var vp = page.getViewport({ scale: (w * dpr) / base.width });
+          canvas.width = Math.round(vp.width);
+          canvas.height = Math.round(vp.height);
+          return page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+        })
+        .then(function () { el.classList.add("is-loaded"); })
+        .catch(function () { el.dataset.done = ""; });   /* leave the emoji showing */
+    }
+    function sweep() {
+      var h = window.innerHeight || 800;
+      covers.forEach(function (el) {
+        if (!el.dataset.done && el.getBoundingClientRect().top < h + 500) render(el);
+      });
+    }
+    var tick;
+    window.addEventListener("scroll", function () {
+      if (tick) return;
+      tick = setTimeout(function () { tick = null; sweep(); }, 150);
+    }, { passive: true });
+    sweep();
+    setTimeout(sweep, 1000);
+  };
+
   /* Any element carrying data-doc opens that PDF in the shared viewer. */
   document.addEventListener("click", function (e) {
     var el = e.target.closest("[data-doc]");

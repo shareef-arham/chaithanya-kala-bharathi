@@ -1,7 +1,86 @@
 {
   "intro": "Our Annual Reports and independently audited statements of accounts, opened right here on the page. Each year holds its report on the left and its audited statement on the right.",
-  "annualReports": [],
-  "auditedAccounts": [],
+  "annualReports": [
+    {
+      "year": "2025-26",
+      "title": "Annual Report 2025–26",
+      "sub": "Programmes, reach and activities",
+      "file": "AR-2025-26.pdf",
+      "latest": true
+    },
+    {
+      "year": "2024-25",
+      "title": "Annual Report 2024–25",
+      "sub": "Programmes, reach and activities",
+      "file": "AR-2024-25.pdf",
+      "latest": false
+    },
+    {
+      "year": "2023-24",
+      "title": "Annual Report 2023–24",
+      "sub": "Programmes, reach and activities",
+      "file": "AR-2023-24.pdf",
+      "latest": false
+    },
+    {
+      "year": "2022-23",
+      "title": "Annual Report 2022–23",
+      "sub": "Programmes, reach and activities",
+      "file": "AR-2022-23.pdf",
+      "latest": false
+    },
+    {
+      "year": "2021-22",
+      "title": "Annual Report 2021–22",
+      "sub": "Programmes, reach and activities",
+      "file": "AR-2021-22.pdf",
+      "latest": false
+    },
+    {
+      "year": "2019-20",
+      "title": "Annual Report 2019–20",
+      "sub": "Programmes, reach and activities",
+      "file": "AR-2019-20.pdf",
+      "latest": false
+    },
+    {
+      "year": "2018-19",
+      "title": "Annual Report 2018–19",
+      "sub": "Programmes, reach and activities",
+      "file": "AR-2018-19.pdf",
+      "latest": false
+    }
+  ],
+  "auditedAccounts": [
+    {
+      "year": "2025-26",
+      "title": "Audited Statements 2025–26",
+      "sub": "Independently audited accounts",
+      "file": "AUDIT-2025-26.pdf",
+      "latest": true
+    },
+    {
+      "year": "2024-25",
+      "title": "Audited Statements 2024–25",
+      "sub": "Independently audited accounts",
+      "file": "AUDIT-2024-25.pdf",
+      "latest": false
+    },
+    {
+      "year": "2023-24",
+      "title": "Audited Statements 2023–24",
+      "sub": "Independently audited accounts",
+      "file": "AUDIT-2023-24.pdf",
+      "latest": false
+    },
+    {
+      "year": "2022-23",
+      "title": "Audited Statements 2022–23",
+      "sub": "Independently audited accounts",
+      "file": "AUDIT-2022-23.pdf",
+      "latest": false
+    }
+  ],
   "media": {
     "file": "DynamicReport.pdf",
     "title": "Activity Report",

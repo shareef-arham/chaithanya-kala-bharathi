@@ -94,6 +94,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
   <div class="tabs" id="tabs">
     <button class="tab active" data-tab="home">Home</button>
     <button class="tab" data-tab="org">Organisation</button>
+    <button class="tab" data-tab="vision">Vision &amp; Mission</button>
     <button class="tab" data-tab="programs">Programs</button>
     <button class="tab" data-tab="legal">Legal &amp; Governance</button>
     <button class="tab" data-tab="reports">Reports</button>
@@ -146,6 +147,19 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     <div class="field"><label>Logo image</label><input id="o_logo" /></div>
     <h3>Headline numbers</h3><div id="o_stats"></div>
     <h3>Impact figures</h3><div id="o_impact"></div>
+  </div>
+
+  <!-- PROGRAMS -->
+  <div class="panel" id="panel-vision">
+    <h2>Vision &amp; Mission</h2>
+    <p class="hint">The About Us &rarr; Vision &amp; Mission section. This is the text readers see on the page itself. Put one objective per line — they are numbered automatically.</p>
+    <div class="saverow"><button class="btn btn-primary btn-sm" onclick="saveVision()">Save Vision &amp; Mission</button><span class="msg" id="msg-vision"></span></div>
+    <div class="field"><label>Intro line</label><input id="vm_intro" /></div>
+    <div class="field"><label>Vision</label><textarea id="vm_vision" rows="5"></textarea></div>
+    <div class="field"><label>Mission</label><textarea id="vm_mission" rows="4"></textarea></div>
+    <div class="field"><label>Goal</label><textarea id="vm_goal" rows="4"></textarea></div>
+    <div class="field"><label>Objectives — one per line</label><textarea id="vm_obj" rows="14"></textarea></div>
+    <div class="field"><label>Original document (PDF filename, optional)</label><input id="vm_pdf" /></div>
   </div>
 
   <!-- PROGRAMS -->
@@ -430,11 +444,11 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
   }
 
   function loadAll(){
-    Promise.all(["home.json","org.json","programs.json","legal.json","contact.json","gallery.json","pages.json","governance.json"].map(getJSON))
+    Promise.all(["home.json","org.json","programs.json","legal.json","contact.json","gallery.json","pages.json","governance.json","vision.json"].map(getJSON))
       .then(function(a){
         D.home=a[0]||{}; D.org=a[1]||{}; D.programs=a[2]||{}; D.legal=a[3]||{}; D.contact=a[4]||{};
-        D.gallery=a[5]||{}; D.pages=a[6]||{}; D.gov=a[7]||{};
-        bindHome(); bindOrg(); bindPrograms(); bindLegal(); bindContact(); bindPhotos(); bindGovernance(); bindGallery();
+        D.gallery=a[5]||{}; D.pages=a[6]||{}; D.gov=a[7]||{}; D.vision=a[8]||{};
+        bindHome(); bindOrg(); bindPrograms(); bindLegal(); bindContact(); bindPhotos(); bindGovernance(); bindGallery(); bindVision();
       });
   }
 
@@ -493,6 +507,25 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     editor("l_docs",l.documents,cols,"Governance document");
     editor("l_certs",l.certificates,cols,"Certificate");
   }
+  /* ---- VISION & MISSION (vision.json) ----
+     Objectives are edited as one-per-line text; the page numbers them. */
+  function bindVision(){
+    var v=D.vision;
+    setv("vm_intro",v.intro); setv("vm_vision",v.vision);
+    setv("vm_mission",v.mission); setv("vm_goal",v.goal);
+    setv("vm_obj",(v.objectives||[]).join("\n"));
+    setv("vm_pdf",v.pdf);
+    wireInlineUpload(document.getElementById("vm_pdf"));
+  }
+  window.saveVision=function(){
+    var v=D.vision;
+    v.intro=val("vm_intro"); v.vision=val("vm_vision");
+    v.mission=val("vm_mission"); v.goal=val("vm_goal");
+    v.objectives=val("vm_obj").split("\n").map(function(x){return x.trim();}).filter(Boolean);
+    v.pdf=val("vm_pdf");
+    save("vision.json",v,"msg-vision");
+  };
+
   window.saveLegal=function(){ var l=D.legal; l.intro=val("l_intro"); save("legal.json",l,"msg-legal"); };
 
   /* ---- REPORTS (governance.json) ----

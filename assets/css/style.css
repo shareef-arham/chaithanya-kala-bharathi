@@ -312,3 +312,32 @@ h2{font-size:clamp(1.6rem,3.4vw,2.4rem)}
 .model dt{font-weight:700;color:var(--ink)}
 .model dd{margin:0;color:var(--ink-soft)}
 .model dd code{background:rgba(47,125,79,.09);padding:.05rem .3rem;border-radius:4px;font-size:.8rem}
+
+/* ---- Vision & Mission (About page) --------------------------------
+   The statements used to sit behind a PDF tile; they are page content
+   now, so they need type large enough to be read, not just scanned. */
+.vm-pair{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:2rem}
+.vm-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+         padding:1.6rem 1.5rem;box-shadow:var(--shadow);border-top:4px solid var(--green)}
+.vm-card.alt{border-top-color:var(--amber)}
+.vm-card p{margin-top:.6rem;color:var(--ink-soft);font-size:1rem;line-height:1.75}
+.vm-goal{background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff;
+         border-radius:var(--radius);padding:1.7rem 1.6rem;margin-top:1.4rem;box-shadow:var(--shadow-lg)}
+.vm-goal .eyebrow{color:#fff;background:rgba(255,255,255,.18)}
+.vm-goal p{margin-top:.6rem;color:rgba(255,255,255,.94);font-size:1.02rem;line-height:1.75;max-width:70ch}
+.vm-h{margin-top:2.6rem;font-size:1.35rem;color:var(--green-d)}
+.vm-obj{margin-top:1rem;padding-left:0;list-style:none;counter-reset:vm;
+        display:grid;grid-template-columns:1fr 1fr;gap:.85rem 1.6rem}
+.vm-obj li{counter-increment:vm;position:relative;padding-left:2.3rem;
+           font-size:.95rem;color:var(--ink-soft);line-height:1.65}
+.vm-obj li::before{content:counter(vm);position:absolute;left:0;top:.05rem;
+                   width:1.6rem;height:1.6rem;border-radius:50%;background:var(--leaf);
+                   color:var(--green-d);font-size:.78rem;font-weight:700;
+                   display:grid;place-items:center}
+.vm-src{margin-top:1.8rem;font-size:.9rem}
+.vm-src span[role="button"]{color:var(--green);font-weight:650;text-decoration:none;cursor:pointer}
+.vm-src span[role="button"]:hover{text-decoration:underline}
+@media(max-width:820px){
+  .vm-pair{grid-template-columns:1fr}
+  .vm-obj{grid-template-columns:1fr}
+}

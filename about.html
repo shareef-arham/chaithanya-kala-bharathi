@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=9" />
+  <link rel="stylesheet" href="assets/css/style.css?v=10" />
 </head>
 <body data-page="about">
   <div id="site-header"></div>
@@ -46,9 +46,18 @@
         <div class="center" data-reveal>
           <span class="eyebrow">Vision &amp; Mission</span>
           <h2>What we set out to do</h2>
-          <p class="lede center" style="margin:.6rem auto 0">Our vision and mission, set down in full.</p>
+          <p class="lede center" id="vmIntro" style="margin:.6rem auto 0"></p>
         </div>
-        <div class="grid grid-3" id="mission-docs" style="margin-top:2rem;max-width:820px;margin-left:auto;margin-right:auto" data-reveal></div>
+
+        <div class="vm-pair" id="vmPair" data-reveal></div>
+        <div class="vm-goal" id="vmGoal" data-reveal></div>
+
+        <div id="vmObjWrap" data-reveal>
+          <h3 class="vm-h">Objectives</h3>
+          <ol class="vm-obj" id="vmObj"></ol>
+        </div>
+
+        <p class="vm-src" id="vmSrc"></p>
       </div>
     </section>
 
@@ -142,9 +151,9 @@
         : '<p class="lede center" style="grid-column:1/-1">Not added yet.</p>';
     }
 
-    Promise.all([CKB_get("home.json"), CKB_get("legal.json"), CKB_get("pages.json")])
+    Promise.all([CKB_get("home.json"), CKB_get("legal.json"), CKB_get("pages.json"), CKB_get("vision.json")])
       .then(function (r) {
-        var h = r[0] || {}, l = r[1] || {}, pg = r[2] || {};
+        var h = r[0] || {}, l = r[1] || {}, pg = r[2] || {}, vm = r[3] || {};
         var w = h.whoWeAre || {};
         var docs = l.documents || [];
 
@@ -157,10 +166,26 @@
           return "<li>" + esc(x) + "</li>";
         }).join("");
 
-        fill("mission-docs",   pick(docs, "vision"));
         fill("board-docs",     pick(docs, "board"));
         fill("profile-docs",   pick(docs, "profile"));
         fill("supporter-docs", pick(docs, "supporter"));
+
+        /* Vision & Mission — a page in its own right rather than a PDF tile.
+           The original document stays available as a footnote link. */
+        document.getElementById("vmIntro").textContent = vm.intro || "";
+        document.getElementById("vmPair").innerHTML =
+          (vm.vision  ? '<div class="vm-card"><span class="eyebrow">Vision</span><p>'  + esc(vm.vision)  + "</p></div>" : "") +
+          (vm.mission ? '<div class="vm-card alt"><span class="eyebrow">Mission</span><p>' + esc(vm.mission) + "</p></div>" : "");
+        document.getElementById("vmGoal").innerHTML = vm.goal
+          ? '<span class="eyebrow">Goal</span><p>' + esc(vm.goal) + "</p>" : "";
+        var objs = vm.objectives || [];
+        document.getElementById("vmObjWrap").style.display = objs.length ? "" : "none";
+        document.getElementById("vmObj").innerHTML = objs.map(function (o) {
+          return "<li>" + esc(o) + "</li>";
+        }).join("");
+        document.getElementById("vmSrc").innerHTML = vm.pdf
+          ? '<span role="button" tabindex="0" data-doc="' + esc(vm.pdf) + '" data-title="Vision &amp; Mission">Open the original document (PDF) &rarr;</span>'
+          : "";
 
         document.getElementById("lLede").textContent = l.intro || "";
 

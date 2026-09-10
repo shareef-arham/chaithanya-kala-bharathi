@@ -67,7 +67,7 @@
       "</ul></div>" +
       '<div><h4>Contact</h4><ul id="footContact"><li>Nandyal, Andhra Pradesh</li></ul></div>' +
       "</div><div class=\"foot-base\"><span>&copy; " + y + " Chaithanya Kala Bharathi. All rights reserved.</span>" +
-      '<span><a href="admin.html">Admin</a></span></div></div></footer>';
+      '<span><a href="admin.html" class="admin-link">🔒 Admin</a></span></div></div></footer>';
   }
 
   function mount() {

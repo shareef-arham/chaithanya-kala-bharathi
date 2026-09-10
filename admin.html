@@ -289,7 +289,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
       if(val("m_new").length<8){ m.style.color="#c0392b"; m.textContent="Use at least 8 characters."; return; }
       if(val("m_new")!==val("m_rep")){ m.style.color="#c0392b"; m.textContent="The new passwords do not match."; return; }
       fetch("api/change-password",{method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({current:val("m_cur"),next:val("m_new")})})
+        body:JSON.stringify({currentPassword:val("m_cur"),newPassword:val("m_new")})})
         .then(function(r){ return r.json(); })
         .then(function(d){
           if(d && d.ok){ m.style.color="#1e824c"; m.textContent="Changed."; setTimeout(closeModal,1200); }

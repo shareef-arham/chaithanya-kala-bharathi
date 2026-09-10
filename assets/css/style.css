@@ -252,3 +252,8 @@ h2{font-size:clamp(1.6rem,3.4vw,2.4rem)}
 .lightbox iframe{width:100%;height:100%;border:0}
 .lightbox .close{position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:#fff;
   font-size:2rem;cursor:pointer;line-height:1}
+
+/* Hero video sits in the same frame the photograph used, so the layout does
+   not shift when one is swapped for the other. */
+.hero-video{position:relative;width:100%;aspect-ratio:16/9;background:var(--green-d)}
+.hero-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=3" />
+  <link rel="stylesheet" href="assets/css/style.css?v=4" />
 </head>
 <body data-page="home">
   <div id="site-header"></div>
@@ -27,7 +27,7 @@
               <a href="about.html" class="btn btn-ghost">Our 30-year journey</a>
             </div>
           </div>
-          <div class="hero-media"><img id="hImg" src="uploads/hero-education.jpg" alt="Children at school in Andhra Pradesh" /></div>
+          <div class="hero-media" id="heroMedia"><img id="hImg" src="uploads/hero-education.jpg" alt="Children at school in Andhra Pradesh" /></div>
         </div>
         <div class="stats" id="stats"></div>
       </div>
@@ -80,7 +80,7 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/site.js?v=3"></script>
+  <script src="assets/js/site.js?v=4"></script>
   <script>
   (function () {
     var esc = window.CKB_esc;
@@ -95,7 +95,21 @@
             esc(hero.titleLead || "") + ' <span class="accent">' + esc(hero.titleAccent || "") + "</span>";
         }
         document.getElementById("hLede").textContent = hero.lede || "";
-        if (hero.image) document.getElementById("hImg").src = hero.image;
+
+        /* A YouTube ID in the hero replaces the photograph. Muted autoplay is
+           what browsers allow without a click; controls stay on so a visitor
+           can unmute. Clearing the ID in the admin brings the photo back. */
+        if (hero.videoId) {
+          document.getElementById("heroMedia").innerHTML =
+            '<div class="hero-video"><iframe src="https://www.youtube.com/embed/' +
+            encodeURIComponent(hero.videoId) +
+            '?autoplay=1&mute=1&rel=0&playsinline=1&loop=1&playlist=' +
+            encodeURIComponent(hero.videoId) + '" title="' + esc(hero.videoTitle || "Chaithanya Kala Bharathi") +
+            '" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
+            'allowfullscreen loading="lazy"></iframe></div>';
+        } else if (hero.image) {
+          document.getElementById("hImg").src = hero.image;
+        }
 
         document.getElementById("stats").innerHTML = (o.stats || []).map(function (s) {
           return '<div class="stat"><div class="n">' + esc(s.n) + '</div><div class="l">' + esc(s.l) + "</div></div>";

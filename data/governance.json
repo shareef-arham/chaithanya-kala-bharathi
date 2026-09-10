@@ -81,9 +81,5 @@
       "latest": false
     }
   ],
-  "media": {
-    "file": "DynamicReport.pdf",
-    "title": "Activity Report",
-    "sub": "CKB's consolidated report of activities"
-  }
+  "media": {}
 }

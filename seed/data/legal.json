@@ -1,5 +1,5 @@
 {
-  "intro": "CKB is a registered society and holds the statutory approvals below. The registration details are listed here; each certificate can be opened in full.",
+  "intro": "CKB is a registered society and holds the statutory approvals below. Each certificate can be opened in full.",
   "certificates": [
     {
       "icon": "📜",
@@ -68,44 +68,6 @@
       "title": "Our Supporters",
       "sub": "Partners and funders",
       "file": "OurSupporters.pdf"
-    }
-  ],
-  "registration": [
-    {
-      "label": "Registered under",
-      "value": "Andhra Pradesh Societies Registration Act No. XXI of 1860"
-    },
-    {
-      "label": "Registration number",
-      "value": "1154/1992"
-    },
-    {
-      "label": "Date of registration",
-      "value": "31 March 1992"
-    },
-    {
-      "label": "Place of registration",
-      "value": "Kurnool, Andhra Pradesh, India"
-    },
-    {
-      "label": "PAN",
-      "value": "AAATC6841M"
-    },
-    {
-      "label": "80G",
-      "value": "DIT(E)/HYD/80G/71(06)/2010-11, dated 21 December 2010"
-    },
-    {
-      "label": "FCRA registration no.",
-      "value": "010270187"
-    },
-    {
-      "label": "NGO Darpan no.",
-      "value": "AP/2009/0001798"
-    },
-    {
-      "label": "GSTIN",
-      "value": "37AABTA5663Q2Z4"
     }
   ]
 }

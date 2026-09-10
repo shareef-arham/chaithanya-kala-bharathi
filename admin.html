@@ -430,10 +430,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
   }
 
   function loadAll(){
-    Promise.all(["home.json","org.json","programs.json","legal.json","reports.json","contact.json","gallery.json","pages.json","governance.json"].map(getJSON))
+    Promise.all(["home.json","org.json","programs.json","legal.json","contact.json","gallery.json","pages.json","governance.json"].map(getJSON))
       .then(function(a){
-        D.home=a[0]||{}; D.org=a[1]||{}; D.programs=a[2]||{}; D.legal=a[3]||{}; D.reports=a[4]||{}; D.contact=a[5]||{};
-        D.gallery=a[6]||{}; D.pages=a[7]||{}; D.gov=a[8]||{};
+        D.home=a[0]||{}; D.org=a[1]||{}; D.programs=a[2]||{}; D.legal=a[3]||{}; D.contact=a[4]||{};
+        D.gallery=a[5]||{}; D.pages=a[6]||{}; D.gov=a[7]||{};
         bindHome(); bindOrg(); bindPrograms(); bindLegal(); bindContact(); bindPhotos(); bindGovernance(); bindGallery();
       });
   }

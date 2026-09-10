@@ -26,6 +26,7 @@
   .act.ghost{background:transparent;color:#12684a;border:1.5px solid rgba(22,37,29,.18)}
   .act.ghost:hover{border-color:#12684a;filter:none}
   .act.back{margin-right:.1rem}
+  .act.back .lbl-sm{display:none}
 
   .stage{flex:1 1 auto;position:relative;min-height:0;background:#efe8d8}
 
@@ -64,12 +65,15 @@
             background:rgba(255,255,255,.12);color:#fff;font-size:1.3rem;line-height:1;display:grid;place-items:center}
   .vmodal-x:hover{background:rgba(255,255,255,.24)}
 
-  @media (max-width:640px){ .vh h1 small{display:none} .act{padding:.42rem .7rem;font-size:.76rem} .act .lbl{display:none} }
+  /* On a narrow screen the header has no room for full labels. Back keeps a
+     short one — it is the control a reader most needs to find. */
+  @media (max-width:640px){ .vh h1 small{display:none} .act{padding:.42rem .7rem;font-size:.76rem} .act .lbl{display:none}
+                            .act.back .lbl-sm{display:inline} }
 </style>
 </head>
 <body>
   <div class="vh">
-    <button class="act ghost back" id="back" type="button" title="Close this document and go back">&larr;&nbsp;<span class="lbl" id="backLbl">Back</span></button>
+    <button class="act ghost back" id="back" type="button" title="Close this document and go back">&larr;&nbsp;<span class="lbl" id="backLbl">Back</span><span class="lbl-sm">Back</span></button>
     <h1 id="title">Document</h1>
     <span class="pginfo" id="pginfo"></span>
     <a class="act" id="openTab" href="#" target="_blank" rel="noopener">Open&nbsp;<span class="lbl">in new tab&nbsp;</span>↗</a>

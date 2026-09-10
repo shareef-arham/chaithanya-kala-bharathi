@@ -5,16 +5,21 @@
 (function () {
   "use strict";
 
+  /* Each About Us dropdown item is a page of its own. The list is shared by
+     the dropdown and by the "More about us" row at the foot of each of
+     those pages, so the two can never drift apart. */
+  var ABOUT_PAGES = [
+    { href: "about.html",      label: "Who We Are" },
+    { href: "vision.html",     label: "Vision & Mission" },
+    { href: "board.html",      label: "Board Members" },
+    { href: "profile.html",    label: "Organisation Profile" },
+    { href: "legal.html",      label: "Legal Status" },
+    { href: "supporters.html", label: "Our Supporters" }
+  ];
+
   var NAV = [
     { href: "index.html",       label: "Home",         key: "home" },
-    { href: "about.html",       label: "About Us",     key: "about", sub: [
-      { href: "about.html#story",    label: "Who We Are" },
-      { href: "about.html#mission",  label: "Vision & Mission" },
-      { href: "about.html#board",    label: "Board Members" },
-      { href: "about.html#profile",  label: "Organisation Profile" },
-      { href: "about.html#legal",    label: "Legal Status" },
-      { href: "about.html#supporters", label: "Our Supporters" }
-    ] },
+    { href: "about.html",       label: "About Us",     key: "about", sub: ABOUT_PAGES },
     { href: "programs.html",    label: "Programs",     key: "programs" },
     { href: "gallery.html",     label: "Gallery",      key: "gallery" },
     { href: "reports.html",     label: "Reports",      key: "reports" },
@@ -184,6 +189,16 @@
     }, { passive: true });
     sweep();
     setTimeout(sweep, 1000);
+  };
+
+  /* The row of sibling links at the foot of every About Us page. */
+  window.CKB_aboutNav = function (currentHref) {
+    var el = document.getElementById("aboutNav");
+    if (!el) return;
+    el.innerHTML = '<span class="eyebrow">More about us</span><div class="about-links">' +
+      ABOUT_PAGES.filter(function (x) { return x.href !== currentHref; })
+        .map(function (x) { return '<a href="' + x.href + '">' + esc(x.label) + "</a>"; })
+        .join("") + "</div>";
   };
 
   /* Any element carrying data-doc opens that PDF in the shared viewer.

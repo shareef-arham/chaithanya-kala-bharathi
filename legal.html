@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Legal Status — CKB</title>
+  <meta name="description" content="Registration details, statutory approvals and certificates of Chaithanya Kala Bharathi." />
+  <link rel="icon" href="assets/logo-sm.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=11" />
+</head>
+<body data-page="about">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="crumbs"><a href="index.html">Home</a> / <a href="about.html">About Us</a> / <span>Legal Status</span></div>
+        <span class="eyebrow">Legal status</span>
+        <h1>Registrations &amp; approvals</h1>
+        <p class="lede" style="margin-top:.7rem" id="pIntro"></p>
+      </div>
+    </section>
+
+    <section style="padding-top:1.4rem">
+      <div class="wrap">
+        <div class="bank" id="regDetails" style="max-width:760px" data-reveal></div>
+        <h3 class="vm-h">Certificates</h3>
+        <p class="lede" style="margin:.3rem 0 1.2rem">Each certificate opens here on the page.</p>
+        <div class="grid grid-4" id="certs" data-reveal></div>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="about-nav" id="aboutNav" data-reveal></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="assets/js/site.js?v=11"></script>
+  <script>
+  (function () {
+    var esc = window.CKB_esc;
+    CKB_get("legal.json").then(function (l) {
+      document.getElementById("pIntro").textContent = l.intro || "";
+      var reg = l.registration || [];
+      document.getElementById("regDetails").innerHTML = reg.length
+        ? "<h4>Registration details</h4>" + reg.map(function (x) {
+            return '<div class="row"><span>' + esc(x.label) + "</span><span>" + esc(x.value) + "</span></div>";
+          }).join("")
+        : "";
+      document.getElementById("certs").innerHTML = (l.certificates || []).map(function (d) {
+        return '<div class="doc-card" role="button" tabindex="0" data-doc="' + esc(d.file) +
+          '" data-title="' + esc(d.title) + '" data-sub="' + esc(d.sub || "") + '">' +
+          '<span class="pdf-cover" data-cover="' + esc(d.file) + '"><span class="fb">' +
+          esc(d.icon || "📄") + "</span><canvas></canvas></span>" +
+          "<b>" + esc(d.title) + "</b><small>" + esc(d.sub || "") + "</small>" +
+          '<span class="open">Open &rarr;</span></div>';
+      }).join("");
+      CKB_aboutNav("legal.html");
+      CKB_reveals();
+      if (window.CKB_renderCovers) window.CKB_renderCovers("main");
+    });
+  })();
+  </script>
+</body>
+</html>

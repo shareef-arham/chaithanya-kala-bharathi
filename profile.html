@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Organisation Profile — CKB</title>
+  <meta name="description" content="A profile of Chaithanya Kala Bharathi — constitution, area of operation and core values." />
+  <link rel="icon" href="assets/logo-sm.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=11" />
+</head>
+<body data-page="about">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="crumbs"><a href="index.html">Home</a> / <a href="about.html">About Us</a> / <span>Organisation Profile</span></div>
+        <span class="eyebrow">Profile</span>
+        <h1>Organisation profile</h1>
+        <p class="lede" style="margin-top:.7rem" id="pIntro"></p>
+      </div>
+    </section>
+
+    <section style="padding-top:1.4rem">
+      <div class="wrap">
+        <div class="prof-grid">
+          <div class="bank" id="pFacts" data-reveal></div>
+          <div class="bank" id="pCover" data-reveal></div>
+        </div>
+        <div id="pValuesWrap" data-reveal>
+          <h3 class="vm-h">Core values</h3>
+          <ul class="points" id="pValues" style="max-width:760px"></ul>
+        </div>
+        <p class="vm-src" id="pSrc"></p>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="about-nav" id="aboutNav" data-reveal></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/js/site.js?v=11"></script>
+  <script>
+  (function () {
+    var esc = window.CKB_esc;
+    function rows(title, list) {
+      return list && list.length
+        ? "<h4>" + esc(title) + "</h4>" + list.map(function (x) {
+            return '<div class="row"><span>' + esc(x.label) + "</span><span>" + esc(x.value) + "</span></div>";
+          }).join("")
+        : "";
+    }
+    CKB_get("about.json").then(function (d) {
+      var p = d.profile || {};
+      document.getElementById("pIntro").textContent = p.intro || "";
+      document.getElementById("pFacts").innerHTML = rows("At a glance", p.facts);
+      document.getElementById("pCover").innerHTML = rows("Where we work", p.coverage);
+      var v = p.values || [];
+      document.getElementById("pValuesWrap").style.display = v.length ? "" : "none";
+      document.getElementById("pValues").innerHTML = v.map(function (x) {
+        return "<li>" + esc(x) + "</li>";
+      }).join("");
+      document.getElementById("pSrc").innerHTML = p.pdf
+        ? '<span role="button" tabindex="0" data-doc="' + esc(p.pdf) +
+          '" data-title="Organisation Profile">Open the full profile (PDF) &rarr;</span>' : "";
+      CKB_aboutNav("profile.html");
+      CKB_reveals();
+    });
+  })();
+  </script>
+</body>
+</html>

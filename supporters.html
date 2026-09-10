@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Supporters — CKB</title>
+  <meta name="description" content="The partners and funders who support the work of Chaithanya Kala Bharathi." />
+  <link rel="icon" href="assets/logo-sm.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=11" />
+</head>
+<body data-page="about">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="crumbs"><a href="index.html">Home</a> / <a href="about.html">About Us</a> / <span>Our Supporters</span></div>
+        <span class="eyebrow">Partners</span>
+        <h1>Our supporters</h1>
+        <p class="lede" style="margin-top:.7rem" id="pIntro"></p>
+      </div>
+    </section>
+
+    <section style="padding-top:1.4rem">
+      <div class="wrap">
+        <div class="grid grid-3" id="sup" data-reveal></div>
+        <p class="lede" id="sNote" style="margin-top:1.6rem"></p>
+        <p class="vm-src" id="pSrc"></p>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="about-nav" id="aboutNav" data-reveal></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/js/site.js?v=11"></script>
+  <script>
+  (function () {
+    var esc = window.CKB_esc;
+    CKB_get("about.json").then(function (d) {
+      var s = d.supporters || {};
+      document.getElementById("pIntro").textContent = s.intro || "";
+      document.getElementById("sup").innerHTML = (s.items || []).map(function (i) {
+        return '<div class="sup-card"><b>' + esc(i.name) + "</b>" +
+          (i.place ? "<small>" + esc(i.place) + "</small>" : "") + "</div>";
+      }).join("");
+      document.getElementById("sNote").textContent = s.note || "";
+      document.getElementById("pSrc").innerHTML = s.pdf
+        ? '<span role="button" tabindex="0" data-doc="' + esc(s.pdf) +
+          '" data-title="Our Supporters">Open the original document (PDF) &rarr;</span>' : "";
+      CKB_aboutNav("supporters.html");
+      CKB_reveals();
+    });
+  })();
+  </script>
+</body>
+</html>

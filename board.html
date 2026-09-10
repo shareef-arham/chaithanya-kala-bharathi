@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Board Members — CKB</title>
+  <meta name="description" content="The Executive Committee of Chaithanya Kala Bharathi — who governs the organisation." />
+  <link rel="icon" href="assets/logo-sm.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=11" />
+</head>
+<body data-page="about">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="crumbs"><a href="index.html">Home</a> / <a href="about.html">About Us</a> / <span>Board Members</span></div>
+        <span class="eyebrow">Governance</span>
+        <h1>Board members</h1>
+        <p class="lede" style="margin-top:.7rem" id="pIntro"></p>
+      </div>
+    </section>
+
+    <section style="padding-top:1.4rem">
+      <div class="wrap">
+        <div class="people" id="people" data-reveal></div>
+        <p class="vm-src" id="pSrc"></p>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="about-nav" id="aboutNav" data-reveal></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/js/site.js?v=11"></script>
+  <script>
+  (function () {
+    var esc = window.CKB_esc;
+    function initials(n) {
+      var parts = String(n || "").replace(/[^A-Za-z ]/g, " ").trim().split(/\s+/);
+      return ((parts[0] || "")[0] || "") + ((parts[parts.length - 1] || "")[0] || "");
+    }
+    CKB_get("about.json").then(function (d) {
+      var b = d.board || {};
+      document.getElementById("pIntro").textContent = b.intro || "";
+      document.getElementById("people").innerHTML = (b.members || []).map(function (m) {
+        return '<div class="person">' +
+          '<div class="avatar">' + esc(initials(m.name).toUpperCase()) + "</div>" +
+          '<div class="who"><b>' + esc(m.name) + "</b>" +
+          '<span class="role">' + esc(m.role || "") + "</span>" +
+          (m.relation || m.qualification
+            ? '<small class="meta">' + esc([m.relation, m.qualification].filter(Boolean).join(" · ")) + "</small>"
+            : "") +
+          (m.bio ? "<p>" + esc(m.bio) + "</p>" : "") +
+          "</div></div>";
+      }).join("");
+      document.getElementById("pSrc").innerHTML = b.pdf
+        ? '<span role="button" tabindex="0" data-doc="' + esc(b.pdf) +
+          '" data-title="Board Members">Open the original document (PDF) &rarr;</span>' : "";
+      CKB_aboutNav("board.html");
+      CKB_reveals();
+    });
+  })();
+  </script>
+</body>
+</html>

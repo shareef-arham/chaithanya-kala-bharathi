@@ -95,6 +95,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     <button class="tab active" data-tab="home">Home</button>
     <button class="tab" data-tab="org">Organisation</button>
     <button class="tab" data-tab="vision">Vision &amp; Mission</button>
+    <button class="tab" data-tab="about">Board, Profile &amp; Supporters</button>
     <button class="tab" data-tab="programs">Programs</button>
     <button class="tab" data-tab="legal">Legal &amp; Governance</button>
     <button class="tab" data-tab="reports">Reports</button>
@@ -150,6 +151,31 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
   </div>
 
   <!-- PROGRAMS -->
+  <div class="panel" id="panel-about">
+    <h2>Board, Profile &amp; Supporters</h2>
+    <p class="hint">The three About Us pages that are built from lists: <b>Board Members</b>, <b>Organisation Profile</b> and <b>Our Supporters</b>. Each also keeps a link to its original PDF.</p>
+    <div class="saverow"><button class="btn btn-primary btn-sm" onclick="saveAbout()">Save all three</button><span class="msg" id="msg-about"></span></div>
+
+    <h3>Board Members</h3>
+    <div class="field"><label>Intro line</label><textarea id="ab_b_intro" rows="2"></textarea></div>
+    <div id="ab_board"></div>
+    <div class="field"><label>Original document (PDF filename)</label><input id="ab_b_pdf" /></div>
+
+    <h3>Organisation Profile</h3>
+    <div class="field"><label>Intro line</label><textarea id="ab_p_intro" rows="2"></textarea></div>
+    <h4>At a glance</h4><div id="ab_facts"></div>
+    <h4>Where we work</h4><div id="ab_cover"></div>
+    <div class="field"><label>Core values — one per line</label><textarea id="ab_p_values" rows="7"></textarea></div>
+    <div class="field"><label>Original document (PDF filename)</label><input id="ab_p_pdf" /></div>
+
+    <h3>Our Supporters</h3>
+    <div class="field"><label>Intro line</label><textarea id="ab_s_intro" rows="2"></textarea></div>
+    <div id="ab_sup"></div>
+    <div class="field"><label>Closing note</label><textarea id="ab_s_note" rows="2"></textarea></div>
+    <div class="field"><label>Original document (PDF filename)</label><input id="ab_s_pdf" /></div>
+  </div>
+
+  <!-- VISION & MISSION -->
   <div class="panel" id="panel-vision">
     <h2>Vision &amp; Mission</h2>
     <p class="hint">The About Us &rarr; Vision &amp; Mission section. This is the text readers see on the page itself. Put one objective per line — they are numbered automatically.</p>
@@ -444,11 +470,11 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
   }
 
   function loadAll(){
-    Promise.all(["home.json","org.json","programs.json","legal.json","contact.json","gallery.json","pages.json","governance.json","vision.json"].map(getJSON))
+    Promise.all(["home.json","org.json","programs.json","legal.json","contact.json","gallery.json","pages.json","governance.json","vision.json","about.json"].map(getJSON))
       .then(function(a){
         D.home=a[0]||{}; D.org=a[1]||{}; D.programs=a[2]||{}; D.legal=a[3]||{}; D.contact=a[4]||{};
-        D.gallery=a[5]||{}; D.pages=a[6]||{}; D.gov=a[7]||{}; D.vision=a[8]||{};
-        bindHome(); bindOrg(); bindPrograms(); bindLegal(); bindContact(); bindPhotos(); bindGovernance(); bindGallery(); bindVision();
+        D.gallery=a[5]||{}; D.pages=a[6]||{}; D.gov=a[7]||{}; D.vision=a[8]||{}; D.about=a[9]||{};
+        bindHome(); bindOrg(); bindPrograms(); bindLegal(); bindContact(); bindPhotos(); bindGovernance(); bindGallery(); bindVision(); bindAbout();
       });
   }
 
@@ -517,6 +543,45 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     setv("vm_pdf",v.pdf);
     wireInlineUpload(document.getElementById("vm_pdf"));
   }
+  /* ---- BOARD / PROFILE / SUPPORTERS (about.json) ---- */
+  function bindAbout(){
+    var a=D.about;
+    a.board=a.board||{}; a.profile=a.profile||{}; a.supporters=a.supporters||{};
+    a.board.members=a.board.members||[];
+    a.profile.facts=a.profile.facts||[]; a.profile.coverage=a.profile.coverage||[];
+    a.supporters.items=a.supporters.items||[];
+
+    setv("ab_b_intro",a.board.intro); setv("ab_b_pdf",a.board.pdf);
+    editor("ab_board",a.board.members,[
+      {key:"name",label:"Name"},{key:"role",label:"Role"},
+      {key:"relation",label:"S/o, D/o, W/o"},{key:"qualification",label:"Qualification"},
+      {key:"bio",label:"Short note"}],"Board member");
+
+    setv("ab_p_intro",a.profile.intro); setv("ab_p_pdf",a.profile.pdf);
+    setv("ab_p_values",(a.profile.values||[]).join("\n"));
+    var lv=[{key:"label",label:"Label"},{key:"value",label:"Value"}];
+    editor("ab_facts",a.profile.facts,lv,"Fact");
+    editor("ab_cover",a.profile.coverage,lv,"Coverage row");
+
+    setv("ab_s_intro",a.supporters.intro); setv("ab_s_note",a.supporters.note);
+    setv("ab_s_pdf",a.supporters.pdf);
+    editor("ab_sup",a.supporters.items,[
+      {key:"name",label:"Organisation"},{key:"place",label:"Country / place"}],"Supporter");
+
+    ["ab_b_pdf","ab_p_pdf","ab_s_pdf"].forEach(function(id){
+      wireInlineUpload(document.getElementById(id));
+    });
+  }
+  window.saveAbout=function(){
+    var a=D.about;
+    a.board.intro=val("ab_b_intro"); a.board.pdf=val("ab_b_pdf");
+    a.profile.intro=val("ab_p_intro"); a.profile.pdf=val("ab_p_pdf");
+    a.profile.values=lines(val("ab_p_values"));
+    a.supporters.intro=val("ab_s_intro"); a.supporters.note=val("ab_s_note");
+    a.supporters.pdf=val("ab_s_pdf");
+    save("about.json",a,"msg-about");
+  };
+
   window.saveVision=function(){
     var v=D.vision;
     v.intro=val("vm_intro"); v.vision=val("vm_vision");

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=10" />
+  <link rel="stylesheet" href="assets/css/style.css?v=11" />
 </head>
 <body data-page="about">
   <div id="site-header"></div>
@@ -40,73 +40,15 @@
       </div>
     </section>
 
-    <!-- Vision & Mission -->
-    <section id="mission" style="padding-top:1rem">
+    <!-- The rest of About Us, one page each -->
+    <section style="padding-top:1rem">
       <div class="wrap">
         <div class="center" data-reveal>
-          <span class="eyebrow">Vision &amp; Mission</span>
-          <h2>What we set out to do</h2>
-          <p class="lede center" id="vmIntro" style="margin:.6rem auto 0"></p>
+          <span class="eyebrow">More about us</span>
+          <h2>The rest of the story</h2>
+          <p class="lede center" style="margin:.6rem auto 0">Each part of About Us has a page of its own.</p>
         </div>
-
-        <div class="vm-pair" id="vmPair" data-reveal></div>
-        <div class="vm-goal" id="vmGoal" data-reveal></div>
-
-        <div id="vmObjWrap" data-reveal>
-          <h3 class="vm-h">Objectives</h3>
-          <ol class="vm-obj" id="vmObj"></ol>
-        </div>
-
-        <p class="vm-src" id="vmSrc"></p>
-      </div>
-    </section>
-
-    <!-- Board Members -->
-    <section id="board" style="padding-top:1rem">
-      <div class="wrap">
-        <div class="center" data-reveal>
-          <span class="eyebrow">Governance</span>
-          <h2>Board members</h2>
-          <p class="lede center" style="margin:.6rem auto 0">Who governs the organisation.</p>
-        </div>
-        <div class="grid grid-3" id="board-docs" style="margin-top:2rem;max-width:820px;margin-left:auto;margin-right:auto" data-reveal></div>
-      </div>
-    </section>
-
-    <!-- Organisation Profile -->
-    <section id="profile" style="padding-top:1rem">
-      <div class="wrap">
-        <div class="center" data-reveal>
-          <span class="eyebrow">Profile</span>
-          <h2>Organisation profile</h2>
-          <p class="lede center" style="margin:.6rem auto 0">A full profile of CKB and the communities we serve.</p>
-        </div>
-        <div class="grid grid-3" id="profile-docs" style="margin-top:2rem;max-width:820px;margin-left:auto;margin-right:auto" data-reveal></div>
-      </div>
-    </section>
-
-    <!-- Legal Status -->
-    <section id="legal" style="padding-top:1rem">
-      <div class="wrap">
-        <div class="center" data-reveal>
-          <span class="eyebrow">Legal status</span>
-          <h2>Registrations &amp; approvals</h2>
-          <p class="lede center" id="lLede" style="margin:.6rem auto 0"></p>
-        </div>
-        <div class="bank" id="regDetails" style="margin-top:1.8rem;max-width:760px;margin-left:auto;margin-right:auto" data-reveal></div>
-        <div class="grid grid-4" id="certs" style="margin-top:2rem" data-reveal></div>
-      </div>
-    </section>
-
-    <!-- Our Supporters -->
-    <section id="supporters" style="padding-top:1rem">
-      <div class="wrap">
-        <div class="center" data-reveal>
-          <span class="eyebrow">Partners</span>
-          <h2>Our supporters</h2>
-          <p class="lede center" style="margin:.6rem auto 0">The partners and funders who make this work possible.</p>
-        </div>
-        <div class="grid grid-3" id="supporter-docs" style="margin-top:2rem;max-width:820px;margin-left:auto;margin-right:auto" data-reveal></div>
+        <div class="grid grid-3" id="aboutCards" style="margin-top:2rem" data-reveal></div>
       </div>
     </section>
 
@@ -122,40 +64,31 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/site.js?v=10"></script>
+  <script src="assets/js/site.js?v=11"></script>
   <script>
   (function () {
     var esc = window.CKB_esc;
 
-    function tile(d) {
-      return '<div class="doc-card" role="button" tabindex="0" data-doc="' + esc(d.file) +
-        '" data-title="' + esc(d.title) + '" data-sub="' + esc(d.sub || "") + '">' +
-        '<div class="doc-ico">' + esc(d.icon || "📄") + "</div>" +
-        "<b>" + esc(d.title) + "</b><small>" + esc(d.sub || "") + "</small>" +
-        '<span class="open">Open &rarr;</span></div>';
-    }
+    /* About Us is a set of pages now; this grid is the way in to the others. */
+    var CARDS = [
+      { href: "vision.html",     icon: "🎯",          title: "Vision & Mission",     sub: "What we set out to do" },
+      { href: "board.html",      icon: "👥", title: "Board Members",        sub: "Who governs the organisation" },
+      { href: "profile.html",    icon: "📘",           title: "Organisation Profile", sub: "How CKB is constituted" },
+      { href: "legal.html",      icon: "📜",              title: "Legal Status",         sub: "Registrations & approvals" },
+      { href: "supporters.html", icon: "🤝",           title: "Our Supporters",       sub: "Partners and funders" }
+    ];
 
-    /* The governance documents are one flat list in legal.json. Each About
-       section picks the one it is about, so a section shows a short note
-       rather than an empty grid when its document has not been added. */
-    function pick(docs, needle) {
-      return docs.filter(function (d) {
-        return (d.title || "").toLowerCase().indexOf(needle) > -1;
-      });
-    }
-    function fill(id, items) {
-      var el = document.getElementById(id);
-      if (!el) return;
-      el.innerHTML = items.length
-        ? items.map(tile).join("")
-        : '<p class="lede center" style="grid-column:1/-1">Not added yet.</p>';
-    }
+    document.getElementById("aboutCards").innerHTML = CARDS.map(function (c) {
+      return '<a class="doc-card" href="' + c.href + '">' +
+        '<div class="doc-ico">' + c.icon + "</div>" +
+        "<b>" + esc(c.title) + "</b><small>" + esc(c.sub) + "</small>" +
+        '<span class="open">Read more &rarr;</span></a>';
+    }).join("");
 
-    Promise.all([CKB_get("home.json"), CKB_get("legal.json"), CKB_get("pages.json"), CKB_get("vision.json")])
+    Promise.all([CKB_get("home.json"), CKB_get("pages.json")])
       .then(function (r) {
-        var h = r[0] || {}, l = r[1] || {}, pg = r[2] || {}, vm = r[3] || {};
+        var h = r[0] || {}, pg = r[1] || {};
         var w = h.whoWeAre || {};
-        var docs = l.documents || [];
 
         if (pg.about && pg.about.image) document.getElementById("aImg").src = pg.about.image;
         document.getElementById("aLede").textContent = (h.hero && h.hero.lede) || "";
@@ -165,38 +98,6 @@
         document.getElementById("aPoints").innerHTML = (w.points || []).map(function (x) {
           return "<li>" + esc(x) + "</li>";
         }).join("");
-
-        fill("board-docs",     pick(docs, "board"));
-        fill("profile-docs",   pick(docs, "profile"));
-        fill("supporter-docs", pick(docs, "supporter"));
-
-        /* Vision & Mission — a page in its own right rather than a PDF tile.
-           The original document stays available as a footnote link. */
-        document.getElementById("vmIntro").textContent = vm.intro || "";
-        document.getElementById("vmPair").innerHTML =
-          (vm.vision  ? '<div class="vm-card"><span class="eyebrow">Vision</span><p>'  + esc(vm.vision)  + "</p></div>" : "") +
-          (vm.mission ? '<div class="vm-card alt"><span class="eyebrow">Mission</span><p>' + esc(vm.mission) + "</p></div>" : "");
-        document.getElementById("vmGoal").innerHTML = vm.goal
-          ? '<span class="eyebrow">Goal</span><p>' + esc(vm.goal) + "</p>" : "";
-        var objs = vm.objectives || [];
-        document.getElementById("vmObjWrap").style.display = objs.length ? "" : "none";
-        document.getElementById("vmObj").innerHTML = objs.map(function (o) {
-          return "<li>" + esc(o) + "</li>";
-        }).join("");
-        document.getElementById("vmSrc").innerHTML = vm.pdf
-          ? '<span role="button" tabindex="0" data-doc="' + esc(vm.pdf) + '" data-title="Vision &amp; Mission">Open the original document (PDF) &rarr;</span>'
-          : "";
-
-        document.getElementById("lLede").textContent = l.intro || "";
-
-        var reg = l.registration || [];
-        document.getElementById("regDetails").innerHTML = reg.length
-          ? "<h4>Registration details</h4>" + reg.map(function (x) {
-              return '<div class="row"><span>' + esc(x.label) + "</span><span>" + esc(x.value) + "</span></div>";
-            }).join("")
-          : "";
-
-        document.getElementById("certs").innerHTML = (l.certificates || []).map(tile).join("");
         CKB_reveals();
       });
   })();

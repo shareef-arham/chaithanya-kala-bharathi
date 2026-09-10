@@ -186,12 +186,16 @@
     setTimeout(sweep, 1000);
   };
 
-  /* Any element carrying data-doc opens that PDF in the shared viewer. */
+  /* Any element carrying data-doc opens that PDF in the shared viewer.
+     The page it was opened from travels along as ?from= so the viewer can
+     offer a "Back to Reports" button that works even when the document was
+     reached by a direct link and there is no history to go back through. */
   document.addEventListener("click", function (e) {
     var el = e.target.closest("[data-doc]");
     if (!el) return;
     var q = "?file=" + encodeURIComponent(el.dataset.doc);
     if (el.dataset.title) q += "&title=" + encodeURIComponent(el.dataset.title);
+    q += "&from=" + encodeURIComponent(location.pathname.split("/").pop() || "index.html");
     location.href = "pdfviewer.html" + q;
   });
 

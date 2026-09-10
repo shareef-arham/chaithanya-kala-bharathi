@@ -25,6 +25,7 @@
   .act:hover{filter:brightness(1.1)}
   .act.ghost{background:transparent;color:#12684a;border:1.5px solid rgba(22,37,29,.18)}
   .act.ghost:hover{border-color:#12684a;filter:none}
+  .act.back{margin-right:.1rem}
 
   .stage{flex:1 1 auto;position:relative;min-height:0;background:#efe8d8}
 
@@ -68,6 +69,7 @@
 </head>
 <body>
   <div class="vh">
+    <button class="act ghost back" id="back" type="button" title="Close this document and go back">&larr;&nbsp;<span class="lbl" id="backLbl">Back</span></button>
     <h1 id="title">Document</h1>
     <span class="pginfo" id="pginfo"></span>
     <a class="act" id="openTab" href="#" target="_blank" rel="noopener">Open&nbsp;<span class="lbl">in new tab&nbsp;</span>↗</a>
@@ -94,6 +96,24 @@
   var file  = p.get("file") || "";
   var title = p.get("title") || "";
   var sub   = p.get("sub") || "";
+
+  /* ---------- back to the page this document was opened from ---------- */
+  var PAGE_NAMES = {
+    "index.html": "Home", "about.html": "About Us", "programs.html": "Programs",
+    "reports.html": "Reports", "gallery.html": "Gallery", "contact.html": "Contact",
+    "donate.html": "Donate"
+  };
+  var from = (p.get("from") || "").replace(/[^\w.\-]/g, "");
+  if (!PAGE_NAMES[from]) from = "";
+  document.getElementById("backLbl").textContent = from ? "Back to " + PAGE_NAMES[from] : "Back";
+  function goBack() {
+    /* Prefer the real page name. history.back() would land on whichever
+       document was viewed before this one when PDFs cross-link to each other. */
+    if (from) { location.href = from; return; }
+    if (history.length > 1) { history.back(); return; }
+    location.href = "index.html";
+  }
+  document.getElementById("back").addEventListener("click", goBack);
 
   var loader = document.getElementById("loader");
   var pagesEl = document.getElementById("pages");
@@ -144,21 +164,27 @@
   function closeVideo(){ vmodal.hidden = true; vframe.src = "about:blank"; }
   document.getElementById("vmodalX").addEventListener("click", closeVideo);
   vmodal.addEventListener("click", function(e){ if (e.target === vmodal) closeVideo(); });
-  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && !vmodal.hidden) closeVideo(); });
+  document.addEventListener("keydown", function(e){
+    if (e.key !== "Escape") return;
+    if (!vmodal.hidden) closeVideo(); else goBack();
+  });
 
+  function keepFrom(q){
+    return (from && q.indexOf("from=") < 0) ? "&from=" + encodeURIComponent(from) : "";
+  }
   function handleLink(url){
     if (!url) return;
     var id = youTubeId(url);
     if (id) { openVideo(id, ""); return; }
     /* a link to this same viewer (rewritten PDF cross-links) — stay in place */
     var pv = String(url).match(/pdfviewer\.html\?(.+)$/i);
-    if (pv) { location.href = "pdfviewer.html?" + pv[1]; return; }
+    if (pv) { location.href = "pdfviewer.html?" + pv[1] + keepFrom(pv[1]); return; }
     var xf = crossPdf(url);
     if (xf) {
       var q = "?file=" + encodeURIComponent(xf);
       var rt = reportTitle(url);
       if (rt) q += "&title=" + encodeURIComponent(rt);
-      location.href = "pdfviewer.html" + q;
+      location.href = "pdfviewer.html" + q + keepFrom(q);
       return;
     }
     if (/^mailto:/i.test(url)) { location.href = url; return; }

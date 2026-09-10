@@ -2,51 +2,10 @@
   "featured": {
     "eyebrow": "Featured film",
     "videoId": "",
-    "title": "Chaithanya Kala Bharathi — our work in the community",
-    "desc": "Add a YouTube video ID in the admin panel to show a featured film here.",
+    "title": "",
+    "desc": "",
     "thumb": ""
   },
-  "intro": "Films and reports from our work with schools, mothers and infants, health camps and farming families.",
-  "moments": [
-    {
-      "title": "School & Education (Badi Bata)",
-      "when": "Programme report",
-      "date": "2026-01",
-      "blurb": "Enrolment drives bringing out-of-school children back into classrooms.",
-      "file": "SchoolEducation.pdf",
-      "videos": []
-    },
-    {
-      "title": "Health & Nutrition",
-      "when": "Programme report",
-      "date": "2026-01",
-      "blurb": "Mother and child health, immunisation and village check-up camps.",
-      "file": "HealthNutrition.pdf",
-      "videos": []
-    },
-    {
-      "title": "Community Welfare",
-      "when": "Programme report",
-      "date": "2026-01",
-      "blurb": "Support for tribal communities, Dalits and people with disabilities.",
-      "file": "CommunityWelfare.pdf",
-      "videos": []
-    },
-    {
-      "title": "Economic Empowerment",
-      "when": "Programme report",
-      "date": "2026-01",
-      "blurb": "Livelihoods, farmer collectives and skills for smallholder families.",
-      "file": "EconomicEmpowerment.pdf",
-      "videos": []
-    },
-    {
-      "title": "Photo gallery",
-      "when": "Photographs",
-      "date": "2025-12",
-      "blurb": "Photographs from the field, collected as a single document.",
-      "file": "ourgallery.pdf",
-      "videos": []
-    }
-  ]
+  "intro": "Films and reports from our work across Kurnool and Nandyal districts.",
+  "moments": []
 }

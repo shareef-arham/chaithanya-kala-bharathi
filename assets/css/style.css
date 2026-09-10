@@ -291,3 +291,24 @@ h2{font-size:clamp(1.6rem,3.4vw,2.4rem)}
 .pdf-cover.is-loaded .fb{display:none}
 /* on the document tiles the cover is larger and centred */
 .doc-card .pdf-cover{width:74px;height:96px;margin:0 auto .2rem}
+
+/* ---------- Admin: model card ---------- */
+.model{display:grid;grid-template-columns:200px 1fr;gap:1.2rem;align-items:start;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:1.1rem;margin:.6rem 0 1.2rem}
+@media(max-width:640px){.model{grid-template-columns:1fr}}
+.model .demo{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.model .demo .shot{aspect-ratio:16/9;background:linear-gradient(140deg,#2f7d4f,#5aa877);
+  display:grid;place-items:center;color:#fff;font-size:1.6rem}
+.model .demo .body{padding:.7rem .8rem}
+.model .demo .cat{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#c07f0c}
+.model .demo b{display:block;font-size:.9rem;margin:.15rem 0}
+.model .demo small{color:var(--ink-soft);font-size:.78rem;line-height:1.4}
+.model .demo .btns{display:flex;gap:.3rem;margin-top:.5rem}
+.model .demo .btns span{font-size:.66rem;font-weight:650;padding:.22rem .5rem;border-radius:999px;
+  background:#2f7d4f;color:#fff}
+.model .demo .btns span.g{background:rgba(47,125,79,.12);color:#1f5c39}
+.model dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.35rem .9rem;font-size:.84rem}
+.model dt{font-weight:700;color:var(--ink)}
+.model dd{margin:0;color:var(--ink-soft)}
+.model dd code{background:rgba(47,125,79,.09);padding:.05rem .3rem;border-radius:4px;font-size:.8rem}

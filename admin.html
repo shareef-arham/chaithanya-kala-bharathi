@@ -199,7 +199,35 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     </div>
     <div class="field"><label>Title</label><input id="ga_f_title" /></div>
     <div class="field"><label>Description</label><textarea id="ga_f_desc"></textarea></div>
-    <h3>Films &amp; reports</h3><div id="ga_moments"></div>
+    <h3>Films &amp; reports</h3>
+    <p class="hint">Each row below becomes one card on the Gallery page. Here is what a
+    finished card looks like and which box fills which part of it.</p>
+
+    <div class="model">
+      <div class="demo">
+        <div class="shot">&#9654;</div>
+        <div class="body">
+          <div class="cat">March 2026</div>
+          <b>International Women's Day</b>
+          <small>Celebrating the day with the women's groups we work alongside in Nandyal.</small>
+          <div class="btns"><span>&#9654; Watch film</span><span class="g">&#128196; Report</span></div>
+        </div>
+      </div>
+      <dl>
+        <dt>Title</dt><dd>The heading on the card &mdash; <code>International Women's Day</code></dd>
+        <dt>When / label</dt><dd>The small line above it &mdash; <code>March 2026</code>, or <code>Programme report</code></dd>
+        <dt>Date for ordering</dt><dd><code>2026-03</code> &mdash; year and month only. Newest cards appear first.</dd>
+        <dt>Description</dt><dd>The sentence under the title.</dd>
+        <dt>YouTube video IDs</dt><dd>Just the ID, not the whole link. In
+          <code>youtube.com/watch?v=<b>ABC123xyz</b></code> the ID is <code>ABC123xyz</code>.
+          Two films on one card? Separate them with a comma.</dd>
+        <dt>Report PDF</dt><dd>Use the <b>Upload&hellip;</b> button beside the box &mdash; it uploads the
+          file and fills in the name for you.</dd>
+      </dl>
+    </div>
+    <p class="hint">A card needs a <b>title</b>. Everything else is optional: a video with no
+    report, a report with no video, or both. Press <b>+ Add</b> to start, then <b>Save Gallery</b>.</p>
+    <div id="ga_moments"></div>
   </div>
 
   <!-- PHOTOS -->
@@ -354,7 +382,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     var o={}; cols.forEach(function(c){ var e=document.getElementById("m_"+c.key); if(e) o[c.key]=e.value.trim(); }); return o;
   }
   /* Row editor: a small table with Add / Edit / Move up / Delete. */
-  function editor(mountId,arr,cols,label){
+  function editor(mountId,arr,cols,label,defaults){
     var mount=document.getElementById(mountId); if(!mount)return;
     function render(){
       var head=cols.map(function(c){return "<th>"+esc(c.label)+"</th>";}).join("")+"<th></th>";
@@ -368,7 +396,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
         '<button class="btn btn-primary btn-sm" data-add="1" style="margin-top:.5rem">+ Add</button>';
     }
     function open(i){
-      var it = i<0 ? {} : arr[i];
+      var it = i<0 ? (defaults ? defaults() : {}) : arr[i];
       openModal("<h3>"+(i<0?"Add":"Edit")+" — "+esc(label)+"</h3>"+
         cols.map(function(c){return fieldHTML(c,it[c.key]);}).join("")+
         '<div class="modal-acts"><button class="btn btn-outline" data-cancel>Cancel</button><button class="btn btn-primary" data-ok>Save</button></div>');
@@ -501,13 +529,14 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     setv("ga_f_vid",g.featured.videoId); setv("ga_f_eyebrow",g.featured.eyebrow);
     setv("ga_f_title",g.featured.title); setv("ga_f_desc",g.featured.desc);
     g.moments.forEach(function(m){ if(Array.isArray(m.videos)) m.videos=m.videos.join(", "); });
+    var ym = new Date().toISOString().slice(0,7);
     editor("ga_moments",g.moments,[
       {key:"title",label:"Title"},{key:"when",label:"When / label"},
       {key:"date",label:"Date for ordering (YYYY-MM)"},
       {key:"blurb",label:"Description",type:"textarea"},
       {key:"videos",label:"YouTube video IDs (comma separated)"},
       {key:"file",label:"Report PDF filename"}
-    ],"Film or report");
+    ],"Film or report", function(){ return {date: ym}; });
   }
   window.saveGallery=function(){
     var g=D.gallery;

@@ -163,6 +163,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     <p class="hint">Certificates and governance documents shown on the About and Reports pages.</p>
     <div class="saverow"><button class="btn btn-primary btn-sm" onclick="saveLegal()">Save Legal &amp; Governance</button><span class="msg" id="msg-legal"></span></div>
     <div class="field"><label>Intro paragraph</label><textarea id="l_intro"></textarea></div>
+    <h3>Registration details</h3>
+    <p class="hint">Shown as a labelled list on the About page — registration number, PAN, 80G, FCRA and so on.</p>
+    <div id="l_reg"></div>
     <h3>Governance documents</h3><div id="l_docs"></div>
     <h3>Statutory certificates</h3><div id="l_certs"></div>
   </div>
@@ -455,9 +458,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
 
   /* ---- LEGAL ---- */
   function bindLegal(){
-    var l=D.legal; l.documents=l.documents||[]; l.certificates=l.certificates||[];
+    var l=D.legal; l.documents=l.documents||[]; l.certificates=l.certificates||[]; l.registration=l.registration||[];
     setv("l_intro",l.intro);
     var cols=[{key:"icon",label:"Icon"},{key:"title",label:"Title"},{key:"sub",label:"Sub-line"},{key:"file",label:"PDF filename"}];
+    editor("l_reg",l.registration,[{key:"label",label:"Label"},{key:"value",label:"Value"}],"Registration detail");
     editor("l_docs",l.documents,cols,"Governance document");
     editor("l_certs",l.certificates,cols,"Certificate");
   }

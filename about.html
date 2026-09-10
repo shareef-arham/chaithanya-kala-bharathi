@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=4" />
+  <link rel="stylesheet" href="assets/css/style.css?v=5" />
 </head>
 <body data-page="about">
   <div id="site-header"></div>
@@ -56,6 +56,7 @@
           <h2>Registrations &amp; approvals</h2>
           <p class="lede center" id="lLede" style="margin:.6rem auto 0"></p>
         </div>
+        <div class="bank" id="regDetails" style="margin-top:1.8rem;max-width:760px;margin-left:auto;margin-right:auto" data-reveal></div>
         <div class="grid grid-4" id="certs" style="margin-top:2rem" data-reveal></div>
       </div>
     </section>
@@ -72,7 +73,7 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/site.js?v=4"></script>
+  <script src="assets/js/site.js?v=5"></script>
   <script>
   (function () {
     var esc = window.CKB_esc;
@@ -96,6 +97,14 @@
       }).join("");
 
       document.getElementById("lLede").textContent = l.intro || "";
+      /* registration details, as a labelled list rather than a certificate tile */
+      var reg = l.registration || [];
+      document.getElementById("regDetails").innerHTML = reg.length
+        ? "<h4>Registration details</h4>" + reg.map(function (r) {
+            return '<div class="row"><span>' + esc(r.label) + "</span><span>" + esc(r.value) + "</span></div>";
+          }).join("")
+        : "";
+
       document.getElementById("docs").innerHTML  = (l.documents || []).map(tile).join("");
       document.getElementById("certs").innerHTML = (l.certificates || []).map(tile).join("");
       CKB_reveals();

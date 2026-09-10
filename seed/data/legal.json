@@ -1,18 +1,111 @@
 {
-  "intro": "CKB is a registered society and holds the statutory approvals below. Each certificate can be opened here.",
+  "intro": "CKB is a registered society and holds the statutory approvals below. The registration details are listed here; each certificate can be opened in full.",
   "certificates": [
-    { "icon": "📜", "title": "Registration",        "sub": "Society registration certificate",        "file": "Registration.pdf" },
-    { "icon": "🧾", "title": "12A",                 "sub": "Income-tax exemption",                    "file": "12A.pdf" },
-    { "icon": "💠", "title": "80G",                 "sub": "Tax deduction for donors",                "file": "80G.pdf" },
-    { "icon": "🏢", "title": "CSR",                 "sub": "CSR registration",                        "file": "CSR.pdf" },
-    { "icon": "🌍", "title": "FCRA",                "sub": "Foreign contribution approval",           "file": "FCRA.pdf" },
-    { "icon": "🆔", "title": "Unique ID",           "sub": "NGO Darpan unique identity",              "file": "UniqueID.pdf" },
-    { "icon": "🗂️", "title": "PAN",                 "sub": "Permanent account number",                "file": "PAN.pdf" }
+    {
+      "icon": "📜",
+      "title": "Registration",
+      "sub": "Society registration certificate",
+      "file": "Registration.pdf"
+    },
+    {
+      "icon": "🧾",
+      "title": "12A",
+      "sub": "Income-tax exemption",
+      "file": "12A.pdf"
+    },
+    {
+      "icon": "💠",
+      "title": "80G",
+      "sub": "Tax deduction for donors",
+      "file": "80G.pdf"
+    },
+    {
+      "icon": "🏢",
+      "title": "CSR",
+      "sub": "CSR registration",
+      "file": "CSR.pdf"
+    },
+    {
+      "icon": "🌍",
+      "title": "FCRA",
+      "sub": "Foreign contribution approval",
+      "file": "FCRA.pdf"
+    },
+    {
+      "icon": "🆔",
+      "title": "Unique ID",
+      "sub": "NGO Darpan unique identity",
+      "file": "UniqueID.pdf"
+    },
+    {
+      "icon": "🗂️",
+      "title": "PAN",
+      "sub": "Permanent account number",
+      "file": "PAN.pdf"
+    }
   ],
   "documents": [
-    { "icon": "🎯", "title": "Vision & Mission",     "sub": "What we set out to do",                   "file": "VisionMission.pdf" },
-    { "icon": "👥", "title": "Board Members",        "sub": "Who governs the organisation",            "file": "BoardMembers.pdf" },
-    { "icon": "📘", "title": "Organization Profile", "sub": "A full profile of CKB",                   "file": "OrganizationProfile.pdf" },
-    { "icon": "🤲", "title": "Our Supporters",       "sub": "Partners and funders",                    "file": "OurSupporters.pdf" }
+    {
+      "icon": "🎯",
+      "title": "Vision & Mission",
+      "sub": "What we set out to do",
+      "file": "VisionMission.pdf"
+    },
+    {
+      "icon": "👥",
+      "title": "Board Members",
+      "sub": "Who governs the organisation",
+      "file": "BoardMembers.pdf"
+    },
+    {
+      "icon": "📘",
+      "title": "Organization Profile",
+      "sub": "A full profile of CKB",
+      "file": "OrganizationProfile.pdf"
+    },
+    {
+      "icon": "🤲",
+      "title": "Our Supporters",
+      "sub": "Partners and funders",
+      "file": "OurSupporters.pdf"
+    }
+  ],
+  "registration": [
+    {
+      "label": "Registered under",
+      "value": "Andhra Pradesh Societies Registration Act No. XXI of 1860"
+    },
+    {
+      "label": "Registration number",
+      "value": "1154/1992"
+    },
+    {
+      "label": "Date of registration",
+      "value": "31 March 1992"
+    },
+    {
+      "label": "Place of registration",
+      "value": "Kurnool, Andhra Pradesh, India"
+    },
+    {
+      "label": "PAN",
+      "value": "AAATC6841M"
+    },
+    {
+      "label": "80G",
+      "value": "DIT(E)/HYD/80G/71(06)/2010-11, dated 21 December 2010"
+    },
+    {
+      "label": "FCRA registration no.",
+      "value": "010270187"
+    },
+    {
+      "label": "NGO Darpan no.",
+      "value": "AP/2009/0001798"
+    },
+    {
+      "label": "GSTIN",
+      "value": "37AABTA5663Q2Z4"
+    }
   ]
 }

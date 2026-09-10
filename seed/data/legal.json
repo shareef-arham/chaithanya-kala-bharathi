@@ -1,5 +1,5 @@
 {
-  "intro": "CKB is a registered society and holds the statutory approvals below. Each certificate can be opened in full.",
+  "intro": "CKB is a registered society holding the statutory approvals below. The details here are taken from the certificates themselves, each of which can be opened in full.",
   "certificates": [
     {
       "icon": "📜",
@@ -68,6 +68,52 @@
       "title": "Our Supporters",
       "sub": "Partners and funders",
       "file": "OurSupporters.pdf"
+    }
+  ],
+  "registration": [
+    {
+      "label": "PAN",
+      "value": "AAATC6841M"
+    },
+    {
+      "label": "12A registration no.",
+      "value": "AAATC6841ME20166"
+    },
+    {
+      "label": "12A granted",
+      "value": "2 October 2021, valid AY 2022-23 to AY 2026-27"
+    },
+    {
+      "label": "80G approval no.",
+      "value": "AAATC6841MF20107"
+    },
+    {
+      "label": "80G granted",
+      "value": "2 October 2021, valid AY 2022-23 to AY 2026-27"
+    },
+    {
+      "label": "CSR registration no.",
+      "value": "CSR00034226"
+    },
+    {
+      "label": "CSR granted",
+      "value": "20 July 2022, Registrar of Companies"
+    },
+    {
+      "label": "FCRA registration no.",
+      "value": "010270187"
+    },
+    {
+      "label": "FCRA renewed",
+      "value": "11 January 2024"
+    },
+    {
+      "label": "FCRA purposes",
+      "value": "Cultural, Economic, Educational, Social"
+    },
+    {
+      "label": "Registered office",
+      "value": "29/178-22-H, SBI Colony, Opp. Ramalayam Temple, Nandyal, Kurnool District, Andhra Pradesh 518501"
     }
   ]
 }

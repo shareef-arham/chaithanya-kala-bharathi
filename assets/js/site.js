@@ -7,7 +7,14 @@
 
   var NAV = [
     { href: "index.html",       label: "Home",         key: "home" },
-    { href: "about.html",       label: "About Us",     key: "about" },
+    { href: "about.html",       label: "About Us",     key: "about", sub: [
+      { href: "about.html#story",    label: "Who We Are" },
+      { href: "about.html#mission",  label: "Vision & Mission" },
+      { href: "about.html#board",    label: "Board Members" },
+      { href: "about.html#profile",  label: "Organisation Profile" },
+      { href: "about.html#legal",    label: "Legal Status" },
+      { href: "about.html#supporters", label: "Our Supporters" }
+    ] },
     { href: "programs.html",    label: "Programs",     key: "programs" },
     { href: "gallery.html",     label: "Gallery",      key: "gallery" },
     { href: "reports.html",     label: "Reports",      key: "reports" },
@@ -41,8 +48,17 @@
 
   function header() {
     var page = document.body.getAttribute("data-page") || "";
+    /* An item with a sub list becomes a hover/focus dropdown, the same
+       shape APARD uses, so About Us can hold its sections without adding
+       a page for each one. */
     var links = NAV.map(function (n) {
-      return '<a href="' + n.href + '"' + (n.key === page ? ' class="active"' : "") + ">" + n.label + "</a>";
+      var cls = n.key === page ? ' class="active"' : "";
+      if (!n.sub) return '<a href="' + n.href + '"' + cls + ">" + n.label + "</a>";
+      var subs = n.sub.map(function (x) {
+        return '<a href="' + x.href + '">' + x.label + "</a>";
+      }).join("");
+      return '<span class="has-sub"><a href="' + n.href + '"' + cls + ">" + n.label +
+        '</a><span class="subnav">' + subs + "</span></span>";
     }).join("");
     return '<nav class="nav"><div class="nav-inner">' + brand() +
       '<button class="nav-toggle" id="navToggle" aria-label="Menu">&#9776;</button>' +

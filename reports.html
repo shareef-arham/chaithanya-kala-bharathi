@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=5" />
+  <link rel="stylesheet" href="assets/css/style.css?v=6" />
 </head>
 <body data-page="reports">
   <div id="site-header"></div>
@@ -41,19 +41,12 @@
         <p class="lede" style="margin:.4rem 0 1.2rem">One report for each of our four interventions.</p>
         <div class="grid grid-4" id="progs" data-reveal></div>
 
-        <h2 style="margin-top:2.6rem">Governance</h2>
-        <p class="lede" style="margin:.4rem 0 1.2rem">Vision and mission, the board, our full profile and our supporters.</p>
-        <div class="grid grid-4" id="docs" data-reveal></div>
-
-        <h2 style="margin-top:2.6rem">Statutory certificates</h2>
-        <p class="lede" style="margin:.4rem 0 1.2rem">Registration and approvals, available to read in full.</p>
-        <div class="grid grid-4" id="certs" data-reveal></div>
       </div>
     </section>
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/site.js?v=5"></script>
+  <script src="assets/js/site.js?v=6"></script>
   <script>
   (function () {
     var esc = window.CKB_esc;
@@ -66,9 +59,9 @@
         '<span class="open">Open &rarr;</span></div>';
     }
 
-    Promise.all([CKB_get("governance.json"), CKB_get("programs.json"), CKB_get("legal.json")])
+    Promise.all([CKB_get("governance.json"), CKB_get("programs.json")])
       .then(function (r) {
-        var g = r[0] || {}, p = r[1] || {}, l = r[2] || {};
+        var g = r[0] || {}, p = r[1] || {};
         var ars = g.annualReports || [], auds = g.auditedAccounts || [];
 
         document.getElementById("gIntro").textContent = g.intro || "";
@@ -117,8 +110,6 @@
         document.getElementById("progs").innerHTML = (p.items || []).map(function (i) {
           return tile({ file: i.file, title: i.title, sub: i.sub, icon: i.icon }, "📄");
         }).join("");
-        document.getElementById("docs").innerHTML  = (l.documents || []).map(function (d) { return tile(d, "📘"); }).join("");
-        document.getElementById("certs").innerHTML = (l.certificates || []).map(function (d) { return tile(d, "📜"); }).join("");
 
         CKB_reveals();
       });

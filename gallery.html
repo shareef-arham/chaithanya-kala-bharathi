@@ -3,58 +3,114 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gallery — CKB</title>
-  <meta name="description" content="Photographs and field records from Chaithanya Kala Bharathi's work in Kurnool and Nandyal districts." />
+  <title>Gallery — Films &amp; Reports — CKB</title>
+  <meta name="description" content="Films and reports from Chaithanya Kala Bharathi's work across Kurnool and Nandyal districts — education, health, nutrition and livelihoods." />
   <link rel="icon" href="assets/logo-sm.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=2" />
+  <link rel="stylesheet" href="assets/css/style.css?v=3" />
 </head>
 <body data-page="gallery">
   <div id="site-header"></div>
+
   <main>
     <section class="page-hero">
       <div class="wrap">
         <div class="crumbs"><a href="index.html">Home</a> / <span>Gallery</span></div>
-        <span class="eyebrow">From the field</span>
+        <span class="eyebrow">Films &amp; reports</span>
         <h1>Gallery</h1>
         <p class="lede" style="margin-top:.7rem" id="gIntro"></p>
       </div>
     </section>
-    <section style="padding-top:1.4rem">
+
+    <section style="padding-top:1rem">
       <div class="wrap">
-        <div class="grid grid-3" id="photos" data-reveal></div>
-          <div class="card" style="padding:0;overflow:hidden"><img src="uploads/programs-community.jpg" alt="Community welfare work" style="height:230px;width:100%;object-fit:cover" /></div>
-          <div class="card" style="padding:0;overflow:hidden"><img src="uploads/gallery-volunteer.jpg" alt="Volunteers in the field" style="height:230px;width:100%;object-fit:cover" /></div>
-        </div>
-        <div id="galleryDoc" style="margin-top:2rem;max-width:480px" data-reveal></div>
+        <div id="film" data-reveal></div>
+        <div class="video-grid" id="moments" data-reveal></div>
+        <p class="lede center" id="momentsEmpty" style="margin:1.6rem auto 0;display:none">
+          Nothing added yet. Films and reports can be added from the admin panel, under <b>Gallery</b>.
+        </p>
       </div>
     </section>
   </main>
+
   <div id="site-footer"></div>
-  <script src="assets/js/site.js?v=2"></script>
+
+  <div class="lightbox" id="lightbox">
+    <button class="close" id="lbClose" aria-label="Close">&times;</button>
+    <div class="frame" id="lbFrame"></div>
+  </div>
+
+  <script src="assets/js/site.js?v=3"></script>
   <script>
-  (function(){
+  (function () {
     var esc = window.CKB_esc;
-    Promise.all([CKB_get("reports.json"), CKB_get("gallery.json")]).then(function(res){
-      var r = res[0] || {}, g2 = res[1] || {};
-      document.getElementById("gIntro").textContent = g2.intro || "";
-      document.getElementById("photos").innerHTML = (g2.photos || []).map(function(ph){
-        return '<figure class="card" style="padding:0;overflow:hidden">' +
-          '<img src="' + esc(ph.file) + '" alt="' + esc(ph.caption || "") + '" style="height:230px;width:100%;object-fit:cover" />' +
-          (ph.caption ? '<figcaption style="padding:.7rem .9rem;font-size:.88rem;color:var(--ink-soft)">' + esc(ph.caption) + '</figcaption>' : "") +
-          '</figure>';
+    var PLAY = '<span class="pin"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>';
+
+    function ytThumb(id) { return "https://i.ytimg.com/vi/" + encodeURIComponent(id) + "/hqdefault.jpg"; }
+
+    /* ---- lightbox for YouTube playback ---- */
+    var lb = document.getElementById("lightbox"), lbFrame = document.getElementById("lbFrame");
+    function openVideo(id) {
+      if (!id) return;
+      lbFrame.innerHTML = '<iframe src="https://www.youtube.com/embed/' + encodeURIComponent(id) +
+        '?autoplay=1&rel=0" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+      lb.classList.add("open");
+    }
+    function closeVideo() { lb.classList.remove("open"); lbFrame.innerHTML = ""; }
+    document.getElementById("lbClose").addEventListener("click", closeVideo);
+    lb.addEventListener("click", function (e) { if (e.target === lb) closeVideo(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeVideo(); });
+    document.addEventListener("click", function (e) {
+      var el = e.target.closest("[data-video]");
+      if (el && el.dataset.video) { e.preventDefault(); openVideo(el.dataset.video); }
+    });
+
+    CKB_get("gallery.json").then(function (d) {
+      document.getElementById("gIntro").textContent = d.intro || "";
+
+      /* featured film — only shown once a video ID has been added */
+      var f = d.featured || {};
+      document.getElementById("film").innerHTML = f.videoId
+        ? '<div class="film">' +
+            '<div class="thumb" role="button" tabindex="0" data-video="' + esc(f.videoId) +
+            '" style="background-image:url(' + esc(f.thumb || ytThumb(f.videoId)) + ')">' + PLAY + "</div>" +
+            '<div class="body"><span class="eyebrow">' + esc(f.eyebrow || "Featured film") + "</span>" +
+            "<h2>" + esc(f.title || "") + "</h2><p>" + esc(f.desc || "") + "</p></div>" +
+          "</div>"
+        : "";
+
+      /* moments — newest first by date, each with its films and/or report */
+      var moments = (d.moments || []).slice().sort(function (a, b) {
+        return String(b.date || "").localeCompare(String(a.date || ""));
+      });
+
+      document.getElementById("moments").innerHTML = moments.map(function (m) {
+        var vids = m.videos || [];
+        var v0 = vids[0] || "";
+        var actions = vids.map(function (v, i) {
+          return '<button class="mini-btn" data-video="' + esc(v) + '">&#9654; ' +
+            (vids.length > 1 ? "Film " + (i + 1) : "Watch film") + "</button>";
+        }).join("");
+        if (m.file) {
+          actions += '<button class="mini-btn ghost" data-doc="' + esc(m.file) +
+            '" data-title="' + esc(m.title) + '" data-sub="' + esc(m.when || "") + '">&#128196; Report</button>';
+        }
+        var thumb = v0
+          ? '<div class="video-thumb" style="background-image:url(' + esc(ytThumb(v0)) +
+            ')" role="button" tabindex="0" data-video="' + esc(v0) + '">' + PLAY + "</div>"
+          : '<div class="video-thumb no-video"><span class="doc-glyph">📄</span></div>';
+        return '<div class="video-card">' + thumb +
+          '<div class="meta">' +
+            (m.when ? '<div class="cat">' + esc(m.when) + "</div>" : "") +
+            "<h3>" + esc(m.title || "") + "</h3>" +
+            "<small>" + esc(m.blurb || "") + "</small>" +
+            '<div class="mini-actions">' + actions + "</div>" +
+          "</div></div>";
       }).join("");
-      var g = (r && r.gallery) || {};
-      if (g.file) {
-        document.getElementById("galleryDoc").innerHTML =
-          '<div class="card" role="button" tabindex="0" data-doc="' + esc(g.file) +
-          '" data-title="' + esc(g.title) + '" data-sub="' + esc(g.sub || "") + '">' +
-          '<div class="ico">🖼️</div><h3>' + esc(g.title) + '</h3>' +
-          '<div class="sub">' + esc(g.sub || "") + '</div>' +
-          '<span class="open">Open the photo gallery &rarr;</span></div>';
-      }
+
+      document.getElementById("momentsEmpty").style.display = moments.length ? "none" : "";
       CKB_reveals();
     });
   })();

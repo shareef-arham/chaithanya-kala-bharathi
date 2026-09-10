@@ -97,6 +97,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     <button class="tab" data-tab="programs">Programs</button>
     <button class="tab" data-tab="legal">Legal &amp; Governance</button>
     <button class="tab" data-tab="reports">Reports</button>
+    <button class="tab" data-tab="gallery">Gallery</button>
     <button class="tab" data-tab="photos">Photos</button>
     <button class="tab" data-tab="contact">Contact &amp; Banks</button>
     <button class="tab" data-tab="files">Files</button>
@@ -168,23 +169,34 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
   <!-- REPORTS -->
   <div class="panel" id="panel-reports">
     <h2>Reports page</h2>
-    <p class="hint">The featured activity report and the photo gallery PDF.</p>
-    <div class="saverow"><button class="btn btn-primary btn-sm" onclick="saveReports()">Save Reports</button><span class="msg" id="msg-reports"></span></div>
-    <div class="field"><label>Intro paragraph</label><textarea id="r_intro"></textarea></div>
-    <h3>Featured activity report</h3>
+    <p class="hint">Annual Reports and Audited Statements of Accounts. Add a row, then use the <b>Upload…</b> button beside its filename box to attach the PDF. Match the <b>year</b> on both sides so a report and its statement pair up on the page. Put <code>yes</code> in <b>latest</b> on the newest one.</p>
+    <div class="saverow"><button class="btn btn-primary btn-sm" onclick="saveGovernance()">Save Reports</button><span class="msg" id="msg-reports"></span></div>
+    <div class="field"><label>Intro paragraph</label><textarea id="gv_intro"></textarea></div>
+    <h3>Annual Reports</h3><div id="gv_annual"></div>
+    <h3>Audited Statements of Accounts</h3><div id="gv_audit"></div>
+    <h3>Other report (optional)</h3>
     <div class="grid2">
-      <div class="field"><label>PDF filename</label><input id="r_f_file" /></div>
-      <div class="field"><label>Title</label><input id="r_f_title" /></div>
+      <div class="field"><label>PDF filename</label><input id="gv_m_file" /></div>
+      <div class="field"><label>Title</label><input id="gv_m_title" /></div>
     </div>
-    <div class="field"><label>Sub-line</label><input id="r_f_sub" /></div>
-    <h3>Photo gallery PDF</h3>
-    <div class="grid2">
-      <div class="field"><label>PDF filename</label><input id="r_g_file" /></div>
-      <div class="field"><label>Title</label><input id="r_g_title" /></div>
-    </div>
-    <div class="field"><label>Sub-line</label><input id="r_g_sub" /></div>
+    <div class="field"><label>Sub-line</label><input id="gv_m_sub" /></div>
   </div>
 
+  <!-- GALLERY -->
+  <div class="panel" id="panel-gallery">
+    <h2>Gallery page</h2>
+    <p class="hint">Films and reports. A <b>Video ID</b> is the part of a YouTube link after <code>v=</code> — for <code>youtube.com/watch?v=ABC123</code> it is <code>ABC123</code>. Each item can have videos (comma separated), a report PDF, or both. Items are shown newest first using the <b>date</b> field (YYYY-MM).</p>
+    <div class="saverow"><button class="btn btn-primary btn-sm" onclick="saveGallery()">Save Gallery</button><span class="msg" id="msg-gallery"></span></div>
+    <div class="field"><label>Intro paragraph</label><textarea id="ga_intro"></textarea></div>
+    <h3>Featured film</h3>
+    <div class="grid2">
+      <div class="field"><label>YouTube video ID (blank hides the featured film)</label><input id="ga_f_vid" /></div>
+      <div class="field"><label>Eyebrow</label><input id="ga_f_eyebrow" /></div>
+    </div>
+    <div class="field"><label>Title</label><input id="ga_f_title" /></div>
+    <div class="field"><label>Description</label><textarea id="ga_f_desc"></textarea></div>
+    <h3>Films &amp; reports</h3><div id="ga_moments"></div>
+  </div>
 
   <!-- PHOTOS -->
   <div class="panel" id="panel-photos">
@@ -204,10 +216,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     <h3>Logo</h3>
     <div class="field"><label>Logo image</label><input id="ph_logo" /></div>
 
-    <h3>Gallery page</h3>
-    <p class="hint">The grid of photographs on the Gallery page. Add a row, upload the picture, and give it a caption.</p>
-    <div class="field"><label>Gallery intro paragraph</label><textarea id="ph_intro"></textarea></div>
-    <div id="ph_photos"></div>
   </div>
 
   <!-- CONTACT -->
@@ -389,11 +397,11 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
   }
 
   function loadAll(){
-    Promise.all(["home.json","org.json","programs.json","legal.json","reports.json","contact.json","gallery.json","pages.json"].map(getJSON))
+    Promise.all(["home.json","org.json","programs.json","legal.json","reports.json","contact.json","gallery.json","pages.json","governance.json"].map(getJSON))
       .then(function(a){
         D.home=a[0]||{}; D.org=a[1]||{}; D.programs=a[2]||{}; D.legal=a[3]||{}; D.reports=a[4]||{}; D.contact=a[5]||{};
-        D.gallery=a[6]||{}; D.pages=a[7]||{};
-        bindHome(); bindOrg(); bindPrograms(); bindLegal(); bindReports(); bindContact(); bindPhotos();
+        D.gallery=a[6]||{}; D.pages=a[7]||{}; D.gov=a[8]||{};
+        bindHome(); bindOrg(); bindPrograms(); bindLegal(); bindContact(); bindPhotos(); bindGovernance(); bindGallery();
       });
   }
 
@@ -452,21 +460,62 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
   }
   window.saveLegal=function(){ var l=D.legal; l.intro=val("l_intro"); save("legal.json",l,"msg-legal"); };
 
-  /* ---- REPORTS ---- */
-  function bindReports(){
-    var r=D.reports; r.featured=r.featured||{}; r.gallery=r.gallery||{};
-    setv("r_intro",r.intro);
-    setv("r_f_file",r.featured.file); setv("r_f_title",r.featured.title); setv("r_f_sub",r.featured.sub);
-    setv("r_g_file",r.gallery.file); setv("r_g_title",r.gallery.title); setv("r_g_sub",r.gallery.sub);
-    wireInlineUpload(document.getElementById("r_f_file"));
-    wireInlineUpload(document.getElementById("r_g_file"));
+  /* ---- REPORTS (governance.json) ----
+     Annual Reports and Audited Statements, paired by year on the page.
+     "latest" is typed as yes/no because the row editor is text-only. */
+  function yes(v){ return String(v)==="true" || /^(y|yes|true|1)$/i.test(String(v||"")); }
+  function bindGovernance(){
+    var g=D.gov; g.annualReports=g.annualReports||[]; g.auditedAccounts=g.auditedAccounts||[]; g.media=g.media||{};
+    setv("gv_intro",g.intro);
+    setv("gv_m_file",g.media.file); setv("gv_m_title",g.media.title); setv("gv_m_sub",g.media.sub);
+    wireInlineUpload(document.getElementById("gv_m_file"));
+    var cols=[{key:"year",label:"Year (e.g. 2024-25)"},{key:"title",label:"Title"},
+              {key:"sub",label:"Sub-line"},{key:"file",label:"PDF filename"},
+              {key:"latest",label:"Latest? (yes / no)"}];
+    editor("gv_annual",g.annualReports,cols,"Annual Report");
+    editor("gv_audit",g.auditedAccounts,cols,"Audited Statement");
   }
-  window.saveReports=function(){
-    var r=D.reports;
-    r.intro=val("r_intro");
-    r.featured={file:val("r_f_file"),title:val("r_f_title"),sub:val("r_f_sub")};
-    r.gallery={file:val("r_g_file"),title:val("r_g_title"),sub:val("r_g_sub")};
-    save("reports.json",r,"msg-reports");
+  window.saveGovernance=function(){
+    var g=D.gov;
+    g.intro=val("gv_intro");
+    g.media={file:val("gv_m_file"),title:val("gv_m_title"),sub:val("gv_m_sub")};
+    [g.annualReports,g.auditedAccounts].forEach(function(arr){
+      (arr||[]).forEach(function(r){ r.latest = yes(r.latest); });
+    });
+    save("governance.json",g,"msg-reports");
+  };
+
+  /* ---- GALLERY (films + reports) ----
+     videos are stored as an array but edited as a comma-separated list,
+     which is easier to type than a nested editor. */
+  function bindGallery(){
+    var g=D.gallery; g.featured=g.featured||{}; g.moments=g.moments||[];
+    setv("ga_intro",g.intro);
+    setv("ga_f_vid",g.featured.videoId); setv("ga_f_eyebrow",g.featured.eyebrow);
+    setv("ga_f_title",g.featured.title); setv("ga_f_desc",g.featured.desc);
+    g.moments.forEach(function(m){ if(Array.isArray(m.videos)) m.videos=m.videos.join(", "); });
+    editor("ga_moments",g.moments,[
+      {key:"title",label:"Title"},{key:"when",label:"When / label"},
+      {key:"date",label:"Date for ordering (YYYY-MM)"},
+      {key:"blurb",label:"Description",type:"textarea"},
+      {key:"videos",label:"YouTube video IDs (comma separated)"},
+      {key:"file",label:"Report PDF filename"}
+    ],"Film or report");
+  }
+  window.saveGallery=function(){
+    var g=D.gallery;
+    g.intro=val("ga_intro");
+    g.featured={videoId:val("ga_f_vid"),eyebrow:val("ga_f_eyebrow"),
+                title:val("ga_f_title"),desc:val("ga_f_desc"),thumb:(g.featured&&g.featured.thumb)||""};
+    var out=JSON.parse(JSON.stringify(g));
+    out.moments=(g.moments||[]).map(function(m){
+      var c=JSON.parse(JSON.stringify(m));
+      c.videos=fromCsv(typeof m.videos==="string"? m.videos : (m.videos||[]).join(","));
+      return c;
+    });
+    saveP("gallery.json",out).then(function(ok){
+      msg("msg-gallery", ok? "Saved." : "Save failed - try logging in again.");
+    });
   };
 
   /* ---- CONTACT ---- */
@@ -520,27 +569,22 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
   function bindPhotos(){
     var h=D.home; h.hero=h.hero||{}; h.whoWeAre=h.whoWeAre||{};
     var pg=D.pages; pg.about=pg.about||{}; pg.donate=pg.donate||{}; pg.getInvolved=pg.getInvolved||{};
-    var g=D.gallery; g.photos=g.photos||[];
 
     setv("ph_hero",h.hero.image); setv("ph_who",h.whoWeAre.image);
     setv("ph_about",pg.about.image); setv("ph_donate",pg.donate.image);
     setv("ph_involved",pg.getInvolved.image);
-    setv("ph_logo",D.org.logo); setv("ph_intro",g.intro);
+    setv("ph_logo",D.org.logo);
 
     ["ph_hero","ph_who","ph_about","ph_donate","ph_involved","ph_logo"].forEach(function(id){
       wireInlineUpload(document.getElementById(id),{prefix:"uploads/"});
     });
-    editor("ph_photos",g.photos,[
-      {key:"file",label:"Photo"},{key:"caption",label:"Caption"}
-    ],"Gallery photo");
   }
   window.savePhotos=function(){
     var h=D.home; h.hero.image=val("ph_hero"); h.whoWeAre.image=val("ph_who");
     var pg=D.pages;
     pg.about={image:val("ph_about")}; pg.donate={image:val("ph_donate")}; pg.getInvolved={image:val("ph_involved")};
     D.org.logo=val("ph_logo");
-    D.gallery.intro=val("ph_intro");
-    Promise.all([saveP("home.json",h),saveP("pages.json",pg),saveP("org.json",D.org),saveP("gallery.json",D.gallery)])
+    Promise.all([saveP("home.json",h),saveP("pages.json",pg),saveP("org.json",D.org)])
       .then(function(r){
         msg("msg-photos", r.every(Boolean) ? "Saved." : "Some photos did not save - try logging in again.");
       });

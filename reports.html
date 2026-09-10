@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reports &amp; Certificates — CKB</title>
-  <meta name="description" content="CKB's activity reports, programme reports, governance documents and statutory certificates — 12A, 80G, CSR, FCRA, PAN and registration." />
+  <title>Reports &amp; Audited Accounts — CKB</title>
+  <meta name="description" content="Chaithanya Kala Bharathi's Annual Reports and independently audited statements of accounts, programme reports and statutory certificates — opened right here on the page." />
   <link rel="icon" href="assets/logo-sm.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=2" />
+  <link rel="stylesheet" href="assets/css/style.css?v=3" />
 </head>
 <body data-page="reports">
   <div id="site-header"></div>
@@ -19,16 +19,25 @@
       <div class="wrap">
         <div class="crumbs"><a href="index.html">Home</a> / <span>Reports</span></div>
         <span class="eyebrow">Transparency</span>
-        <h1>Reports &amp; certificates</h1>
-        <p class="lede" style="margin-top:.7rem" id="rIntro"></p>
+        <h1>Accountable, in the open</h1>
+        <p class="lede" style="margin-top:.7rem" id="gIntro"></p>
       </div>
     </section>
 
-    <section style="padding-top:1.4rem">
+    <section style="padding-top:1rem">
       <div class="wrap">
-        <div id="featured" data-reveal></div>
+        <div class="stats" id="repStats" style="margin-top:0"></div>
 
-        <h2 style="margin-top:2.4rem">Programme reports</h2>
+        <!-- Annual Reports paired with their Audited Statements, by year -->
+        <div class="rtl" id="rtl" data-reveal><div class="rtl-spine"></div></div>
+        <p class="lede center" id="rtlEmpty" style="margin:1.6rem auto 0;display:none">
+          No annual reports have been added yet. They can be uploaded from the
+          admin panel, under <b>Reports</b>.
+        </p>
+
+        <div id="mediaRow" class="center" style="margin:2.4rem auto 0;max-width:460px" data-reveal></div>
+
+        <h2 style="margin-top:3rem">Programme reports</h2>
         <p class="lede" style="margin:.4rem 0 1.2rem">One report for each of our four interventions.</p>
         <div class="grid grid-4" id="progs" data-reveal></div>
 
@@ -44,10 +53,11 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/site.js?v=2"></script>
+  <script src="assets/js/site.js?v=3"></script>
   <script>
   (function () {
     var esc = window.CKB_esc;
+
     function tile(d, icon) {
       return '<div class="doc-card" role="button" tabindex="0" data-doc="' + esc(d.file) +
         '" data-title="' + esc(d.title) + '" data-sub="' + esc(d.sub || "") + '">' +
@@ -55,18 +65,53 @@
         "<b>" + esc(d.title) + "</b><small>" + esc(d.sub || "") + "</small>" +
         '<span class="open">Open &rarr;</span></div>';
     }
-    Promise.all([CKB_get("reports.json"), CKB_get("programs.json"), CKB_get("legal.json")])
-      .then(function (r) {
-        var rep = r[0] || {}, p = r[1] || {}, l = r[2] || {};
-        document.getElementById("rIntro").textContent = rep.intro || "";
 
-        var f = rep.featured || {};
-        document.getElementById("featured").innerHTML = f.file
-          ? '<div class="card" role="button" tabindex="0" style="max-width:520px" data-doc="' + esc(f.file) +
-            '" data-title="' + esc(f.title) + '" data-sub="' + esc(f.sub || "") + '">' +
-            '<div class="ico">📘</div><h3>' + esc(f.title) + "</h3>" +
-            '<div class="sub">' + esc(f.sub || "") + "</div>" +
-            '<span class="open">Open the report &rarr;</span></div>'
+    Promise.all([CKB_get("governance.json"), CKB_get("programs.json"), CKB_get("legal.json")])
+      .then(function (r) {
+        var g = r[0] || {}, p = r[1] || {}, l = r[2] || {};
+        var ars = g.annualReports || [], auds = g.auditedAccounts || [];
+
+        document.getElementById("gIntro").textContent = g.intro || "";
+
+        document.getElementById("repStats").innerHTML =
+          '<div class="stat"><div class="n">' + ars.length + '</div><div class="l">Years documented</div></div>' +
+          '<div class="stat"><div class="n">' + (ars.length + auds.length) + '</div><div class="l">Public documents</div></div>' +
+          '<div class="stat"><div class="n">1992</div><div class="l">Registered since</div></div>' +
+          '<div class="stat"><div class="n">80G</div><div class="l">Tax-deductible</div></div>';
+
+        /* pair each annual report with the audited statement for its year */
+        var byYear = {};
+        auds.forEach(function (a) { byYear[a.year] = a; });
+
+        function card(x, side, verb, glyph) {
+          if (!x || !x.file) return "<div></div>";
+          return '<div class="rtl-card ' + side + '" role="button" tabindex="0" data-doc="' + esc(x.file) +
+            '" data-title="' + esc(x.title) + '" data-sub="' + esc(x.sub || "") + '">' +
+            (side === "left" && x.latest ? '<span class="rtl-badge">Latest</span>' : "") +
+            '<span class="rtl-ico">' + glyph + "</span>" +
+            '<span class="tx"><b>' + esc(x.title) + "</b><small>" + esc(x.sub || "") + "</small>" +
+            '<span class="open">' + verb + " &rarr;</span></span></div>";
+        }
+
+        var rows = ars.map(function (ar) {
+          var au = byYear[ar.year];
+          var yr = esc(String(ar.year || "").replace("-", "–"));
+          return '<div class="rtl-row">' +
+            card(ar, "left", "Open report", "📘") +
+            '<div class="rtl-node' + (ar.latest ? " is-latest" : "") + '">' + yr + "</div>" +
+            card(au, "right", "Open statement", "🧮") +
+            "</div>";
+        }).join("");
+
+        document.getElementById("rtl").innerHTML = '<div class="rtl-spine"></div>' + rows;
+        document.getElementById("rtlEmpty").style.display = ars.length ? "none" : "";
+
+        var m = g.media || {};
+        document.getElementById("mediaRow").innerHTML = m.file
+          ? '<div class="doc-card" role="button" tabindex="0" data-doc="' + esc(m.file) +
+            '" data-title="' + esc(m.title) + '" data-sub="' + esc(m.sub || "") + '">' +
+            '<div class="doc-ico">📰</div><b>' + esc(m.title) + "</b><small>" + esc(m.sub || "") + "</small>" +
+            '<span class="open">Open &rarr;</span></div>'
           : "";
 
         document.getElementById("progs").innerHTML = (p.items || []).map(function (i) {
@@ -74,6 +119,7 @@
         }).join("");
         document.getElementById("docs").innerHTML  = (l.documents || []).map(function (d) { return tile(d, "📘"); }).join("");
         document.getElementById("certs").innerHTML = (l.certificates || []).map(function (d) { return tile(d, "📜"); }).join("");
+
         CKB_reveals();
       });
   })();

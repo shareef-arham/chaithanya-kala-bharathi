@@ -18,8 +18,10 @@
     { href: "programs.html",    label: "Programs",     key: "programs" },
     { href: "gallery.html",     label: "Gallery",      key: "gallery" },
     { href: "reports.html",     label: "Reports",      key: "reports" },
-    { href: "get-involved.html",label: "Get Involved", key: "get-involved" },
-    { href: "contact.html",     label: "Contact",      key: "contact" }
+    { href: "contact.html",     label: "Contact",      key: "contact", sub: [
+      { href: "contact.html",          label: "Contact Details" },
+      { href: "contact.html#involved", label: "Get Involved" }
+    ] }
   ];
 
   function esc(s) {
@@ -79,7 +81,7 @@
       '<li><a href="programs.html">Our programs</a></li>' +
       '<li><a href="reports.html">Reports &amp; certificates</a></li>' +
       '<li><a href="gallery.html">Gallery</a></li>' +
-      '<li><a href="get-involved.html">Get involved</a></li>' +
+      '<li><a href="contact.html#involved">Get involved</a></li>' +
       "</ul></div>" +
       '<div><h4>Contact</h4><ul id="footContact"><li>Nandyal, Andhra Pradesh</li></ul></div>' +
       "</div><div class=\"foot-base\"><span>&copy; " + y + " Chaithanya Kala Bharathi. All rights reserved.</span>" +

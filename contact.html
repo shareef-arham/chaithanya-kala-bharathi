@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact Us — CKB</title>
-  <meta name="description" content="Contact Chaithanya Kala Bharathi — head office in Nandyal, Andhra Pradesh. Phone, email and postal address." />
+  <title>Contact Us &amp; Get Involved — CKB</title>
+  <meta name="description" content="Contact Chaithanya Kala Bharathi in Nandyal, Andhra Pradesh — phone, email and address — and the ways to support the work: donate, partner or volunteer." />
   <link rel="icon" href="assets/logo-sm.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="stylesheet" href="assets/css/style.css?v=9" />
 </head>
 <body data-page="contact">
   <div id="site-header"></div>
@@ -19,7 +19,7 @@
       <div class="wrap">
         <div class="crumbs"><a href="index.html">Home</a> / <span>Contact</span></div>
         <span class="eyebrow">Get in touch</span>
-        <h1>Contact us</h1>
+        <h1>Contact us &amp; get involved</h1>
         <p class="lede" style="margin-top:.7rem" id="cIntro"></p>
       </div>
     </section>
@@ -43,6 +43,54 @@
       </div>
     </section>
 
+
+    <!-- Ways to help (folded in from the old Get Involved page) -->
+    <section id="involved" style="padding-top:1rem">
+      <div class="wrap">
+        <div class="center" data-reveal>
+          <span class="eyebrow">Join us</span>
+          <h2>Ways to help</h2>
+          <p class="lede center" style="margin:.6rem auto 0">There is more than one way to stand alongside the communities we serve.</p>
+        </div>
+        <div class="grid grid-3" style="margin-top:2rem" data-reveal>
+          <div class="card">
+            <div class="ico">❤️</div>
+            <h3>Donate</h3>
+            <div class="sub">80G eligible</div>
+            <p>A contribution of any size supports schooling, nutrition and health camps. Indian and foreign donations are both accepted, the latter through our FCRA account.</p>
+            <a href="donate.html" class="open">See bank details &rarr;</a>
+          </div>
+          <div class="card">
+            <div class="ico">🤝</div>
+            <h3>Partner with us</h3>
+            <div class="sub">CSR &amp; institutional</div>
+            <p>We hold CSR registration and work with companies, trusts and philanthropic partners on programmes with clear reporting and measurable outcomes.</p>
+            <a href="reports.html" class="open">Read our reports &rarr;</a>
+          </div>
+          <div class="card">
+            <div class="ico">🙋</div>
+            <h3>Volunteer</h3>
+            <div class="sub">In Kurnool &amp; Nandyal</div>
+            <p>Teachers, health professionals, students and local residents all contribute time to our field work. Tell us what you would like to offer.</p>
+            <a href="#top" class="open">Get in touch &rarr;</a>
+          </div>
+        </div>
+
+        <div class="split" data-reveal style="margin-top:3rem">
+          <img id="gImg" src="" alt="Volunteers working with CKB" />
+          <div>
+            <h2>What working with us looks like</h2>
+            <ul class="points" style="margin-top:1rem">
+              <li>Programmes run in partnership with Gram Panchayats, Anganwadis and Primary Health Centres</li>
+              <li>Every intervention documented in a public report</li>
+              <li>Statutory approvals in place: 12A, 80G, CSR and FCRA</li>
+              <li>More than thirty years of continuous presence in the same districts</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section style="padding-top:0">
       <div class="wrap">
         <div class="band" data-reveal>
@@ -55,11 +103,14 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/site.js?v=8"></script>
+  <script src="assets/js/site.js?v=9"></script>
   <script>
   (function () {
     var esc = window.CKB_esc;
-    CKB_get("contact.json").then(function (c) {
+    Promise.all([CKB_get("contact.json"), CKB_get("pages.json")]).then(function (res) {
+      var c = res[0] || {}, pg = res[1] || {};
+      var im = (pg.getInvolved && pg.getInvolved.image) || "";
+      if (im) document.getElementById("gImg").src = im;
       var o = c.office || {};
       document.getElementById("cIntro").textContent = c.intro || "";
       document.getElementById("oName").textContent  = o.name || "Head Office";

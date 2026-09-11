@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=13" />
+  <link rel="stylesheet" href="assets/css/style.css?v=14" />
 </head>
 <body data-page="gallery">
   <div id="site-header"></div>
@@ -42,6 +42,7 @@
     <div class="frame" id="lbFrame"></div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="assets/js/site.js?v=11"></script>
   <script>
   (function () {
@@ -81,10 +82,10 @@
           "</div>"
         : "";
 
-      /* moments — newest first by date, each with its films and/or report */
-      var moments = (d.moments || []).slice().sort(function (a, b) {
-        return String(b.date || "").localeCompare(String(a.date || ""));
-      });
+      /* Cards appear in the order the admin lists them. New ones are added at
+         the top there, so the page reads newest first without needing a date
+         on every entry — most of the older ones have none. */
+      var moments = (d.moments || []).slice();
 
       document.getElementById("moments").innerHTML = moments.map(function (m) {
         var vids = m.videos || [];
@@ -100,7 +101,11 @@
         var thumb = v0
           ? '<div class="video-thumb" style="background-image:url(' + esc(ytThumb(v0)) +
             ')" role="button" tabindex="0" data-video="' + esc(v0) + '">' + PLAY + "</div>"
-          : '<div class="video-thumb no-video"><span class="doc-glyph">📄</span></div>';
+          : m.file
+            ? '<div class="video-thumb no-video" role="button" tabindex="0" data-doc="' + esc(m.file) +
+              '" data-title="' + esc(m.title) + '" data-sub="' + esc(m.when || "") + '">' +
+              '<span class="pdf-cover" data-cover="' + esc(m.file) + '"><span class="fb">📄</span><canvas></canvas></span></div>'
+            : '<div class="video-thumb no-video"><span class="doc-glyph">📄</span></div>';
         return '<div class="video-card">' + thumb +
           '<div class="meta">' +
             (m.when ? '<div class="cat">' + esc(m.when) + "</div>" : "") +
@@ -112,6 +117,7 @@
 
       document.getElementById("momentsEmpty").style.display = moments.length ? "none" : "";
       CKB_reveals();
+      if (window.CKB_renderCovers) window.CKB_renderCovers("#moments");
     });
   })();
   </script>

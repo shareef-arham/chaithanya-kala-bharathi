@@ -226,7 +226,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
   <!-- GALLERY -->
   <div class="panel" id="panel-gallery">
     <h2>Gallery page</h2>
-    <p class="hint">Films and reports. A <b>Video ID</b> is the part of a YouTube link after <code>v=</code> — for <code>youtube.com/watch?v=ABC123</code> it is <code>ABC123</code>. Each item can have videos (comma separated), a report PDF, or both. Items are shown newest first using the <b>date</b> field (YYYY-MM).</p>
+    <p class="hint">Films and reports. A <b>Video ID</b> is the part of a YouTube link after <code>v=</code> — for <code>youtube.com/watch?v=ABC123</code> it is <code>ABC123</code>. Each item can have videos (comma separated), a report PDF, or both. Cards appear on the page in the order listed here: <b>+ Add</b> puts a new one at the top, and <b>&uarr;</b> moves one up.</p>
     <div class="saverow"><button class="btn btn-primary btn-sm" onclick="saveGallery()">Save Gallery</button><span class="msg" id="msg-gallery"></span></div>
     <div class="field"><label>Intro paragraph</label><textarea id="ga_intro"></textarea></div>
     <h3>Featured film</h3>
@@ -419,7 +419,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     var o={}; cols.forEach(function(c){ var e=document.getElementById("m_"+c.key); if(e) o[c.key]=e.value.trim(); }); return o;
   }
   /* Row editor: a small table with Add / Edit / Move up / Delete. */
-  function editor(mountId,arr,cols,label,defaults){
+  /* opts.addToTop: "+ Add" puts the new row first rather than last. */
+  function editor(mountId,arr,cols,label,defaults,opts){
     var mount=document.getElementById(mountId); if(!mount)return;
     function render(){
       var head=cols.map(function(c){return "<th>"+esc(c.label)+"</th>";}).join("")+"<th></th>";
@@ -439,7 +440,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
         '<div class="modal-acts"><button class="btn btn-outline" data-cancel>Cancel</button><button class="btn btn-primary" data-ok>Save</button></div>');
       modalOK(function(){
         var o=readRow(cols);
-        if(i<0) arr.push(o); else cols.forEach(function(c){ arr[i][c.key]=o[c.key]; });
+        if(i<0){ if(opts&&opts.addToTop) arr.unshift(o); else arr.push(o); }
+        else cols.forEach(function(c){ arr[i][c.key]=o[c.key]; });
         render(); closeModalI();
       });
     }
@@ -618,14 +620,12 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     setv("ga_f_vid",g.featured.videoId); setv("ga_f_eyebrow",g.featured.eyebrow);
     setv("ga_f_title",g.featured.title); setv("ga_f_desc",g.featured.desc);
     g.moments.forEach(function(m){ if(Array.isArray(m.videos)) m.videos=m.videos.join(", "); });
-    var ym = new Date().toISOString().slice(0,7);
     editor("ga_moments",g.moments,[
-      {key:"title",label:"Title"},{key:"when",label:"When / label"},
-      {key:"date",label:"Date for ordering (YYYY-MM)"},
+      {key:"title",label:"Title"},{key:"when",label:"Label (supporter, place or date)"},
       {key:"blurb",label:"Description",type:"textarea"},
       {key:"videos",label:"YouTube video IDs (comma separated)"},
       {key:"file",label:"Report PDF filename"}
-    ],"Film or report", function(){ return {date: ym}; });
+    ],"Film or report", null, {addToTop: true});
   }
   window.saveGallery=function(){
     var g=D.gallery;

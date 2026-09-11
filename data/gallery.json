@@ -1,11 +1,253 @@
 {
+  "intro": "Films and reports from our work — each one made possible by a partner who stood with us.",
   "featured": {
     "eyebrow": "Featured film",
-    "videoId": "",
-    "title": "",
-    "desc": "",
+    "videoId": "eM5brT0l1kE",
+    "title": "CKB activities",
+    "desc": "Our work across the villages of Kurnool and Nandyal districts — education, health, water, livelihoods and care for the most vulnerable — in one film.",
     "thumb": ""
   },
-  "intro": "Films and reports from our work across Kurnool and Nandyal districts.",
-  "moments": []
+  "moments": [
+    {
+      "title": "Study material and sanitary kits for 55 students",
+      "when": "SICEWT, UK · June–July 2026",
+      "blurb": "With the support of SICEWT, UK, Chaithanya Kala Bharathi, has distributed Educational and Study Material, Sanitary Kits to the children coming from the Vulnerable groups in 3 districts of Andhra Pradesh. A total of 55 students were supported under this activity.",
+      "videos": [
+        "UofMTaQQb0o"
+      ],
+      "file": "SICEWT2026-REPORT.pdf"
+    },
+    {
+      "title": "Bicycles for 33 girl students",
+      "when": "SICEWT, UK · December 2025",
+      "blurb": "In the month of December 2025, with the support of SICEWT, UK, Chaithanya Kala Bharathi, has distributed Bicycles to 33 Girl students of Vulnerable groups.",
+      "videos": [
+        "YERGzhDdgyU"
+      ],
+      "file": ""
+    },
+    {
+      "title": "Food grain kits for nomadic artisan families",
+      "when": "The Shamdasani Foundation, Hong Kong",
+      "blurb": "With the support of The Shamdasani Foundation, Hong Kong, Chaithanya Kala Bharathi, has distributed Provision Kits (Food Grain Kits) to 12 Nomadic Traditional Artisan Families in Kaja village of Muvva Mandal in Krishna District.",
+      "videos": [
+        "TgGodeEz150"
+      ],
+      "file": "samadasani-2026.pdf"
+    },
+    {
+      "title": "Study material, sanitary kits and bicycles for 62 students",
+      "when": "SICEWT, UK",
+      "blurb": "With the support of SICEWT, UK, Chaithanya Kala Bharathi, has distributed Educational and Study Material, Sanitary Kits and Bicycles to students of Vulnerable groups. A total of 62 students were supported under this activity.",
+      "videos": [
+        "YERGzhDdgyU"
+      ],
+      "file": "SICEWT-REPORT.pdf"
+    },
+    {
+      "title": "Water for the Senior Citizens' Home",
+      "when": "Ms. Moureen & Global Compassion Inc., USA",
+      "blurb": "With the support of Ms. Moureen, and Global Compassion Inc., USA, a bore was dug in the compound of Senior Citizens’ Home and water facility was provided. It is, in need, of support from Humane Donors.",
+      "videos": [
+        "7mBGGr1Jz8o"
+      ],
+      "file": "Report-Moureen.pdf"
+    },
+    {
+      "title": "Study material and food kits for children with thalassemia",
+      "when": "Global Compassion Inc., USA",
+      "blurb": "With the support of Global Compassion Inc. USA, Educational material and Nutritional Food Kits are distributed to the children suffering with Thalassemia.",
+      "videos": [
+        "qxrEMXM-e7s"
+      ],
+      "file": "GLOBAL-REPORT-2.pdf"
+    },
+    {
+      "title": "Bathrooms and toilets for the ITI at Velgode",
+      "when": "Fundación Roviralta, Spain",
+      "blurb": "With the support of Fundación Roviralta, Spain, CKB has constructed (1) Two Bathrooms; and (2) Two toilets in the Industrial Training Institute (ITI), in Velgode, run by Chaithanya Kala Bharathi.",
+      "videos": [],
+      "file": "fund-rev.pdf"
+    },
+    {
+      "title": "Nutritional food kits for children with thalassemia",
+      "when": "Sri Shamdasani Foundation, Hong Kong · June 2024",
+      "blurb": "With the support of SRI SAMDASANI FOUNDATION, Hong Kong, Chaithanya Kala Bharathi, has supplied Nutritional Food Kits containing 12 different food grains to children of different age -groups suffering from Thalassemia.",
+      "videos": [
+        "r2998UWy9Eo"
+      ],
+      "file": "KITS-REPORT.pdf"
+    },
+    {
+      "title": "Drinking water for Harinagaram",
+      "when": "Fresh Water Friends Inc., USA",
+      "blurb": "With the support of Fresh Water Friends Inc., USA, Chaithanya Kala Bharathi, has provided Drinking Water through digging Bore and setting up of Water Storage Tank with cistern in Harinagaram village of Nandyala District.",
+      "videos": [
+        "2ulpxwrfTOI"
+      ],
+      "file": "HARINAGARAM-REPORT.pdf"
+    },
+    {
+      "title": "Drinking water for Sirivella",
+      "when": "Fresh Water Friends Inc., USA",
+      "blurb": "With the support of Fresh Water Friends Inc., USA, Chaithanya Kala Bharathi, has provided Drinking Water through digging Bore and setting up of Water Storage Tank with cistern in Sirivella village of Nandyala District.",
+      "videos": [
+        "siOI85AM2hw"
+      ],
+      "file": "SIRIVELLA-REPORT.pdf"
+    },
+    {
+      "title": "Safe drinking water plants in two schools",
+      "when": "SOS Enfants Abandonnés, Belgium",
+      "blurb": "With the support of SOS Enfants Abandonnes ASBL, Belgium, Chaithanya Kala Bharathi, has installed Safe Drinking Water plants in 2 schools in Nandyal District.",
+      "videos": [
+        "EKPqmR6G4VA"
+      ],
+      "file": "PROJECT-REPORT-SOS.pdf"
+    },
+    {
+      "title": "Study material and nutrition kits for 39 students",
+      "when": "Little Drops Charity Trust, UK",
+      "blurb": "With the support of Little Drops Charity Foundation, UK, 39 Students were supplied with Study Material, and Nutritional Kits in Kurnool and Nandyal District.",
+      "videos": [
+        "cQ87hEy0TD4"
+      ],
+      "file": "LITTLE-DROPS-REPORT.pdf"
+    },
+    {
+      "title": "Food kits for sanitation workers and volunteers",
+      "when": "Shamdasani Foundation, Hong Kong · August 2023",
+      "blurb": "With the support of Samadasini Foundation, Hong Kong, 13 Sanitary Workers and 9 Women Volunteers in the 16th Ward of Nandyal Municipality were supplied with Food Kits, on 15th August 2023.",
+      "videos": [
+        "o5tT1Z_8D_s"
+      ],
+      "file": "SAMADASANI-report.pdf"
+    },
+    {
+      "title": "Safe drinking water for KGBV Abbipuram",
+      "when": "Sankalpa India, USA",
+      "blurb": "With the support of Sankalpa India, USA, CKB has established an Inverter, Electrical submersible Pump, Over-Head Water Tank, and Water Purification Systems, in the KGBV at Abbipuram.",
+      "videos": [
+        "BGiNLgkgYS8"
+      ],
+      "file": "Report-sankalpa.pdf"
+    },
+    {
+      "title": "Tricycles for 17 differently abled students",
+      "when": "Fundación María Francisca de Roviralta, Spain",
+      "blurb": "With the support of Fundacion Maria franciscade Roviralta, Madrid, Spain, CKB has supplied Tricycles to 17 students who are differently abled.",
+      "videos": [
+        "oIdEhhOSV1w"
+      ],
+      "file": "Fundacion-Report.pdf"
+    },
+    {
+      "title": "Support for 41 students living with HIV",
+      "when": "H.E.A.T. Foundation, UK",
+      "blurb": "With the support of H.E.A.T. Foundation Ltd., UK, a total of 41 students suffering with HIV are supported in a program organized by CKB at Nandyal.",
+      "videos": [
+        "YI6wc0P8y5c"
+      ],
+      "file": "HEAT-report.pdf"
+    },
+    {
+      "title": "Nutrition kits, study material and sanitary napkins",
+      "when": "SICEWT, UK · Anantapur",
+      "blurb": "With the support of South India Children’s Education and Welfare Trust (SICEWT), CKB has supplied Nutritional Kits and Educational Material, and Sanitary Napkins at Anantapur.",
+      "videos": [
+        "6MSJa3p61LA"
+      ],
+      "file": "CKB-SICEWT.pdf"
+    },
+    {
+      "title": "Bicycles for 37 students",
+      "when": "Little Drops Charity Trust, UK",
+      "blurb": "Little Drops Charity Trust, UK was kind enough to sanction the project, and under the 1st Phase they have released an amount of Rs.2,54,626. CKB has utilized this amount for distribution of bicycles to 37 students.",
+      "videos": [
+        "w22ESatFp-c"
+      ],
+      "file": "UK-BICYCLES-REPORT.pdf"
+    },
+    {
+      "title": "Furniture for a flood-hit school at Mandapalli",
+      "when": "SOS Enfants Abandonnés, Belgium",
+      "blurb": "Due to floods in Kadapa District, the school in Mandapalli village got inundated and the furniture and other equipment was damaged. SOS Enfants Abandonnes, ASBL Belgium, has come up with supplying the minimum basic requirements.",
+      "videos": [
+        "nuGVdOEjABQ"
+      ],
+      "file": "INFRA.pdf"
+    },
+    {
+      "title": "Study material and bicycles for girl-child education",
+      "when": "SOS Enfants Abandonnés, Belgium",
+      "blurb": "As a part of ‘Promotion Of girl Child Education’ and to provide them the support to improve their knowledge, CKB has supplied them with study material, and bicycles. This programme is supported by SOS Enfants Abandonnes, ASBL Belgium.",
+      "videos": [
+        "djgk5nfxBkk"
+      ],
+      "file": "EDU-CYCLES-REPORT.pdf"
+    },
+    {
+      "title": "A revolving fund for tribal basket makers",
+      "when": "The Strathspey Charitable Trust, UK",
+      "blurb": "As a part of “WOMEN EMPOWERMENT” with the support of STRATHESPEY CHARITABLE TRUST, U.K, Revolving Fund was given to basket making tribal families in Yerukala Colony. This helps them from not taking loans on high interest rates…",
+      "videos": [
+        "WLJvuoX7Yy0"
+      ],
+      "file": "BASKET-MAKING.pdf"
+    },
+    {
+      "title": "Support for 60 girl students living with HIV",
+      "when": "ESA Humanitarian Relief Fund, The Netherlands",
+      "blurb": "With the support of ESA Humanitarian Relief Fund, The Netherlands” 60 HIV Positive girl students were supplied with educational study and learning material, dry ration kit, and bicycles, in Nandyal and Adoni towns…",
+      "videos": [
+        "-F985WQwgYg"
+      ],
+      "file": "ESA-REPORT.pdf"
+    },
+    {
+      "title": "Youth rights and protection from HIV/AIDS",
+      "when": "The Mercury Phoenix Trust, UK",
+      "blurb": "The project titled “YOUTH RIGHTS TO PARTICIPATE AND PROTECTION FROM HIV/AIDS” was supported by The Mercury Phoenix Trust, U.K, is implemented in the colleges and technical institutions spread in 7 mandals of Kurnool District…",
+      "videos": [
+        "HnROo9w926w"
+      ],
+      "file": "Mercury-Phoenix-REPORT.pdf"
+    },
+    {
+      "title": "A borewell for Memallakunta Chenchu Gudem",
+      "when": "Global Compassion Inc., USA",
+      "blurb": "Chaithanya Kala Bharathi has dug a bore well for supply of potable water for the Chenchu community in Memallakunta Chenchu Gudem. This project was supported by Global Compassion Inc., USA.",
+      "videos": [
+        "iXhed6VE6Lw"
+      ],
+      "file": "GLOBAL-REPORT.pdf"
+    },
+    {
+      "title": "A borewell and handpump for Nayani Cheruvu Chenchu Gudem",
+      "when": "KIREA",
+      "blurb": "With the support of KIREA, Chaithanya Kala Bharathi has dug a borewell, and installed a handpump for the communities in Nayani Cheruvu Chenchu Gudem fetching water for their daily usage.",
+      "videos": [
+        "yUHaJ30nhvw"
+      ],
+      "file": "KIREA-REPORT.pdf"
+    },
+    {
+      "title": "Food packages for 45 Chenchu families",
+      "when": "Samadasani Foundation",
+      "blurb": "A total of 45 Chenchu families in Bommilingampalli were supported with essential dry package of food items. Thanks to Samadasani Foundation, USA for their kind support.",
+      "videos": [
+        "XonqFeoINek"
+      ],
+      "file": "SAMADASANI-SUPPLY.pdf"
+    },
+    {
+      "title": "Tricycles for 20 children with special needs",
+      "when": "Global Compassion Inc., USA",
+      "blurb": "CKB, with the support of Global Compassion Inc., USA, has supplied tricycles to 20 identified children with special needs. The children were given these tricycles in a programme conducted by the organization exclusively for this purpose…",
+      "videos": [
+        "QM_0ZoqOKuY"
+      ],
+      "file": "TRICYCLES.pdf"
+    }
+  ]
 }

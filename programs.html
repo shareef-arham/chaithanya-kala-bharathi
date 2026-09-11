@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=12" />
+  <link rel="stylesheet" href="assets/css/style.css?v=13" />
 </head>
 <body data-page="programs">
   <div id="site-header"></div>
@@ -45,6 +45,7 @@
   </main>
 
   <div id="site-footer"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="assets/js/site.js?v=11"></script>
   <script>
   (function () {
@@ -52,15 +53,23 @@
     CKB_get("programs.json").then(function (p) {
       document.getElementById("pIntro").textContent = p.intro || "";
       document.getElementById("items").innerHTML = (p.items || []).map(function (i) {
-        return '<div class="card" role="button" tabindex="0" data-doc="' + esc(i.file) +
+        /* Each programme is shown with the first page of its report, which is
+           what the card opens. The icon stands in until the page is drawn. */
+        return '<div class="card prog" role="button" tabindex="0" data-doc="' + esc(i.file) +
           '" data-title="' + esc(i.title) + '" data-sub="' + esc(i.sub || "") + '">' +
-          '<div class="ico">' + esc(i.icon || "") + "</div>" +
-          "<h3>" + esc(i.title) + "</h3>" +
-          '<div class="sub">' + esc(i.sub || "") + "</div>" +
-          "<p>" + esc(i.desc || "") + "</p>" +
-          '<span class="open">Open the report &rarr;</span></div>';
+          (i.file
+            ? '<span class="pdf-cover" data-cover="' + esc(i.file) + '"><span class="fb">' +
+              esc(i.icon || "\ud83d\udcc4") + "</span><canvas></canvas></span>"
+            : '<div class="ico">' + esc(i.icon || "") + "</div>") +
+          '<div class="prog-tx">' +
+            "<h3>" + esc(i.title) + "</h3>" +
+            '<div class="sub">' + esc(i.sub || "") + "</div>" +
+            "<p>" + esc(i.desc || "") + "</p>" +
+            (i.file ? '<span class="open">Read the report &rarr;</span>' : "") +
+          "</div></div>";
       }).join("");
       CKB_reveals();
+      if (window.CKB_renderCovers) window.CKB_renderCovers("main");
     });
   })();
   </script>

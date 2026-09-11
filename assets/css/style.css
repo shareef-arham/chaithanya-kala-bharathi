@@ -291,6 +291,14 @@ h2{font-size:clamp(1.6rem,3.4vw,2.4rem)}
 .pdf-cover.is-loaded .fb{display:none}
 /* on the document tiles the cover is larger and centred */
 .doc-card .pdf-cover{width:74px;height:96px;margin:0 auto .2rem}
+/* on the Programs cards the report's cover sits beside the description */
+.card.prog{display:flex;gap:1.3rem;align-items:flex-start}
+.card.prog .pdf-cover{width:108px;height:142px;border-radius:8px;border:1px solid var(--line);
+  box-shadow:0 10px 24px -10px rgba(31,92,57,.45);transition:transform .25s var(--ease)}
+.card.prog:hover .pdf-cover{transform:rotate(-1.5deg) scale(1.03)}
+.card.prog .pdf-cover .fb{font-size:2rem}
+.card.prog .prog-tx{min-width:0;flex:1}
+@media(max-width:560px){.card.prog{flex-direction:column}.card.prog .pdf-cover{width:96px;height:126px}}
 
 /* ---------- Admin: model card ---------- */
 .model{display:grid;grid-template-columns:200px 1fr;gap:1.2rem;align-items:start;

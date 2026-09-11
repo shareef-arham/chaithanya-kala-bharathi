@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reports &amp; Audited Accounts — CKB</title>
-  <meta name="description" content="Chaithanya Kala Bharathi's Annual Reports and independently audited statements of accounts, programme reports and statutory certificates — opened right here on the page." />
+  <meta name="description" content="Chaithanya Kala Bharathi's Annual Reports and independently audited statements of accounts — opened right here on the page." />
   <link rel="icon" href="assets/logo-sm.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=12" />
+  <link rel="stylesheet" href="assets/css/style.css?v=13" />
 </head>
 <body data-page="reports">
   <div id="site-header"></div>
@@ -37,10 +37,6 @@
 
         <div id="mediaRow" class="center" style="margin:2.4rem auto 0;max-width:460px" data-reveal></div>
 
-        <h2 style="margin-top:3rem">Programme reports</h2>
-        <p class="lede" style="margin:.4rem 0 1.2rem">One report for each of our four interventions.</p>
-        <div class="grid grid-4" id="progs" data-reveal></div>
-
       </div>
     </section>
   </main>
@@ -52,18 +48,9 @@
   (function () {
     var esc = window.CKB_esc;
 
-    function tile(d, icon) {
-      return '<div class="doc-card" role="button" tabindex="0" data-doc="' + esc(d.file) +
-        '" data-title="' + esc(d.title) + '" data-sub="' + esc(d.sub || "") + '">' +
-        '<span class="pdf-cover" data-cover="' + esc(d.file) + '"><span class="fb">' +
-        esc(d.icon || icon || "📄") + "</span><canvas></canvas></span>" +
-        "<b>" + esc(d.title) + "</b><small>" + esc(d.sub || "") + "</small>" +
-        '<span class="open">Open &rarr;</span></div>';
-    }
-
-    Promise.all([CKB_get("governance.json"), CKB_get("programs.json")])
-      .then(function (r) {
-        var g = r[0] || {}, p = r[1] || {};
+    CKB_get("governance.json")
+      .then(function (g) {
+        g = g || {};
         var ars = g.annualReports || [], auds = g.auditedAccounts || [];
 
         document.getElementById("gIntro").textContent = g.intro || "";
@@ -110,10 +97,6 @@
             "<b>" + esc(m.title) + "</b><small>" + esc(m.sub || "") + "</small>" +
             '<span class="open">Open &rarr;</span></div>'
           : "";
-
-        document.getElementById("progs").innerHTML = (p.items || []).map(function (i) {
-          return tile({ file: i.file, title: i.title, sub: i.sub, icon: i.icon }, "📄");
-        }).join("");
 
         CKB_reveals();
         if (window.CKB_renderCovers) window.CKB_renderCovers("main");

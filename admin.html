@@ -159,7 +159,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     <h3>Board Members</h3>
     <div class="field"><label>Intro line</label><textarea id="ab_b_intro" rows="2"></textarea></div>
     <div id="ab_board"></div>
-    <div class="field"><label>Original document (PDF filename)</label><input id="ab_b_pdf" /></div>
 
     <h3>Organisation Profile</h3>
     <div class="field"><label>Intro line</label><textarea id="ab_p_intro" rows="2"></textarea></div>
@@ -172,7 +171,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     <div class="field"><label>Intro line</label><textarea id="ab_s_intro" rows="2"></textarea></div>
     <div id="ab_sup"></div>
     <div class="field"><label>Closing note</label><textarea id="ab_s_note" rows="2"></textarea></div>
-    <div class="field"><label>Original document (PDF filename)</label><input id="ab_s_pdf" /></div>
   </div>
 
   <!-- VISION & MISSION -->
@@ -185,7 +183,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     <div class="field"><label>Mission</label><textarea id="vm_mission" rows="4"></textarea></div>
     <div class="field"><label>Goal</label><textarea id="vm_goal" rows="4"></textarea></div>
     <div class="field"><label>Objectives — one per line</label><textarea id="vm_obj" rows="14"></textarea></div>
-    <div class="field"><label>Original document (PDF filename, optional)</label><input id="vm_pdf" /></div>
   </div>
 
   <!-- PROGRAMS -->
@@ -540,8 +537,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     setv("vm_intro",v.intro); setv("vm_vision",v.vision);
     setv("vm_mission",v.mission); setv("vm_goal",v.goal);
     setv("vm_obj",(v.objectives||[]).join("\n"));
-    setv("vm_pdf",v.pdf);
-    wireInlineUpload(document.getElementById("vm_pdf"));
   }
   /* ---- BOARD / PROFILE / SUPPORTERS (about.json) ---- */
   function bindAbout(){
@@ -551,7 +546,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     a.profile.facts=a.profile.facts||[]; a.profile.coverage=a.profile.coverage||[];
     a.supporters.items=a.supporters.items||[];
 
-    setv("ab_b_intro",a.board.intro); setv("ab_b_pdf",a.board.pdf);
+    setv("ab_b_intro",a.board.intro);
     editor("ab_board",a.board.members,[
       {key:"name",label:"Name"},{key:"role",label:"Role"},
       {key:"relation",label:"S/o, D/o, W/o"},{key:"qualification",label:"Qualification"},
@@ -564,21 +559,18 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     editor("ab_cover",a.profile.coverage,lv,"Coverage row");
 
     setv("ab_s_intro",a.supporters.intro); setv("ab_s_note",a.supporters.note);
-    setv("ab_s_pdf",a.supporters.pdf);
     editor("ab_sup",a.supporters.items,[
       {key:"name",label:"Organisation"},{key:"place",label:"Country / place"}],"Supporter");
 
-    ["ab_b_pdf","ab_p_pdf","ab_s_pdf"].forEach(function(id){
-      wireInlineUpload(document.getElementById(id));
-    });
+    wireInlineUpload(document.getElementById("ab_p_pdf"));
   }
   window.saveAbout=function(){
     var a=D.about;
-    a.board.intro=val("ab_b_intro"); a.board.pdf=val("ab_b_pdf");
+    a.board.intro=val("ab_b_intro"); delete a.board.pdf;
     a.profile.intro=val("ab_p_intro"); a.profile.pdf=val("ab_p_pdf");
     a.profile.values=lines(val("ab_p_values"));
     a.supporters.intro=val("ab_s_intro"); a.supporters.note=val("ab_s_note");
-    a.supporters.pdf=val("ab_s_pdf");
+    delete a.supporters.pdf;
     save("about.json",a,"msg-about");
   };
 
@@ -587,7 +579,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     v.intro=val("vm_intro"); v.vision=val("vm_vision");
     v.mission=val("vm_mission"); v.goal=val("vm_goal");
     v.objectives=val("vm_obj").split("\n").map(function(x){return x.trim();}).filter(Boolean);
-    v.pdf=val("vm_pdf");
     save("vision.json",v,"msg-vision");
   };
 

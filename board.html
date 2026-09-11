@@ -27,7 +27,6 @@
     <section style="padding-top:1.4rem">
       <div class="wrap">
         <div class="people" id="people" data-reveal></div>
-        <p class="vm-src" id="pSrc"></p>
       </div>
     </section>
 
@@ -61,9 +60,6 @@
           (m.bio ? "<p>" + esc(m.bio) + "</p>" : "") +
           "</div></div>";
       }).join("");
-      document.getElementById("pSrc").innerHTML = b.pdf
-        ? '<span role="button" tabindex="0" data-doc="' + esc(b.pdf) +
-          '" data-title="Board Members">Open the original document (PDF) &rarr;</span>' : "";
       CKB_aboutNav("board.html");
       CKB_reveals();
     });

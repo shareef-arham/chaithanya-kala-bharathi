@@ -65,8 +65,7 @@
         "role": "E.C. Member",
         "bio": ""
       }
-    ],
-    "pdf": "BoardMembers.pdf"
+    ]
   },
   "profile": {
     "intro": "A summary of the organisation — how it is constituted, where it works and what it stands for. The full profile is published as a document.",
@@ -129,8 +128,16 @@
     "pdf": "OrganizationProfile.pdf"
   },
   "supporters": {
-    "intro": "CKB's work is made possible by partners and funders in India and abroad. The organisations below are named in our supporters document; others appear there as logos.",
+    "intro": "CKB is deeply grateful to the foundations, charitable trusts and partners whose confidence and generosity have enabled us to serve vulnerable communities.",
     "items": [
+      {
+        "name": "Andheri Hilfe",
+        "place": "Germany"
+      },
+      {
+        "name": "SOS Enfants Abandonnés",
+        "place": "Belgium"
+      },
       {
         "name": "Mercury Phoenix Trust",
         "place": "United Kingdom"
@@ -140,27 +147,74 @@
         "place": "USA"
       },
       {
-        "name": "The Shamdasani Foundation",
-        "place": "Hong Kong"
+        "name": "The Strathspey Charitable Trust",
+        "place": "United Kingdom"
+      },
+      {
+        "name": "Ontario Teachers' Federation",
+        "place": "Canada"
+      },
+      {
+        "name": "The Guirdham Trust for India",
+        "place": "United Kingdom"
+      },
+      {
+        "name": "EU Can Aid! — EU staff support to development",
+        "place": "Brussels, Belgium"
+      },
+      {
+        "name": "Überseehilfswerk Gemeinnützige Stiftung",
+        "place": "Germany"
+      },
+      {
+        "name": "KIREA — Kapasi International Relief & Education Assistance",
+        "place": "Canada"
       },
       {
         "name": "ESA Humanitarian Relief Fund",
         "place": "The Netherlands"
       },
       {
+        "name": "The Shamdasani Foundation",
+        "place": "Hong Kong"
+      },
+      {
+        "name": "BASAID",
+        "place": "Switzerland"
+      },
+      {
+        "name": "Fresh Water Friends",
+        "place": "USA"
+      },
+      {
+        "name": "Fundación María Francisca de Roviralta",
+        "place": "Spain"
+      },
+      {
+        "name": "H.E.A.T. Foundation",
+        "place": "England"
+      },
+      {
+        "name": "Little Drops Charity Trust",
+        "place": "United Kingdom"
+      },
+      {
         "name": "MAX-BROSE-HILFE e.V. & Deutsches Stiftungszentrum GmbH",
         "place": "Germany"
       },
       {
-        "name": "Aktion Selbstbesteuerung e.V.",
-        "place": "Germany"
+        "name": "South India Children's Education and Welfare Trust",
+        "place": "United Kingdom"
       },
       {
         "name": "Sankalpa India",
-        "place": "India"
+        "place": "Columbus, Ohio, USA"
+      },
+      {
+        "name": "Aktion Selbstbesteuerung e.V.",
+        "place": "Germany"
       }
     ],
-    "note": "Partners are also based in Belgium, Canada, Spain, Switzerland and elsewhere in the United Kingdom and the United States.",
-    "pdf": "OurSupporters.pdf"
+    "note": "We are equally grateful to our local well-wishers, volunteers, board members, general body members and community partners, whose support strengthens our mission."
   }
 }

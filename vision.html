@@ -34,7 +34,6 @@
           <ol class="vm-obj" id="vmObj"></ol>
         </div>
 
-        <p class="vm-src" id="vmSrc"></p>
       </div>
     </section>
 
@@ -62,9 +61,6 @@
       document.getElementById("vmObj").innerHTML = objs.map(function (o) {
         return "<li>" + esc(o) + "</li>";
       }).join("");
-      document.getElementById("vmSrc").innerHTML = vm.pdf
-        ? '<span role="button" tabindex="0" data-doc="' + esc(vm.pdf) +
-          '" data-title="Vision &amp; Mission">Open the original document (PDF) &rarr;</span>' : "";
       CKB_aboutNav("vision.html");
       CKB_reveals();
     });

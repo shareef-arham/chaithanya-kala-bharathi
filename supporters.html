@@ -28,7 +28,6 @@
       <div class="wrap">
         <div class="grid grid-3" id="sup" data-reveal></div>
         <p class="lede" id="sNote" style="margin-top:1.6rem"></p>
-        <p class="vm-src" id="pSrc"></p>
       </div>
     </section>
 
@@ -52,9 +51,6 @@
           (i.place ? "<small>" + esc(i.place) + "</small>" : "") + "</div>";
       }).join("");
       document.getElementById("sNote").textContent = s.note || "";
-      document.getElementById("pSrc").innerHTML = s.pdf
-        ? '<span role="button" tabindex="0" data-doc="' + esc(s.pdf) +
-          '" data-title="Our Supporters">Open the original document (PDF) &rarr;</span>' : "";
       CKB_aboutNav("supporters.html");
       CKB_reveals();
     });

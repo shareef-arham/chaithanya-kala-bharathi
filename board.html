@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=11" />
+  <link rel="stylesheet" href="assets/css/style.css?v=12" />
 </head>
 <body data-page="about">
   <div id="site-header"></div>
@@ -46,12 +46,29 @@
       var parts = String(n || "").replace(/[^A-Za-z ]/g, " ").trim().split(/\s+/);
       return ((parts[0] || "")[0] || "") + ((parts[parts.length - 1] || "")[0] || "");
     }
+    /* A bare filename is an upload; anything with a slash is used as given. */
+    function photoURL(p) { return /[\/:]/.test(p) ? p : "uploads/" + encodeURIComponent(p); }
+    /* The photo, or the member's initials until one has been added. If a
+       photo fails to load, the initials take its place rather than a broken
+       image icon. */
+    window.CKB_noPhoto = function (img) {
+      var box = img.parentNode;
+      box.classList.remove("has-photo");
+      box.textContent = box.getAttribute("data-ini");
+    };
+    function portrait(m) {
+      var ini = esc(initials(m.name).toUpperCase());
+      if (!m.photo) return '<div class="avatar">' + ini + "</div>";
+      return '<div class="avatar has-photo" data-ini="' + ini + '">' +
+        '<img src="' + esc(photoURL(m.photo)) + '" alt="' + esc(m.name) + '" loading="lazy" ' +
+        'onerror="CKB_noPhoto(this)">' +
+        "</div>";
+    }
     CKB_get("about.json").then(function (d) {
       var b = d.board || {};
       document.getElementById("pIntro").textContent = b.intro || "";
       document.getElementById("people").innerHTML = (b.members || []).map(function (m) {
-        return '<div class="person">' +
-          '<div class="avatar">' + esc(initials(m.name).toUpperCase()) + "</div>" +
+        return '<div class="person">' + portrait(m) +
           '<div class="who"><b>' + esc(m.name) + "</b>" +
           '<span class="role">' + esc(m.role || "") + "</span>" +
           (m.relation || m.qualification

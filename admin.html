@@ -550,7 +550,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     editor("ab_board",a.board.members,[
       {key:"name",label:"Name"},{key:"role",label:"Role"},
       {key:"relation",label:"S/o, D/o, W/o"},{key:"qualification",label:"Qualification"},
-      {key:"bio",label:"Short note"}],"Board member");
+      {key:"bio",label:"Short note"},{key:"photo",label:"Photo (filename)"}],"Board member");
 
     setv("ab_p_intro",a.profile.intro); setv("ab_p_pdf",a.profile.pdf);
     setv("ab_p_values",(a.profile.values||[]).join("\n"));

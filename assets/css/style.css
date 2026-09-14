@@ -426,7 +426,7 @@ a.doc-card{text-decoration:none;color:inherit;display:block}
 .home .band .h-section{color:#fff}
 
 .h-hero{padding:clamp(2.4rem,5vw,3.8rem) 0 clamp(2.4rem,5vw,3.6rem)}
-.h-top{display:grid;grid-template-columns:1.35fr .65fr;gap:clamp(1.5rem,4vw,3.5rem);align-items:end}
+.h-top{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(1.5rem,4vw,3.5rem);align-items:end}
 .h-badge{display:inline-flex;align-items:center;gap:.55rem;padding:.4rem .9rem .4rem .6rem;border-radius:999px;
   background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);font-size:.78rem;font-weight:650;color:var(--green-d)}
 .h-badge::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px rgba(233,160,32,.2)}

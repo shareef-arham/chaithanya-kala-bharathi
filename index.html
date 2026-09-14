@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=14" />
+  <link rel="stylesheet" href="assets/css/style.css?v=16" />
 </head>
 <body data-page="home">
   <div id="site-header"></div>
@@ -27,7 +27,7 @@
               <a href="about.html" class="btn btn-ghost">Our 30-year journey</a>
             </div>
           </div>
-          <div class="hero-media" id="heroMedia"><img id="hImg" src="uploads/hero-education.jpg" alt="Children at school in Andhra Pradesh" /></div>
+          <div class="hero-media" id="heroMedia"><img id="hImg" alt="Children at school in Andhra Pradesh" hidden /></div>
         </div>
         <div class="stats" id="stats"></div>
       </div>
@@ -106,9 +106,13 @@
             '?autoplay=1&mute=1&rel=0&playsinline=1&loop=1&playlist=' +
             encodeURIComponent(hero.videoId) + '" title="' + esc(hero.videoTitle || "Chaithanya Kala Bharathi") +
             '" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
-            'allowfullscreen loading="lazy"></iframe></div>';
-        } else if (hero.image) {
-          document.getElementById("hImg").src = hero.image;
+            'allowfullscreen></iframe></div>';
+        } else {
+          /* No film: show the photograph (the page starts with none, so nothing
+             flashes up before the film loads) */
+          var hImg = document.getElementById("hImg");
+          hImg.src = hero.image || "uploads/hero-education.jpg";
+          hImg.hidden = false;
         }
 
         document.getElementById("stats").innerHTML = (o.stats || []).map(function (s) {

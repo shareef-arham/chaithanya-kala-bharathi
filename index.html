@@ -8,38 +8,59 @@
   <link rel="icon" href="assets/logo-sm.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=16" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=18" />
 </head>
 <body data-page="home">
   <div id="site-header"></div>
 
-  <main>
-    <section class="hero">
+  <main class="home">
+    <!-- HERO: the name, large, then the film across the page -->
+    <section class="h-hero">
       <div class="wrap">
-        <div class="hero-grid">
+        <div class="h-top">
           <div>
-            <span class="eyebrow" id="hBadge">Since 1992</span>
-            <h1 id="hTitle">Chaithanya Kala <span class="accent">Bharathi</span></h1>
-            <p class="lede" id="hLede"></p>
+            <span class="h-badge" id="hBadge">Serving communities in Andhra Pradesh since 1992</span>
+            <h1 class="h-title" id="hTitle">Chaithanya Kala <em>Bharathi</em></h1>
+            <p class="h-tag">Compassion in Action</p>
+          </div>
+          <div class="h-side">
+            <p class="h-lede" id="hLede"></p>
             <div class="hero-cta">
               <a href="donate.html" class="btn btn-sun">Support our work</a>
               <a href="about.html" class="btn btn-ghost">Our 30-year journey</a>
             </div>
           </div>
-          <div class="hero-media" id="heroMedia"><img id="hImg" alt="Children at school in Andhra Pradesh" hidden /></div>
         </div>
-        <div class="stats" id="stats"></div>
+
+        <!-- the film: our own cover sits over it until YouTube is really playing,
+             so its title bar and loading frame are never seen -->
+        <div class="h-film" id="hFilm">
+          <div class="h-film-player" id="hPlayer"></div>
+          <div class="h-film-cover" id="hCover">
+            <img src="assets/logo.png" alt="" />
+            <span class="h-spin"></span>
+            <span class="h-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Play film</span>
+          </div>
+          <button class="h-sound" id="hSound" type="button" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg>
+            <span>Sound on</span>
+          </button>
+          <img class="h-photo" id="hImg" alt="Children at school in Andhra Pradesh" hidden />
+        </div>
+
+        <div class="h-stats" id="stats"></div>
       </div>
     </section>
 
+    <!-- WHO WE ARE -->
     <section>
       <div class="wrap">
         <div class="split" data-reveal>
           <div>
             <span class="eyebrow" id="wEyebrow">Who we are</span>
-            <h2 id="wTitle"></h2>
-            <p class="lede" id="wBody" style="margin-top:.8rem"></p>
+            <h2 class="h-section" id="wTitle"></h2>
+            <p class="lede" id="wBody" style="margin-top:.9rem"></p>
             <p class="lede" id="wBody2" style="margin-top:.8rem"></p>
             <ul class="points" id="wPoints"></ul>
           </div>
@@ -48,27 +69,34 @@
       </div>
     </section>
 
+    <!-- OUR WORK -->
     <section style="padding-top:1rem">
       <div class="wrap">
         <div class="center" data-reveal>
           <span class="eyebrow" id="fEyebrow">Our work</span>
-          <h2 id="fTitle"></h2>
-          <p class="lede center" id="fLede" style="margin:.6rem auto 0"></p>
+          <h2 class="h-section" id="fTitle"></h2>
+          <p class="lede center" id="fLede" style="margin:.7rem auto 0"></p>
         </div>
-        <div class="grid grid-4" id="focus" style="margin-top:2rem" data-reveal></div>
+        <div class="grid grid-4" id="focus" style="margin-top:2.2rem" data-reveal></div>
       </div>
     </section>
 
-    <section>
+    <!-- IMPACT -->
+    <section class="h-impact-sec">
       <div class="wrap">
-        <div class="grid grid-4" id="impact" data-reveal></div>
+        <div class="center" data-reveal>
+          <span class="eyebrow">Our reach</span>
+          <h2 class="h-section">Measured in lives</h2>
+        </div>
+        <div class="h-impact" id="impact" data-reveal></div>
       </div>
     </section>
 
+    <!-- CALL TO ACTION -->
     <section style="padding-top:0">
       <div class="wrap">
         <div class="band" data-reveal>
-          <h2>Compassion in action, since 1992</h2>
+          <h2 class="h-section">Compassion in action, since 1992</h2>
           <p>Every contribution supports education, health and livelihoods for families across Kurnool and Nandyal districts. Donations are eligible for deduction under 80G.</p>
           <div class="hero-cta" style="justify-content:center">
             <a href="donate.html" class="btn btn-sun">Donate</a>
@@ -84,6 +112,53 @@
   <script>
   (function () {
     var esc = window.CKB_esc;
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* ---- the home film ----
+       Played through YouTube's player API: muted autoplay (all browsers allow
+       it), no controls, looping. Our cover stays on top until YouTube reports
+       PLAYING, then fades - so no title bar, loading frame or play symbol is
+       ever shown. "Sound on" unmutes it. */
+    function startFilm(id) {
+      var cover = document.getElementById("hCover"), sound = document.getElementById("hSound");
+      function build() {
+        var player = new YT.Player("hPlayer", {
+          videoId: id,
+          host: "https://www.youtube-nocookie.com",
+          playerVars: { autoplay: 1, mute: 1, controls: 0, loop: 1, playlist: id, rel: 0, modestbranding: 1,
+                        playsinline: 1, iv_load_policy: 3, disablekb: 1, fs: 0, origin: location.origin },
+          events: {
+            onReady: function (e) { e.target.mute(); e.target.playVideo(); },
+            onStateChange: function (e) {
+              if (e.data === YT.PlayerState.PLAYING) {
+                /* YouTube shows the film's title for the first seconds - wait it out */
+                setTimeout(function () { cover.classList.add("gone"); sound.hidden = false; }, 3200);
+              }
+            }
+          }
+        });
+        /* where a browser will not autoplay, the cover offers a play button instead
+           of ever showing YouTube's own title screen */
+        setTimeout(function () {
+          if (cover.classList.contains("gone")) return;
+          cover.classList.add("tap");
+          cover.addEventListener("click", function () { player.playVideo(); }, { once: true });
+        }, 7000);
+        sound.addEventListener("click", function () {
+          if (player.isMuted()) { player.unMute(); player.setVolume(80); sound.classList.add("on"); sound.querySelector("span").textContent = "Sound off"; }
+          else { player.mute(); sound.classList.remove("on"); sound.querySelector("span").textContent = "Sound on"; }
+        });
+      }
+      if (window.YT && window.YT.Player) build();
+      else {
+        var prev = window.onYouTubeIframeAPIReady;
+        window.onYouTubeIframeAPIReady = function () { if (prev) prev(); build(); };
+        var s = document.createElement("script");
+        s.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(s);
+      }
+    }
+
     Promise.all([CKB_get("home.json"), CKB_get("org.json"), CKB_get("programs.json")])
       .then(function (r) {
         var h = r[0] || {}, o = r[1] || {}, p = r[2] || {};
@@ -92,31 +167,24 @@
         if (hero.badge) document.getElementById("hBadge").textContent = hero.badge;
         if (hero.titleLead || hero.titleAccent) {
           document.getElementById("hTitle").innerHTML =
-            esc(hero.titleLead || "") + ' <span class="accent">' + esc(hero.titleAccent || "") + "</span>";
+            esc(hero.titleLead || "") + " <em>" + esc(hero.titleAccent || "") + "</em>";
         }
+        if (o.tagline) document.querySelector(".h-tag").textContent = o.tagline;
         document.getElementById("hLede").textContent = hero.lede || "";
 
-        /* A YouTube ID in the hero replaces the photograph. Muted autoplay is
-           what browsers allow without a click; controls stay on so a visitor
-           can unmute. Clearing the ID in the admin brings the photo back. */
-        if (hero.videoId) {
-          document.getElementById("heroMedia").innerHTML =
-            '<div class="hero-video"><iframe src="https://www.youtube.com/embed/' +
-            encodeURIComponent(hero.videoId) +
-            '?autoplay=1&mute=1&rel=0&playsinline=1&loop=1&playlist=' +
-            encodeURIComponent(hero.videoId) + '" title="' + esc(hero.videoTitle || "Chaithanya Kala Bharathi") +
-            '" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
-            'allowfullscreen></iframe></div>';
+        /* A YouTube ID in the hero plays the film; without one, the photo shows. */
+        if (hero.videoId && !reduce) {
+          startFilm(hero.videoId);
         } else {
-          /* No film: show the photograph (the page starts with none, so nothing
-             flashes up before the film loads) */
+          var film = document.getElementById("hFilm");
+          film.classList.add("is-photo");
           var hImg = document.getElementById("hImg");
           hImg.src = hero.image || "uploads/hero-education.jpg";
           hImg.hidden = false;
         }
 
         document.getElementById("stats").innerHTML = (o.stats || []).map(function (s) {
-          return '<div class="stat"><div class="n">' + esc(s.n) + '</div><div class="l">' + esc(s.l) + "</div></div>";
+          return '<div class="h-stat"><b>' + esc(s.n) + "</b><span>" + esc(s.l) + "</span></div>";
         }).join("");
 
         document.getElementById("wEyebrow").textContent = w.eyebrow || "Who we are";
@@ -144,9 +212,8 @@
         }).join("");
 
         document.getElementById("impact").innerHTML = (o.impact || []).map(function (i) {
-          return '<div class="card center"><div class="ico">' + esc(i.icon || "") + "</div>" +
-            '<h3 style="color:var(--green-d)">' + esc(i.n) + "</h3>" +
-            "<p>" + esc(i.l) + "</p></div>";
+          return '<div class="h-imp"><div class="ico">' + esc(i.icon || "") + "</div>" +
+            "<b>" + esc(i.n) + "</b><span>" + esc(i.l) + "</span></div>";
         }).join("");
 
         CKB_reveals();

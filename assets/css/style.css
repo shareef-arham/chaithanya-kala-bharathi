@@ -408,3 +408,11 @@ a.doc-card{text-decoration:none;color:inherit;display:block}
   .people{grid-template-columns:1fr}
   .prof-grid{grid-template-columns:1fr}
 }
+
+/* gallery pages: Previous · 1 2 3 · Next */
+.pager{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.45rem;margin:2.4rem 0 .5rem}
+.pager .pg{min-width:2.6rem;height:2.6rem;padding:0 .8rem;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;
+  background:#fff;border:1px solid var(--line);color:var(--green-d);font-weight:650;font-size:.92rem;text-decoration:none;transition:.15s var(--ease)}
+.pager a.pg[href]:hover{border-color:var(--green);background:var(--leaf)}
+.pager .pg[aria-current="page"]{background:var(--green);border-color:var(--green);color:#fff}
+.pager .pg.off{opacity:.4;pointer-events:none}

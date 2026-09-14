@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=14" />
+  <link rel="stylesheet" href="assets/css/style.css?v=15" />
 </head>
 <body data-page="gallery">
   <div id="site-header"></div>
@@ -28,6 +28,7 @@
       <div class="wrap">
         <div id="film" data-reveal></div>
         <div class="video-grid" id="moments" data-reveal></div>
+        <nav class="pager" id="pager" aria-label="Gallery pages" hidden></nav>
         <p class="lede center" id="momentsEmpty" style="margin:1.6rem auto 0;display:none">
           Nothing added yet. Films and reports can be added from the admin panel, under <b>Gallery</b>.
         </p>
@@ -87,7 +88,14 @@
          on every entry — most of the older ones have none. */
       var moments = (d.moments || []).slice();
 
-      document.getElementById("moments").innerHTML = moments.map(function (m) {
+      /* Twelve to a page. The page number lives in the address (#page=2), so
+         Back, Forward and a shared link all land on the same page. */
+      var PER_PAGE = 12;
+      var pages = Math.max(1, Math.ceil(moments.length / PER_PAGE));
+      var grid = document.getElementById("moments"), pager = document.getElementById("pager");
+      var filmBox = document.getElementById("film"), filmHTML = filmBox.innerHTML;
+
+      function card(m) {
         var vids = m.videos || [];
         var v0 = vids[0] || "";
         var actions = vids.map(function (v, i) {
@@ -113,11 +121,37 @@
             "<small>" + esc(m.blurb || "") + "</small>" +
             '<div class="mini-actions">' + actions + "</div>" +
           "</div></div>";
-      }).join("");
+      }
+
+      function currentPage() {
+        var m = /page=(\d+)/.exec(location.hash);
+        return Math.min(pages, Math.max(1, m ? +m[1] : 1));
+      }
+      function pagerHTML(n) {
+        if (pages < 2) return "";
+        var btn = function (p, label, cls, aria) {
+          var off = p < 1 || p > pages;
+          return '<a class="pg' + (cls ? " " + cls : "") + (off ? " off" : "") + '"' + (off ? ' aria-disabled="true"' : ' href="#page=' + p + '"') +
+            (aria ? ' aria-label="' + aria + '"' : "") + (p === n && !cls ? ' aria-current="page"' : "") + ">" + label + "</a>";
+        };
+        var out = btn(n - 1, "&lsaquo; Previous", "step", "Previous page");
+        for (var p = 1; p <= pages; p++) out += btn(p, String(p), "", "Page " + p);
+        return out + btn(n + 1, "Next &rsaquo;", "step", "Next page");
+      }
+      function show(scroll) {
+        var n = currentPage();
+        filmBox.innerHTML = n === 1 ? filmHTML : "";
+        grid.innerHTML = moments.slice((n - 1) * PER_PAGE, n * PER_PAGE).map(card).join("");
+        pager.innerHTML = pagerHTML(n);
+        pager.hidden = pages < 2;
+        if (window.CKB_renderCovers) window.CKB_renderCovers("#moments");
+        if (scroll) (n === 1 ? filmBox : grid).scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      window.addEventListener("hashchange", function () { show(true); });
+      show(false);
 
       document.getElementById("momentsEmpty").style.display = moments.length ? "none" : "";
       CKB_reveals();
-      if (window.CKB_renderCovers) window.CKB_renderCovers("#moments");
     });
   })();
   </script>

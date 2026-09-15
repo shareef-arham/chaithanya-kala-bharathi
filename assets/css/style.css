@@ -430,9 +430,9 @@ a.doc-card{text-decoration:none;color:inherit;display:block}
 .h-badge{display:inline-flex;align-items:center;gap:.55rem;padding:.4rem .9rem .4rem .6rem;border-radius:999px;
   background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);font-size:.78rem;font-weight:650;color:var(--green-d)}
 .h-badge::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px rgba(233,160,32,.2)}
-.h-title{font-family:'Playfair Display',Georgia,serif;font-weight:900;letter-spacing:-.02em;line-height:.98;
-  font-size:clamp(2.6rem,6vw,4.9rem);color:var(--ink);margin:1.1rem 0 .5rem}
-.h-title em{display:block;font-style:italic;font-weight:800;color:var(--green)}
+.h-title{font-family:'Playfair Display',Georgia,serif;font-weight:900;letter-spacing:0;line-height:1.02;text-transform:uppercase;
+  font-size:clamp(2rem,4.3vw,3.6rem);color:var(--ink);margin:1.1rem 0 .5rem}
+.h-title em{display:block;font-style:normal;font-weight:900;color:var(--green)}
 .h-tag{font-size:.82rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--amber-d);display:flex;align-items:center;gap:.7rem}
 .h-tag::before{content:"";width:2.2rem;height:2px;background:linear-gradient(90deg,var(--green),var(--amber));border-radius:2px}
 .h-lede{font-size:clamp(1.02rem,1.5vw,1.14rem);color:var(--ink-soft);line-height:1.7}

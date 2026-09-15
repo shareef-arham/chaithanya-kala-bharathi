@@ -64,7 +64,7 @@
             <p class="lede" id="wBody2" style="margin-top:.8rem"></p>
             <ul class="points" id="wPoints"></ul>
           </div>
-          <img id="wImg" src="uploads/programs-community.jpg" alt="Community and women's welfare work" />
+          <img id="wImg" alt="Community and women's welfare work" />
         </div>
       </div>
     </section>
@@ -191,7 +191,7 @@
         document.getElementById("wTitle").textContent = w.title || "";
         document.getElementById("wBody").textContent = w.body || "";
         document.getElementById("wBody2").textContent = w.body2 || "";
-        if (w.image) document.getElementById("wImg").src = w.image;
+        document.getElementById("wImg").src = w.image || "uploads/programs-community.jpg";
         document.getElementById("wPoints").innerHTML = (w.points || []).map(function (x) {
           return "<li>" + esc(x) + "</li>";
         }).join("");

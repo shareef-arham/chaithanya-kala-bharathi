@@ -10,10 +10,10 @@
      those pages, so the two can never drift apart. */
   var ABOUT_PAGES = [
     { href: "about.html",      label: "Who We Are" },
+    { href: "legal.html",      label: "Legal Status" },
     { href: "vision.html",     label: "Vision & Mission" },
     { href: "board.html",      label: "Board Members" },
     { href: "profile.html",    label: "Organisation Profile" },
-    { href: "legal.html",      label: "Legal Status" },
     { href: "supporters.html", label: "Our Supporters" }
   ];
 

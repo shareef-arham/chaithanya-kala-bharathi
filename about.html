@@ -28,7 +28,7 @@
     <section id="story" style="padding-top:1.4rem">
       <div class="wrap">
         <div class="split" data-reveal>
-          <img id="aImg" src="uploads/about-team.jpg" alt="The CKB team in the field" />
+          <img id="aImg" alt="The CKB team in the field" />
           <div>
             <span class="eyebrow">Who we are</span>
             <h2 id="aTitle"></h2>
@@ -64,7 +64,7 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/site.js?v=11"></script>
+  <script src="assets/js/site.js?v=12"></script>
   <script>
   (function () {
     var esc = window.CKB_esc;
@@ -90,7 +90,7 @@
         var h = r[0] || {}, pg = r[1] || {};
         var w = h.whoWeAre || {};
 
-        if (pg.about && pg.about.image) document.getElementById("aImg").src = pg.about.image;
+        document.getElementById("aImg").src = (pg.about && pg.about.image) || "uploads/about-team.jpg";
         document.getElementById("aLede").textContent = (h.hero && h.hero.lede) || "";
         document.getElementById("aTitle").textContent = w.title || "Who we are";
         document.getElementById("aBody").textContent = w.body || "";

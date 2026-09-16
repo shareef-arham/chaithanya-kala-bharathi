@@ -192,6 +192,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     <div class="saverow"><button class="btn btn-primary btn-sm" onclick="savePrograms()">Save Programs</button><span class="msg" id="msg-programs"></span></div>
     <div class="field"><label>Intro paragraph</label><textarea id="p_intro"></textarea></div>
     <h3>Interventions</h3><div id="p_items"></div>
+    <h3>Reports under each intervention</h3>
+    <p class="hint">These are the reports listed under each card on the Programs page. Edit a title, add a report with the <b>Upload…</b> button beside its filename box, or delete one. A newly added intervention appears here after you save and reload.</p>
+    <div id="p_reports"></div>
   </div>
 
   <!-- LEGAL -->
@@ -520,6 +523,18 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
       {key:"icon",label:"Icon (emoji)"},{key:"title",label:"Title"},{key:"sub",label:"Sub-line"},
       {key:"desc",label:"Description",type:"textarea"},{key:"file",label:"Report PDF filename"}
     ],"Intervention");
+    /* One small table per intervention for the reports listed under it. */
+    var host=document.getElementById("p_reports");
+    host.innerHTML=p.items.map(function(it,i){
+      return '<h4 style="margin:.9rem 0 .3rem">'+esc(it.title||("Intervention "+(i+1)))+"</h4>"+
+        '<div id="p_reps_'+i+'"></div>';
+    }).join("");
+    p.items.forEach(function(it,i){
+      it.reports=it.reports||[];
+      editor("p_reps_"+i,it.reports,[
+        {key:"title",label:"Title"},{key:"when",label:"Supporter / date"},{key:"file",label:"Report PDF filename"}
+      ],"Report");
+    });
   }
   window.savePrograms=function(){ var p=D.programs; p.intro=val("p_intro"); save("programs.json",p,"msg-programs"); };
 

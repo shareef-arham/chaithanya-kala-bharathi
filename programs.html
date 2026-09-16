@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=22" />
+  <link rel="stylesheet" href="assets/css/style.css?v=23" />
 </head>
 <body data-page="programs">
   <div id="site-header"></div>
@@ -72,8 +72,10 @@
               ? '<div class="prog-reports"><h4>Reports under this programme</h4>' +
                 i.reports.map(function (r) {
                   return '<span class="rep" role="button" tabindex="0" data-doc="' + esc(r.file) +
-                    '" data-title="' + esc(r.title) + '"><b>' + esc(r.title) + "</b>" +
-                    (r.when ? "<small>" + esc(r.when) + "</small>" : "") + "</span>";
+                    '" data-title="' + esc(r.title) + '">' +
+                    '<span class="pdf-cover" data-cover="' + esc(r.file) + '"><canvas></canvas></span>' +
+                    '<span class="rep-tx"><b>' + esc(r.title) + "</b>" +
+                    (r.when ? "<small>" + esc(r.when) + "</small>" : "") + "</span></span>";
                 }).join("") + "</div>"
               : "") +
           "</div></div>";

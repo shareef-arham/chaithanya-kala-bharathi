@@ -306,6 +306,17 @@ h2{font-size:clamp(1.6rem,3.4vw,2.4rem)}
   box-shadow:0 10px 26px -10px rgba(31,92,57,.5)}
 .video-thumb.no-video .pdf-cover .fb{font-size:2rem}
 @media(max-width:560px){.card.prog{flex-direction:column}.card.prog .pdf-cover{width:96px;height:126px}}
+.prog-reports{margin-top:1rem;border-top:1px solid var(--line);padding-top:.85rem}
+.prog-reports h4{margin:0 0 .55rem;font-size:.72rem;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--green-d)}
+.prog-reports .rep{display:block;padding:.5rem .7rem;border:1px solid var(--line);border-radius:10px;
+  background:#fff;margin-bottom:.45rem;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s}
+.prog-reports .rep:hover,.prog-reports .rep:focus-visible{border-color:var(--green);transform:translateX(3px);
+  box-shadow:var(--shadow)}
+.prog-reports .rep b{display:block;font-size:.88rem;font-weight:650;color:var(--ink)}
+.prog-reports .rep small{display:block;margin-top:.12rem;font-size:.76rem;color:var(--ink-soft)}
+.prog-reports .rep::after{content:"Open the report \2192 ";display:block;margin-top:.3rem;
+  font-size:.74rem;font-weight:650;color:var(--green)}
 
 /* ---------- Admin: model card ---------- */
 .model{display:grid;grid-template-columns:200px 1fr;gap:1.2rem;align-items:start;

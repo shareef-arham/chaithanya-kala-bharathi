@@ -1,33 +1,106 @@
 {
-  "intro": "CKB works across four core interventions in Kurnool and Nandyal districts. Each has a published report, opened directly on the page.",
-  "items": [
+ "intro": "CKB works across four core interventions in Kurnool and Nandyal districts. Each has a published report, opened directly on the page.",
+ "items": [
+  {
+   "icon": "🏫",
+   "title": "School & Education",
+   "sub": "Badi Bata — \"Back to School\" and child rights",
+   "desc": "Enrolment drives that bring out-of-school children back into classrooms, supported by child-rights awareness in villages and follow-up with families and teachers.",
+   "file": "SchoolEducation.pdf",
+   "reports": [
     {
-      "icon": "🏫",
-      "title": "School & Education",
-      "sub": "Badi Bata — \"Back to School\" and child rights",
-      "desc": "Enrolment drives that bring out-of-school children back into classrooms, supported by child-rights awareness in villages and follow-up with families and teachers.",
-      "file": "SchoolEducation.pdf"
+     "file": "LITTLE-DROPS-REPORT.pdf",
+     "title": "Study material and nutrition kits for 39 students",
+     "when": "Little Drops Charity Trust, UK"
     },
     {
-      "icon": "🤝",
-      "title": "Community Welfare",
-      "sub": "Tribal communities, Dalits and people with disabilities",
-      "desc": "Support for the most marginalised households in the operational area, including access to entitlements, awareness and community organisation.",
-      "file": "CommunityWelfare.pdf"
+     "file": "HEAT-report.pdf",
+     "title": "Support for 41 students living with HIV",
+     "when": "H.E.A.T. Foundation, UK"
     },
     {
-      "icon": "🩺",
-      "title": "Health & Nutrition",
-      "sub": "Mother and child health, immunisation, fluorosis care",
-      "desc": "Nutrition and immunisation support for mothers and infants, safe-delivery awareness, and dental, eye and general health check-up camps.",
-      "file": "HealthNutrition.pdf"
+     "file": "CKB-SICEWT.pdf",
+     "title": "Nutrition kits, study material and sanitary napkins",
+     "when": "SICEWT, UK · Anantapur"
     },
     {
-      "icon": "🌾",
-      "title": "Economic Empowerment",
-      "sub": "Livelihoods, farmer collectives and skills",
-      "desc": "Livelihood support for marginalised families — skills, collective formation and market linkage for smallholder farmers.",
-      "file": "EconomicEmpowerment.pdf"
+     "file": "UK-BICYCLES-REPORT.pdf",
+     "title": "Bicycles for 37 students",
+     "when": "Little Drops Charity Trust, UK"
+    },
+    {
+     "file": "INFRA.pdf",
+     "title": "Furniture for a flood-hit school at Mandapalli",
+     "when": "SOS Enfants Abandonnés, Belgium"
+    },
+    {
+     "file": "EDU-CYCLES-REPORT.pdf",
+     "title": "Study material and bicycles for girl-child education",
+     "when": "SOS Enfants Abandonnés, Belgium"
     }
-  ]
+   ]
+  },
+  {
+   "icon": "🤝",
+   "title": "Community Welfare",
+   "sub": "Tribal communities, Dalits and people with disabilities",
+   "desc": "Support for the most marginalised households in the operational area, including access to entitlements, awareness and community organisation.",
+   "file": "CommunityWelfare.pdf",
+   "reports": [
+    {
+     "file": "SAMADASANI-SUPPLY.pdf",
+     "title": "Food packages for 45 Chenchu families",
+     "when": "Samadasani Foundation"
+    },
+    {
+     "file": "KIREA-REPORT.pdf",
+     "title": "A borewell and handpump for Nayani Cheruvu Chenchu Gudem",
+     "when": "KIREA"
+    },
+    {
+     "file": "GLOBAL-REPORT.pdf",
+     "title": "A borewell for Memallakunta Chenchu Gudem",
+     "when": "Global Compassion Inc., USA"
+    },
+    {
+     "file": "SAMADASANI-report.pdf",
+     "title": "Food kits for sanitation workers and volunteers",
+     "when": "Shamdasani Foundation, Hong Kong · August 2023"
+    }
+   ]
+  },
+  {
+   "icon": "🩺",
+   "title": "Health & Nutrition",
+   "sub": "Mother and child health, immunisation, fluorosis care",
+   "desc": "Nutrition and immunisation support for mothers and infants, safe-delivery awareness, and dental, eye and general health check-up camps.",
+   "file": "HealthNutrition.pdf",
+   "reports": [
+    {
+     "file": "SAMADASANI-report.pdf",
+     "title": "Food kits for sanitation workers and volunteers",
+     "when": "Shamdasani Foundation, Hong Kong · August 2023"
+    },
+    {
+     "file": "SAMADASANI-SUPPLY.pdf",
+     "title": "Food packages for 45 Chenchu families",
+     "when": "Samadasani Foundation"
+    }
+   ]
+  },
+  {
+   "icon": "🌾",
+   "title": "Economic Empowerment",
+   "sub": "Livelihoods, farmer collectives and skills",
+   "desc": "Livelihood support for marginalised families — skills, collective formation and market linkage for smallholder farmers.",
+   "file": "EconomicEmpowerment.pdf",
+   "reports": [
+    {
+     "file": "BASKET-MAKING.pdf",
+     "title": "A revolving fund for tribal basket makers",
+     "when": "The Strathspey Charitable Trust, UK"
+    }
+   ]
+  }
+ ]
 }

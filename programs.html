@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=20" />
+  <link rel="stylesheet" href="assets/css/style.css?v=22" />
 </head>
 <body data-page="programs">
   <div id="site-header"></div>
@@ -66,6 +66,16 @@
             '<div class="sub">' + esc(i.sub || "") + "</div>" +
             "<p>" + esc(i.desc || "") + "</p>" +
             (i.file ? '<span class="open">Read the report &rarr;</span>' : "") +
+            /* The reports named inside that programme's own PDF, each one
+               opening on its own rather than only through the main report. */
+            ((i.reports || []).length
+              ? '<div class="prog-reports"><h4>Reports under this programme</h4>' +
+                i.reports.map(function (r) {
+                  return '<span class="rep" role="button" tabindex="0" data-doc="' + esc(r.file) +
+                    '" data-title="' + esc(r.title) + '"><b>' + esc(r.title) + "</b>" +
+                    (r.when ? "<small>" + esc(r.when) + "</small>" : "") + "</span>";
+                }).join("") + "</div>"
+              : "") +
           "</div></div>";
       }).join("");
       CKB_reveals();

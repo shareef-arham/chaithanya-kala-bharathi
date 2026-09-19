@@ -11,3 +11,9 @@ node_modules/
 server.py
 start.bat
 *.bak
+
+# Local-only secrets and the password reset tool - never uploaded
+.env
+.env*.local
+scripts/set-password.js
+SET ADMIN PASSWORD.bat

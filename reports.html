@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=23" />
+  <link rel="stylesheet" href="assets/css/style.css?v=27" />
 </head>
 <body data-page="reports">
   <div id="site-header"></div>
@@ -24,26 +24,32 @@
       </div>
     </section>
 
-    <section style="padding-top:1rem">
+    <section style="padding-top:.6rem">
       <div class="wrap">
-        <div class="stats" id="repStats" style="margin-top:0"></div>
+        <div class="rep-strip" id="repStats" data-reveal></div>
 
-        <!-- Annual Reports paired with their Audited Statements, by year -->
-        <div class="rtl" id="rtl" data-reveal><div class="rtl-spine"></div></div>
+        <!-- 1. the latest year, in the spotlight -->
+        <div id="repSpot" data-reveal></div>
+
+        <!-- 2. every year as a volume on the shelf -->
+        <div class="rep-head" data-reveal>
+          <div><span class="eyebrow">The archive</span><h2>Every year, <em style="color:var(--green)">on the record</em></h2></div>
+          <small id="repCount"></small>
+        </div>
+        <div class="rep-shelf" id="repShelf" data-reveal></div>
         <p class="lede center" id="rtlEmpty" style="margin:1.6rem auto 0;display:none">
           No annual reports have been added yet. They can be uploaded from the
           admin panel, under <b>Reports</b>.
         </p>
 
-        <div id="mediaRow" class="center" style="margin:2.4rem auto 0;max-width:460px" data-reveal></div>
-
+        <div id="mediaRow" class="center" style="margin:3rem auto 0;max-width:460px" data-reveal></div>
       </div>
     </section>
   </main>
 
   <div id="site-footer"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script src="assets/js/site.js?v=12"></script>
+  <script src="assets/js/site.js?v=13"></script>
   <script>
   (function () {
     var esc = window.CKB_esc;
@@ -55,39 +61,59 @@
 
         document.getElementById("gIntro").textContent = g.intro || "";
 
+        /* pair each annual report with the audited statement for its year;
+           a year that has only a statement still gets its volume */
+        var byYear = {}, years = [];
+        function slot(y) { if (!byYear[y]) { byYear[y] = {}; years.push(y); } return byYear[y]; }
+        ars.forEach(function (a) { if (a && a.year) slot(a.year).ar = a; });
+        auds.forEach(function (a) { if (a && a.year) slot(a.year).au = a; });
+        years.sort(function (a, b) { return a < b ? 1 : a > b ? -1 : 0; });   /* newest first */
+
+        var first = years.length ? years[years.length - 1] : "";
         document.getElementById("repStats").innerHTML =
-          '<div class="stat"><div class="n">' + ars.length + '</div><div class="l">Years documented</div></div>' +
-          '<div class="stat"><div class="n">' + (ars.length + auds.length) + '</div><div class="l">Public documents</div></div>' +
-          '<div class="stat"><div class="n">1992</div><div class="l">Registered since</div></div>' +
-          '<div class="stat"><div class="n">80G</div><div class="l">Tax-deductible</div></div>';
+          "<div><b>" + years.length + "</b><span>Years published</span></div>" +
+          "<div><b>" + (ars.length + auds.length) + "</b><span>Public documents</span></div>" +
+          "<div><b>" + esc(String(first).split("-")[0] || "1992") + "</b><span>Archive since</span></div>" +
+          "<div><b>80G</b><span>Tax-deductible gifts</span></div>";
 
-        /* pair each annual report with the audited statement for its year */
-        var byYear = {};
-        auds.forEach(function (a) { byYear[a.year] = a; });
-
-        function card(x, side, verb, glyph) {
-          if (!x || !x.file) return "<div></div>";
-          return '<div class="rtl-card ' + side + '" role="button" tabindex="0" data-doc="' + esc(x.file) +
-            '" data-title="' + esc(x.title) + '" data-sub="' + esc(x.sub || "") + '">' +
-            (side === "left" && x.latest ? '<span class="rtl-badge">Latest</span>' : "") +
-            '<span class="pdf-cover" data-cover="' + esc(x.file) + '"><span class="fb">' + glyph +
-            "</span><canvas></canvas></span>" +
-            '<span class="tx"><b>' + esc(x.title) + "</b><small>" + esc(x.sub || "") + "</small>" +
-            '<span class="open">' + verb + " &rarr;</span></span></div>";
+        function yr(y) { return esc(String(y || "").replace("-", "\u2013")); }
+        function cover(x, glyph) {
+          if (!x || !x.file) return "";
+          return '<span class="pdf-cover" role="button" tabindex="0" data-doc="' + esc(x.file) + '" data-title="' + esc(x.title) +
+            '" data-sub="' + esc(x.sub || "") + '" title="' + esc(x.title) + '" data-cover="' + esc(x.file) + '"><span class="fb">' +
+            glyph + "</span><canvas></canvas></span>";
+        }
+        function link(x, label) {
+          return x && x.file
+            ? '<span class="vol-link" role="button" tabindex="0" data-doc="' + esc(x.file) + '" data-title="' + esc(x.title) +
+              '" data-sub="' + esc(x.sub || "") + '">' + label + " <i>&rarr;</i></span>"
+            : '<span class="vol-link na">' + label + " \u2014 not yet published</span>";
         }
 
-        var rows = ars.map(function (ar) {
-          var au = byYear[ar.year];
-          var yr = esc(String(ar.year || "").replace("-", "–"));
-          return '<div class="rtl-row">' +
-            card(ar, "left", "Open report", "📘") +
-            '<div class="rtl-node' + (ar.latest ? " is-latest" : "") + '">' + yr + "</div>" +
-            card(au, "right", "Open statement", "🧮") +
-            "</div>";
-        }).join("");
+        /* the spotlight: the year marked Latest in admin, else the newest */
+        var latestYear = (ars.filter(function (a) { return a.latest; })[0] || {}).year || years[0];
+        var L = byYear[latestYear] || {};
+        document.getElementById("repSpot").innerHTML = latestYear
+          ? '<div class="rep-spot"><div class="rep-spot-covers">' + cover(L.ar, "📘") + cover(L.au, "🧮") + "</div>" +
+            '<div><span class="eyebrow">Latest publication</span>' +
+            '<h2>The year <span class="yr">' + yr(latestYear) + "</span></h2>" +
+            "<p>" + esc((L.ar && L.ar.sub) || "Programmes, reach and activities") +
+            (L.au ? ", with the independently audited statement of accounts for the same year." : ".") + "</p>" +
+            '<div class="rep-spot-acts">' +
+              (L.ar ? '<span class="btn btn-green" role="button" tabindex="0" data-doc="' + esc(L.ar.file) + '" data-title="' + esc(L.ar.title) + '">Read the annual report</span>' : "") +
+              (L.au ? '<span class="btn btn-ghost" role="button" tabindex="0" data-doc="' + esc(L.au.file) + '" data-title="' + esc(L.au.title) + '">Audited statement</span>' : "") +
+            "</div></div></div>"
+          : "";
 
-        document.getElementById("rtl").innerHTML = '<div class="rtl-spine"></div>' + rows;
-        document.getElementById("rtlEmpty").style.display = ars.length ? "none" : "";
+        /* the shelf: every year, newest first */
+        document.getElementById("repShelf").innerHTML = years.map(function (y) {
+          var e = byYear[y];
+          return '<article class="vol"><div class="vol-covers">' + cover(e.ar, "📘") + cover(e.au, "🧮") + "</div>" +
+            '<div class="vol-year">' + yr(y) + "<small>" + (y === latestYear ? "Latest" : "Financial year") + "</small></div>" +
+            '<div class="vol-links">' + link(e.ar, "Annual report") + link(e.au, "Audited statement") + "</div></article>";
+        }).join("");
+        document.getElementById("repCount").textContent = years.length ? years.length + " years \u00b7 newest first" : "";
+        document.getElementById("rtlEmpty").style.display = years.length ? "none" : "";
 
         var m = g.media || {};
         document.getElementById("mediaRow").innerHTML = m.file

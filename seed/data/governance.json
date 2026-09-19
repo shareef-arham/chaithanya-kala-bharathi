@@ -1,5 +1,5 @@
 {
-  "intro": "Our Annual Reports and independently audited statements of accounts, opened right here on the page. Each year holds its report on the left and its audited statement on the right.",
+  "intro": "Our Annual Reports and independently audited statements of accounts, opened right here on the page. The latest year is shown first; every earlier year is kept below, each with its report and its audited statement.",
   "annualReports": [
     {
       "year": "2025-26",
@@ -79,7 +79,39 @@
       "sub": "Independently audited accounts",
       "file": "AUDIT-2022-23.pdf",
       "latest": false
+    },
+    {
+      "year": "2021-22",
+      "title": "Audited Statement 2021-22",
+      "sub": "Independently audited accounts",
+      "file": "CKB-AUDIT-2021-22.pdf",
+      "latest": false
+    },
+    {
+      "year": "2020-21",
+      "title": "Audited statements 2020-21",
+      "sub": "Independently audited accounts",
+      "file": "CKB-AUDIT-2020-21.pdf",
+      "latest": false
+    },
+    {
+      "year": "2019-20",
+      "title": "Audited statements 2019-20",
+      "sub": "Independently audited accounts",
+      "file": "CKB-AUDIT-2019-20.pdf",
+      "latest": false
+    },
+    {
+      "year": "2018-19",
+      "title": "Audited Statements 2018-19",
+      "sub": "Independently audited accounts",
+      "file": "CKB-AUDIT-2018-19.pdf",
+      "latest": false
     }
   ],
-  "media": {}
+  "media": {
+    "file": "",
+    "title": "",
+    "sub": ""
+  }
 }

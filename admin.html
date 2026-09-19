@@ -156,6 +156,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     <p class="hint">The three About Us pages that are built from lists: <b>Board Members</b>, <b>Organisation Profile</b> and <b>Our Supporters</b>. Each also keeps a link to its original PDF.</p>
     <div class="saverow"><button class="btn btn-primary btn-sm" onclick="saveAbout()">Save all three</button><span class="msg" id="msg-about"></span></div>
 
+    <h3>About Us page photo</h3>
+    <p class="hint">The picture beside "Who we are" on the About Us page. Press <b>Upload…</b> to choose one, or <b>Remove</b> to show the page without a picture. Then press <b>Save all three</b>.</p>
+    <div class="field"><label>Photo</label><input id="ab_photo" /></div>
+
     <h3>Board Members</h3>
     <div class="field"><label>Intro line</label><textarea id="ab_b_intro" rows="2"></textarea></div>
     <div id="ab_board"></div>
@@ -491,6 +495,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     setv("f_eyebrow",h.focus.eyebrow); setv("f_title",h.focus.title); setv("f_lede",h.focus.lede);
     wireInlineUpload(document.getElementById("h_image"),{prefix:"uploads/"});
     wireInlineUpload(document.getElementById("w_image"),{prefix:"uploads/"});
+    addRemove("w_image");
   }
   window.saveHome=function(){
     var h=D.home;
@@ -580,9 +585,32 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
       {key:"name",label:"Organisation"},{key:"place",label:"Country / place"}],"Supporter");
 
     wireInlineUpload(document.getElementById("ab_p_pdf"));
+    D.pages.about=D.pages.about||{};
+    setv("ab_photo",D.pages.about.image);
+    wireInlineUpload(document.getElementById("ab_photo"),{prefix:"uploads/"});
+    addRemove("ab_photo");
+    twin("ab_photo","ph_about");
+  }
+  /* a "Remove" button beside a photo box: empties it, so the page shows no picture */
+  function addRemove(id){
+    var el=document.getElementById(id); if(!el||el._rm) return; el._rm=true;
+    var b=document.createElement("button"); b.type="button"; b.className="btn btn-outline btn-sm"; b.textContent="Remove";
+    b.addEventListener("click",function(){ el.value=""; el.dispatchEvent(new Event("input")); });
+    var host=el.nextElementSibling && el.nextElementSibling.querySelector && el.nextElementSibling.querySelector("button")
+      ? el.nextElementSibling : el.parentNode;
+    host.appendChild(b);
+  }
+  /* the same photo is offered on two tabs; keep both boxes showing the same value */
+  function twin(a,b){
+    var x=document.getElementById(a), y=document.getElementById(b); if(!x||!y) return;
+    x.addEventListener("input",function(){ y.value=x.value; });
+    y.addEventListener("input",function(){ x.value=y.value; });
   }
   window.saveAbout=function(){
     var a=D.about;
+    /* the About Us photo lives with the other page photos (pages.json) */
+    D.pages.about={image:val("ab_photo")};
+    saveP("pages.json",D.pages);
     a.board.intro=val("ab_b_intro"); delete a.board.pdf;
     a.profile.intro=val("ab_p_intro"); a.profile.pdf=val("ab_p_pdf");
     a.profile.values=lines(val("ab_p_values"));
@@ -718,6 +746,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     ["ph_hero","ph_who","ph_about","ph_donate","ph_involved","ph_logo"].forEach(function(id){
       wireInlineUpload(document.getElementById(id),{prefix:"uploads/"});
     });
+    ["ph_who","ph_about","ph_donate","ph_involved"].forEach(addRemove);
+    twin("ph_who","w_image");
   }
   window.savePhotos=function(){
     var h=D.home; h.hero.image=val("ph_hero"); h.hero.videoId=val("ph_vid"); h.whoWeAre.image=val("ph_who");

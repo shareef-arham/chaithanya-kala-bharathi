@@ -492,3 +492,256 @@ a.doc-card{text-decoration:none;color:inherit;display:block}
 .h-film-cover.tap{cursor:pointer}
 .h-film-cover.tap .h-spin{display:none}
 .h-film-cover.tap .h-play{display:inline-flex}
+
+/* ===========================================================================
+   EDITORIAL THEME (September 2026)
+   The same pages, set to a richer standard: deep forest green and a warm
+   gold taken from the logo, ivory paper, large serif headings (Playfair
+   Display) over a quiet sans (Inter), hairline rules instead of heavy
+   boxes, and more air. Everything below overrides the rules above it, so
+   the page markup and the admin panel are unchanged.
+   =========================================================================== */
+:root{
+  --green:#1f6b45; --green-d:#0f3d28; --green-l:#4f9a6e; --green-xd:#0a2b1c;
+  --gold:#b98a2f; --gold-l:#d9b566; --gold-50:#f7efdc;
+  --amber:#c9982f; --amber-d:#a67a1f;
+  --leaf:#e9f0e8; --mint:#f6f8f3; --paper:#fbfaf5;
+  --ink:#15241b; --ink-soft:#4c5f53; --ink-3:#7b8c80;
+  --line:rgba(15,61,40,.12); --line-2:rgba(15,61,40,.2);
+  --shadow:0 1px 2px rgba(15,61,40,.05),0 6px 18px -8px rgba(15,61,40,.14);
+  --shadow-lg:0 2px 4px rgba(15,61,40,.05),0 24px 48px -20px rgba(15,61,40,.28);
+  --radius:10px; --wrap:1180px;
+  --serif:'Playfair Display',Georgia,'Times New Roman',serif;
+  --sans:'Inter',system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.7}
+/* a far quieter ground: ivory, with one soft green light at the top */
+body::before{background:
+  radial-gradient(70% 40% at 85% -10%,rgba(31,107,69,.10),transparent 65%),
+  radial-gradient(50% 30% at 0% 0%,rgba(185,138,47,.07),transparent 60%),
+  var(--paper)}
+section{padding:clamp(3.6rem,7vw,5.6rem) 0}
+.wrap{padding:0 clamp(1.1rem,3vw,1.6rem)}
+::selection{background:var(--green-d);color:#fff}
+
+/* ---------- type ---------- */
+h1,h2,h3{font-family:var(--serif);font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+h4{font-family:var(--sans);font-weight:700}
+h1{font-size:clamp(2.3rem,5.4vw,3.9rem);line-height:1.06}
+h2{font-size:clamp(1.8rem,3.6vw,2.7rem);line-height:1.12}
+h3{font-size:1.28rem;line-height:1.25}
+.lede{font-size:clamp(1.02rem,1.4vw,1.12rem);line-height:1.75;color:var(--ink-soft)}
+/* the eyebrow loses its pill and becomes a gold-ruled small-caps label */
+.eyebrow{background:none;padding:0;border-radius:0;color:var(--gold);font-size:.74rem;font-weight:700;
+  letter-spacing:.22em;display:inline-flex;align-items:center;gap:.7rem;margin-bottom:1rem}
+.eyebrow::before{content:"";width:2rem;height:1px;background:currentColor}
+.center .eyebrow,.eyebrow.center{justify-content:center}
+.center .eyebrow::after{content:"";width:2rem;height:1px;background:currentColor}
+.home .h-section{font-family:var(--serif);font-weight:700;font-size:clamp(1.9rem,3.8vw,2.9rem)}
+
+/* ---------- buttons: squarer, quieter, gold for giving ---------- */
+.btn{border-radius:6px;padding:.8rem 1.55rem;font-weight:600;font-size:.9rem;letter-spacing:.02em}
+.btn-green{background:var(--green-d);color:#fff}
+.btn-green:hover{background:var(--green);filter:none}
+.btn-sun{background:var(--gold);color:#fff;box-shadow:0 8px 20px -10px rgba(185,138,47,.9)}
+.btn-sun:hover{background:var(--amber-d);filter:none}
+.btn-ghost{background:transparent;border-color:var(--line-2);color:var(--green-d)}
+.btn-ghost:hover{border-color:var(--green-d);color:var(--green-d);background:#fff}
+
+/* ---------- header ---------- */
+.nav{background:rgba(251,250,245,.9);border-bottom:1px solid var(--line);backdrop-filter:saturate(1.4) blur(12px)}
+.nav::before{content:"";display:block;height:3px;background:linear-gradient(90deg,var(--green-d),var(--green),var(--gold))}
+.nav-inner{padding:.75rem clamp(1.1rem,3vw,1.6rem);gap:1.4rem}
+.brand{gap:.8rem}
+.brand-mark{width:48px;height:48px;border-radius:50%;box-shadow:0 0 0 1px var(--line);background:#fff !important}
+.brand b{font-family:var(--serif);font-size:1.12rem;font-weight:700;color:var(--green-d);letter-spacing:.005em}
+.brand small{font-size:.66rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.nav-links{gap:.35rem}
+.nav-links a:not(.btn){position:relative;background:none !important;border-radius:0;padding:.5rem .7rem;font-size:.86rem;
+  font-weight:600;letter-spacing:.03em;color:var(--ink-soft)}
+.nav-links > a:not(.btn)::after,.has-sub > a::before{content:"";position:absolute;left:.7rem;right:.7rem;bottom:.25rem;
+  height:1.5px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
+.nav-links > a:not(.btn):hover::after,.nav-links > a.active::after,
+.has-sub:hover > a::before,.has-sub > a.active::before{transform:scaleX(1)}
+.nav-links a:not(.btn):hover,.nav-links a:not(.btn).active{color:var(--green-d)}
+.nav-links .btn{margin-left:.8rem !important;padding:.62rem 1.3rem;color:#fff}
+.nav-links .btn::after{display:none}
+.subnav{border-radius:10px;border-color:var(--line);padding:.6rem;min-width:250px;box-shadow:var(--shadow-lg)}
+.subnav a{padding:.55rem .8rem;border-radius:6px;font-size:.88rem;letter-spacing:0}
+.subnav a:hover{background:var(--leaf) !important;color:var(--green-d)}
+@media(max-width:980px){
+  .nav-links a:not(.btn){padding:.8rem .2rem;border-bottom:1px solid var(--line)}
+  .nav-links > a:not(.btn)::after,.has-sub > a::before{display:none}
+  .nav-links .btn{margin:1rem 0 .4rem !important;justify-content:center}
+  .subnav a{border-bottom:0}
+}
+
+/* ---------- inner page heroes ---------- */
+.page-hero{padding:clamp(3rem,7vw,5rem) 0 clamp(1.6rem,3vw,2.4rem);position:relative}
+.page-hero h1{max-width:20ch}
+.page-hero .lede{max-width:64ch}
+.page-hero .wrap::after{content:"";display:block;margin-top:clamp(1.8rem,3vw,2.6rem);height:1px;
+  background:linear-gradient(90deg,var(--gold),var(--line) 30%,transparent)}
+.crumbs{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:1.3rem}
+.crumbs a{color:var(--green);font-weight:600}
+
+/* ---------- cards: white, hairline, lifted only on hover ---------- */
+.card,.doc-card,.stat,.bank,.person,.sup-card,.vm-card,.video-card,.rtl-card{border-radius:var(--radius);
+  border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.card{padding:1.7rem}
+.card:hover,.doc-card:hover,.video-card:hover,.person:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--line-2)}
+.card h3{font-size:1.3rem;margin-bottom:.35rem}
+.card .sub{color:var(--gold);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.card .open,.doc-card .open{color:var(--green-d);font-weight:650;letter-spacing:.02em}
+.card .ico{font-size:1.7rem;width:3.2rem;height:3.2rem;border-radius:50%;display:grid;place-items:center;
+  background:var(--leaf);margin-bottom:1rem}
+.doc-card b{font-family:var(--serif);font-size:1.08rem;font-weight:700}
+.stat .n,.h-stat b,.h-imp b{font-family:var(--serif);color:var(--green-d);font-weight:700}
+.stat .l{letter-spacing:.04em}
+
+/* ---------- split panel photographs: framed like prints ---------- */
+.split img{border-radius:4px;border:0;box-shadow:0 0 0 1px var(--line),22px 22px 0 -2px var(--gold-50),var(--shadow-lg)}
+.points li::before{content:"";width:.5rem;height:.5rem;margin-top:.6rem;border-radius:50%;background:var(--gold)}
+
+/* ---------- call-to-action band ---------- */
+.band{border-radius:14px;padding:clamp(2.6rem,6vw,4rem) clamp(1.4rem,4vw,3rem);position:relative;overflow:hidden;
+  background:radial-gradient(120% 140% at 100% 0%,var(--green),var(--green-d) 55%,var(--green-xd))}
+.band::after{content:"";position:absolute;inset:14px;border:1px solid rgba(217,181,102,.35);border-radius:8px;pointer-events:none}
+.band h2{font-family:var(--serif)}
+.band p{font-size:1.05rem}
+
+/* ---------- footer ---------- */
+.foot{background:var(--green-xd);margin-top:0;padding:clamp(3rem,6vw,4.4rem) 0 1.6rem;position:relative}
+.foot::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-l),var(--gold))}
+.foot-grid{grid-template-columns:1.6fr 1fr 1fr;gap:3rem}
+.foot h4{font-family:var(--serif);font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:1rem}
+.foot h4 small{display:block;margin-top:.3rem;font-family:var(--sans);font-size:.66rem;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold-l)}
+.foot p,.foot li{color:rgba(255,255,255,.72);line-height:1.8}
+.foot a{color:rgba(255,255,255,.86)}
+.foot a:hover{color:var(--gold-l);text-decoration:none}
+.foot-logo{width:64px;height:64px;border-radius:50%;background:#fff;padding:6px;margin-bottom:1rem}
+.foot-base{border-top-color:rgba(255,255,255,.12);margin-top:2.6rem;padding-top:1.2rem;color:rgba(255,255,255,.5)}
+
+/* ---------- home ---------- */
+.h-hero{padding-top:clamp(2.6rem,6vw,4.4rem)}
+.h-badge{background:transparent;border:1px solid var(--line-2);box-shadow:none;color:var(--green-d);letter-spacing:.04em}
+.h-badge::before{background:var(--gold);box-shadow:0 0 0 4px rgba(185,138,47,.18)}
+.h-title{font-family:var(--serif);font-weight:800;letter-spacing:.01em;font-size:clamp(2.1rem,4.4vw,3.7rem)}
+.h-title em{color:var(--green)}
+.h-tag{color:var(--gold);letter-spacing:.3em}
+.h-tag::before{background:var(--gold);height:1px}
+.h-film{border-radius:14px;border:0;box-shadow:0 0 0 1px var(--line),0 40px 80px -40px rgba(10,43,28,.55)}
+.h-stats{border-radius:12px;box-shadow:var(--shadow)}
+.h-stat{padding:1.5rem 1.6rem}
+.h-stat span,.h-imp span{letter-spacing:.03em}
+.h-imp{border-radius:12px;padding:2rem 1.3rem;box-shadow:var(--shadow)}
+.h-imp .ico{width:3.4rem;height:3.4rem;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:var(--leaf);font-size:1.6rem}
+.h-impact-sec{background:linear-gradient(180deg,transparent,rgba(233,240,232,.7) 30%,rgba(233,240,232,.7) 70%,transparent)}
+
+/* ---------- about / board / supporters / vision ---------- */
+.vm-card{border-top:3px solid var(--green-d);padding:2rem 1.9rem}
+.vm-card.alt{border-top-color:var(--gold)}
+.vm-card p{font-family:var(--serif);font-size:1.12rem;line-height:1.7;color:var(--ink)}
+.vm-goal{border-radius:12px;background:radial-gradient(120% 140% at 100% 0%,var(--green),var(--green-d) 60%)}
+.vm-h{font-family:var(--serif);color:var(--green-d)}
+.vm-obj li::before{background:var(--gold-50);color:var(--amber-d)}
+.person .role{background:var(--gold-50);color:var(--amber-d)}
+.person .avatar.has-photo{background:linear-gradient(140deg,var(--green-d),var(--gold))}
+.person .who b{font-family:var(--serif);font-size:1.12rem}
+.sup-card{border-left:3px solid var(--gold)}
+.about-links a{border-radius:6px}
+.about-links a:hover{border-color:var(--gold)}
+
+/* ---------- gallery ---------- */
+.film{border-radius:14px;background:radial-gradient(120% 140% at 100% 0%,var(--green),var(--green-d) 55%,var(--green-xd))}
+.film .body .eyebrow{background:none;color:var(--gold-l)}
+.video-card .cat{color:var(--gold)}
+.video-card h3{font-family:var(--serif);font-size:1.12rem}
+.mini-btn{border-radius:5px;background:var(--green-d)}
+.mini-btn.ghost{background:var(--leaf);color:var(--green-d)}
+.pager .pg{border-radius:6px}
+.pager .pg[aria-current="page"]{background:var(--green-d);border-color:var(--green-d)}
+
+/* ---------- programmes ---------- */
+.card.prog .pdf-cover{border-radius:4px;box-shadow:0 0 0 1px var(--line),10px 10px 0 -2px var(--gold-50),0 16px 30px -16px rgba(10,43,28,.5)}
+.prog-reports h4{color:var(--gold);letter-spacing:.2em}
+.prog-reports .rep{border-radius:8px}
+.prog-reports .rep:hover{border-color:var(--gold)}
+.prog-reports .rep b{font-family:var(--serif);font-size:.98rem;font-weight:700}
+
+/* =========================== REPORTS (new arrangement) ======================
+   1. the latest year as a spotlight: both documents side by side, large;
+   2. every year as a "volume" in a shelf: the two covers overlapping like
+      books, the year set large beneath, the two documents as links. */
+.rep-spot{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(1.6rem,4vw,3.4rem);align-items:center;margin-top:1rem;
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:clamp(1.6rem,4vw,3rem);box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.rep-spot::before{content:"";position:absolute;inset:0 auto 0 0;width:38%;background:linear-gradient(160deg,var(--leaf),var(--gold-50));z-index:0}
+.rep-spot > *{position:relative;z-index:1}
+.rep-spot-covers{display:flex;justify-content:center;align-items:flex-end;gap:0;min-height:260px}
+.rep-spot-covers .pdf-cover{width:clamp(130px,16vw,185px);height:auto;aspect-ratio:3/4;border-radius:3px;cursor:pointer;
+  box-shadow:0 0 0 1px var(--line),0 26px 40px -18px rgba(10,43,28,.55);transition:transform .3s var(--ease)}
+.rep-spot-covers .pdf-cover .fb{font-size:2.6rem}
+.rep-spot-covers .pdf-cover:first-child{transform:rotate(-4deg) translateX(14px);z-index:2}
+.rep-spot-covers .pdf-cover:last-child{transform:rotate(3deg) translate(-14px,10px)}
+.rep-spot-covers .pdf-cover:hover{transform:rotate(0) translateY(-6px) scale(1.03);z-index:3}
+.rep-spot .eyebrow{margin-bottom:.6rem}
+.rep-spot h2{font-size:clamp(2rem,4.2vw,3.1rem)}
+.rep-spot .yr{font-family:var(--serif);font-style:italic;color:var(--green)}
+.rep-spot p{margin-top:.8rem;color:var(--ink-soft)}
+.rep-spot-acts{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem}
+.rep-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin:clamp(3.4rem,7vw,5rem) 0 1.6rem}
+.rep-head h2{font-size:clamp(1.7rem,3.2vw,2.3rem)}
+.rep-head small{color:var(--ink-3);letter-spacing:.04em}
+.rep-shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:clamp(1rem,2.4vw,1.6rem)}
+.vol{background:#fff;border:1px solid var(--line);border-radius:12px;padding:1.4rem 1.3rem 1.2rem;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s}
+.vol:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--line-2)}
+.vol-covers{position:relative;height:150px;display:flex;justify-content:center;align-items:flex-end;
+  background:linear-gradient(180deg,var(--mint),var(--leaf));border-radius:8px;margin-bottom:1.1rem;padding-bottom:12px}
+.vol-covers .pdf-cover{width:84px;height:112px;border-radius:2px;cursor:pointer;
+  box-shadow:0 0 0 1px var(--line),0 14px 22px -12px rgba(10,43,28,.55);transition:transform .25s var(--ease)}
+.vol-covers .pdf-cover .fb{font-size:1.6rem}
+.vol-covers .pdf-cover:first-child{transform:rotate(-5deg) translateX(10px);z-index:2}
+.vol-covers .pdf-cover:nth-child(2){transform:rotate(4deg) translate(-10px,6px)}
+.vol-covers .pdf-cover:only-child{transform:none}
+.vol-covers .pdf-cover:hover{transform:translateY(-6px) rotate(0);z-index:3}
+.vol-year{font-family:var(--serif);font-size:1.9rem;font-weight:700;line-height:1;color:var(--green-d)}
+.vol-year small{display:block;margin-top:.35rem;font-family:var(--sans);font-size:.68rem;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold)}
+.vol-links{margin-top:1rem;border-top:1px solid var(--line);display:grid}
+.vol-link{display:flex;justify-content:space-between;align-items:center;gap:.6rem;padding:.62rem 0;border-bottom:1px solid var(--line);
+  font-size:.88rem;font-weight:600;color:var(--ink);cursor:pointer;transition:color .15s}
+.vol-link:last-child{border-bottom:0}
+.vol-link:hover,.vol-link:focus-visible{color:var(--green)}
+.vol-link i{font-style:normal;color:var(--gold);transition:transform .2s var(--ease)}
+.vol-link:hover i{transform:translateX(3px)}
+.vol-link.na{color:var(--ink-3);cursor:default;font-weight:500}
+.vol-link.na i{display:none}
+.rep-strip{display:grid;grid-template-columns:repeat(4,1fr);margin:0 0 2.4rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.rep-strip div{padding:1.3rem 1rem;text-align:center;border-right:1px solid var(--line)}
+.rep-strip div:last-child{border-right:0}
+.rep-strip b{display:block;font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;color:var(--green-d);line-height:1.1}
+.rep-strip span{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+@media(max-width:820px){
+  .rep-spot{grid-template-columns:1fr}
+  .rep-spot::before{inset:0 0 auto 0;width:auto;height:52%}
+  .rep-strip{grid-template-columns:repeat(2,1fr)}
+  .rep-strip div:nth-child(2){border-right:0}
+  .rep-strip div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+
+/* Playfair's default old-style figures read oddly in figures such as 80G
+   or 1992; use full-height (lining) numerals wherever the serif is used. */
+h1,h2,h3,.h-title,.h-stat b,.h-imp b,.stat .n,.vol-year,.rep-strip b,.rep-spot h2,.doc-card b,
+.brand b,.foot h4,.person .who b,.vm-card p,.video-card h3{font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
+
+/* a split panel whose photo has been removed in admin: text only, full width */
+.split.no-photo{grid-template-columns:1fr}
+.split.no-photo > div{max-width:780px}
+
+/* board members: square portraits (softly rounded corners), not circles */
+.person .avatar{border-radius:8px}
+.person .avatar.has-photo{width:104px;height:104px;border-radius:10px;padding:3px}
+.person .avatar.has-photo img{border-radius:7px;object-position:50% 25%}
+@media(max-width:480px){.person .avatar.has-photo{width:84px;height:84px}}

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=23" />
+  <link rel="stylesheet" href="assets/css/style.css?v=27" />
 </head>
 <body data-page="home">
   <div id="site-header"></div>
@@ -108,7 +108,7 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/site.js?v=12"></script>
+  <script src="assets/js/site.js?v=13"></script>
   <script>
   (function () {
     var esc = window.CKB_esc;
@@ -191,7 +191,10 @@
         document.getElementById("wTitle").textContent = w.title || "";
         document.getElementById("wBody").textContent = w.body || "";
         document.getElementById("wBody2").textContent = w.body2 || "";
-        document.getElementById("wImg").src = w.image || "uploads/programs-community.jpg";
+        /* no photo chosen in admin: leave the picture out and let the text take the row */
+        var wImg = document.getElementById("wImg");
+        if (w.image) wImg.src = w.image;
+        else { wImg.remove(); wImg = null; document.querySelector(".home .split").classList.add("no-photo"); }
         document.getElementById("wPoints").innerHTML = (w.points || []).map(function (x) {
           return "<li>" + esc(x) + "</li>";
         }).join("");

@@ -77,7 +77,8 @@
   function footer() {
     var y = new Date().getFullYear();
     return '<footer class="foot"><div class="wrap"><div class="foot-grid">' +
-      "<div><h4>Chaithanya Kala Bharathi</h4>" +
+      '<div><img class="foot-logo" src="assets/logo-sm.png" alt="" onerror="this.remove()">' +
+      "<h4>Chaithanya Kala Bharathi<small>Compassion in Action</small></h4>" +
       "<p>A registered non-governmental organisation working since 1992 in Kurnool and Nandyal " +
       "districts of Andhra Pradesh, with tribal communities, Dalits, women, children and people " +
       "with disabilities.</p></div>" +

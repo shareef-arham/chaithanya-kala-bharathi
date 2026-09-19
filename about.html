@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=23" />
+  <link rel="stylesheet" href="assets/css/style.css?v=27" />
 </head>
 <body data-page="about">
   <div id="site-header"></div>
@@ -64,7 +64,7 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/site.js?v=12"></script>
+  <script src="assets/js/site.js?v=13"></script>
   <script>
   (function () {
     var esc = window.CKB_esc;
@@ -90,7 +90,10 @@
         var h = r[0] || {}, pg = r[1] || {};
         var w = h.whoWeAre || {};
 
-        document.getElementById("aImg").src = (pg.about && pg.about.image) || "uploads/about-team.jpg";
+        /* no photo chosen in admin: leave the picture out and let the text take the row */
+        var aImg = document.getElementById("aImg"), aSrc = pg.about && pg.about.image;
+        if (aSrc) aImg.src = aSrc;
+        else { aImg.remove(); document.querySelector("#story .split").classList.add("no-photo"); }
         document.getElementById("aLede").textContent = (h.hero && h.hero.lede) || "";
         document.getElementById("aTitle").textContent = w.title || "Who we are";
         document.getElementById("aBody").textContent = w.body || "";

@@ -745,3 +745,58 @@ h1,h2,h3,.h-title,.h-stat b,.h-imp b,.stat .n,.vol-year,.rep-strip b,.rep-spot h
 .person .avatar.has-photo{width:104px;height:104px;border-radius:10px;padding:3px}
 .person .avatar.has-photo img{border-radius:7px;object-position:50% 25%}
 @media(max-width:480px){.person .avatar.has-photo{width:84px;height:84px}}
+
+/* =========================== PROGRAMS: photo tabs + panel ===========================
+   One tab per programme (its photo, else its report's cover, else its icon).
+   The chosen tab opens its panel: picture and text, then its reports with
+   covers and its films, which play over the page. */
+.ptabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.9rem;margin-bottom:2rem}
+.ptab{display:flex;flex-direction:column;text-align:left;padding:0;border:1px solid var(--line);border-radius:12px;background:#fff;
+  overflow:hidden;cursor:pointer;font:inherit;color:inherit;box-shadow:var(--shadow);transition:transform .2s var(--ease),box-shadow .2s,border-color .2s}
+.ptab:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.ptab.on{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold),var(--shadow-lg)}
+.ptab-pic{display:block;position:relative;width:100%;height:auto;aspect-ratio:4/3;border-radius:0;box-shadow:none;background:var(--leaf);overflow:hidden}
+.ptab-pic img,.pp-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.ptab-pic.pdf-cover canvas{object-position:top}
+.ptab-pic .fb,.pp-pic .fb{font-size:2.4rem}
+.ptab-pic.is-icon,.pp-pic.is-icon{display:grid;place-items:center;background:linear-gradient(150deg,var(--leaf),var(--gold-50))}
+.ptab-tx{display:block;padding:.75rem .9rem .85rem;border-top:3px solid transparent}
+.ptab.on .ptab-tx{border-top-color:var(--gold)}
+.ptab-tx b{display:block;font-family:var(--serif);font-size:1.02rem;line-height:1.25;color:var(--ink)}
+.ptab-tx small{display:block;margin-top:.3rem;font-size:.74rem;color:var(--ink-3);letter-spacing:.02em}
+
+.ppanel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:clamp(1.4rem,3.6vw,2.6rem);box-shadow:var(--shadow-lg);scroll-margin-top:6rem}
+.ppanel.in{animation:ppIn .45s var(--ease)}
+@keyframes ppIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pp-head{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(1.4rem,4vw,3rem);align-items:center}
+.pp-pic{display:block;position:relative;width:100%;height:auto;aspect-ratio:4/3;border-radius:8px;overflow:hidden;background:var(--leaf);
+  box-shadow:0 0 0 1px var(--line),18px 18px 0 -2px var(--gold-50),var(--shadow-lg)}
+.pp-pic.pdf-cover{aspect-ratio:3/4;max-width:300px;justify-self:center}
+.pp-tx h2{margin:.1rem 0 .3rem}
+.pp-sub{color:var(--gold);font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.8rem}
+.pp-tx .hero-cta{margin-top:1.3rem}
+.pp-sec{margin-top:clamp(2rem,4vw,2.8rem);padding-top:1.6rem;border-top:1px solid var(--line)}
+.pp-sec h3{display:flex;align-items:center;gap:.6rem;margin-bottom:1.1rem}
+.pp-sec h3 small{font-family:var(--sans);font-size:.72rem;font-weight:700;color:#fff;background:var(--green-d);border-radius:999px;padding:.15rem .55rem}
+.pp-reps{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.9rem}
+.pp-rep{display:flex;gap:.9rem;align-items:flex-start;padding:.8rem;border:1px solid var(--line);border-radius:10px;cursor:pointer;
+  transition:border-color .15s,transform .15s,box-shadow .15s}
+.pp-rep:hover,.pp-rep:focus-visible{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow)}
+.pp-rep .pdf-cover{width:64px;height:84px;border-radius:3px;box-shadow:0 0 0 1px var(--line),0 8px 16px -10px rgba(10,43,28,.6)}
+.pp-rep b{display:block;font-family:var(--serif);font-size:1rem;line-height:1.3}
+.pp-rep small{display:block;margin-top:.25rem;font-size:.8rem;color:var(--ink-soft)}
+.pp-rep i{display:block;margin-top:.45rem;font-style:normal;font-size:.78rem;font-weight:650;color:var(--green)}
+.pp-films{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.1rem}
+.pp-film{cursor:pointer}
+.pp-thumb{display:block;position:relative;aspect-ratio:16/9;border-radius:10px;background:var(--green-d) center/cover no-repeat;
+  box-shadow:var(--shadow);transition:transform .2s var(--ease)}
+.pp-film:hover .pp-thumb{transform:translateY(-3px)}
+.pp-film b{display:block;margin-top:.6rem;font-family:var(--serif);font-size:1rem}
+.pp-film small{display:block;margin-top:.2rem;font-size:.8rem;color:var(--ink-soft)}
+.pp-empty{margin-top:1.6rem;padding:1rem 1.2rem;border-radius:8px;background:var(--mint);color:var(--ink-soft);font-size:.92rem}
+@media(max-width:760px){
+  .pp-head{grid-template-columns:1fr}
+  .ptabs{grid-template-columns:repeat(2,1fr)}
+}
+.ptab-pic.pdf-cover,.pp-pic.pdf-cover{display:grid;place-items:center}
+.ptab-pic.pdf-cover.is-loaded,.pp-pic.pdf-cover.is-loaded{display:block}

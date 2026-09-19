@@ -2,6 +2,13 @@
  "intro": "CKB works across four core interventions in Kurnool and Nandyal districts. Each has a published report, opened directly on the page.",
  "items": [
   {
+   "icon": "🚐",
+   "title": "Home for Senior Citizens",
+   "sub": "Caring the Senior Citizens",
+   "desc": "CKB has established a Home for the Senior Citizens in Velgode village of Nandyal District.  About 40 senior citizens of both genders are taken care in this centre.  \n\nOur Home for Senior Citizens stands as an urgent sanctuary to restore dignity, security, and warmth to these vulnerable elders. By offering safe shelter, regular nutritious meals, healthcare, and compassionate personal care, the home ensures that their twilight years are no longer spent struggling for survival on the pavements, but lived with comfort, respect, and peace.",
+   "file": ""
+  },
+  {
    "icon": "🏫",
    "title": "School & Education",
    "sub": "Badi Bata — \"Back to School\" and child rights",

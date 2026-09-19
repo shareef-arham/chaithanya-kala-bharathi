@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Programs &amp; Interventions — CKB</title>
-  <meta name="description" content="CKB's four core interventions: School &amp; Education (Badi Bata), Community Welfare, Health &amp; Nutrition, and Economic Empowerment." />
+  <meta name="description" content="CKB's programmes and interventions, each with its reports and films." />
   <link rel="icon" href="assets/logo-sm.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=27" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=29" />
 </head>
 <body data-page="programs">
   <div id="site-header"></div>
@@ -24,9 +24,11 @@
       </div>
     </section>
 
-    <section style="padding-top:1.4rem">
+    <section style="padding-top:.4rem">
       <div class="wrap">
-        <div class="grid grid-2" id="items" data-reveal></div>
+        <!-- one photo tab per programme; choosing one opens its panel below -->
+        <div class="ptabs" id="ptabs" role="tablist" aria-label="Programmes" data-reveal></div>
+        <div id="ppanel" class="ppanel" role="tabpanel" aria-live="polite"></div>
       </div>
     </section>
 
@@ -45,43 +47,119 @@
   </main>
 
   <div id="site-footer"></div>
+
+  <div class="lightbox" id="lightbox">
+    <button class="close" id="lbClose" aria-label="Close">&times;</button>
+    <div class="frame" id="lbFrame"></div>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="assets/js/site.js?v=13"></script>
   <script>
   (function () {
     var esc = window.CKB_esc;
+    var PLAY = '<span class="pin"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>';
+
+    /* a YouTube link of any usual shape, or a bare 11-character ID */
+    function ytId(s) {
+      s = String(s || "").trim();
+      var m = s.match(/(?:v=|youtu\.be\/|embed\/|shorts\/|live\/)([A-Za-z0-9_-]{11})/);
+      if (m) return m[1];
+      return /^[A-Za-z0-9_-]{11}$/.test(s) ? s : "";
+    }
+    function slug(t, i) {
+      return (String(t || "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "programme-" + (i + 1));
+    }
+
+    /* ---- films play in a window over the page ---- */
+    var lb = document.getElementById("lightbox"), lbFrame = document.getElementById("lbFrame");
+    function openVideo(id) {
+      if (!id) return;
+      lbFrame.innerHTML = '<iframe src="https://www.youtube.com/embed/' + encodeURIComponent(id) +
+        '?autoplay=1&rel=0" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+      lb.classList.add("open");
+    }
+    function closeVideo() { lb.classList.remove("open"); lbFrame.innerHTML = ""; }
+    document.getElementById("lbClose").addEventListener("click", closeVideo);
+    lb.addEventListener("click", function (e) { if (e.target === lb) closeVideo(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeVideo(); });
+    document.addEventListener("click", function (e) {
+      var el = e.target.closest("[data-video]");
+      if (el && el.dataset.video) { e.preventDefault(); openVideo(el.dataset.video); }
+    });
+
     CKB_get("programs.json").then(function (p) {
+      p = p || {};
+      var items = p.items || [];
       document.getElementById("pIntro").textContent = p.intro || "";
-      document.getElementById("items").innerHTML = (p.items || []).map(function (i) {
-        /* Each programme is shown with the first page of its report, which is
-           what the card opens. The icon stands in until the page is drawn. */
-        return '<div class="card prog" role="button" tabindex="0" data-doc="' + esc(i.file) +
-          '" data-title="' + esc(i.title) + '" data-sub="' + esc(i.sub || "") + '">' +
-          (i.file
-            ? '<span class="pdf-cover" data-cover="' + esc(i.file) + '"><span class="fb">' +
-              esc(i.icon || "\ud83d\udcc4") + "</span><canvas></canvas></span>"
-            : '<div class="ico">' + esc(i.icon || "") + "</div>") +
-          '<div class="prog-tx">' +
-            "<h3>" + esc(i.title) + "</h3>" +
-            '<div class="sub">' + esc(i.sub || "") + "</div>" +
-            "<p>" + esc(i.desc || "") + "</p>" +
-            (i.file ? '<span class="open">Read the report &rarr;</span>' : "") +
-            /* The reports named inside that programme's own PDF, each one
-               opening on its own rather than only through the main report. */
-            ((i.reports || []).length
-              ? '<div class="prog-reports"><h4>Reports under this programme</h4>' +
-                i.reports.map(function (r) {
-                  return '<span class="rep" role="button" tabindex="0" data-doc="' + esc(r.file) +
-                    '" data-title="' + esc(r.title) + '">' +
-                    '<span class="pdf-cover" data-cover="' + esc(r.file) + '"><canvas></canvas></span>' +
-                    '<span class="rep-tx"><b>' + esc(r.title) + "</b>" +
-                    (r.when ? "<small>" + esc(r.when) + "</small>" : "") + "</span></span>";
-                }).join("") + "</div>"
-              : "") +
-          "</div></div>";
+      var tabs = document.getElementById("ptabs"), panel = document.getElementById("ppanel");
+      if (!items.length) { panel.innerHTML = '<p class="lede">Programmes will appear here shortly.</p>'; return; }
+      items.forEach(function (it, i) { it._slug = slug(it.title, i); });
+
+      /* the picture for a programme: its photo, else its report's first page, else its icon */
+      function pic(it, cls) {
+        if (it.photo) return '<span class="' + cls + '"><img src="' + esc(it.photo) + '" alt="" loading="lazy" /></span>';
+        if (it.file) return '<span class="' + cls + ' pdf-cover" data-cover="' + esc(it.file) + '"><span class="fb">' + esc(it.icon || "") + "</span><canvas></canvas></span>";
+        return '<span class="' + cls + ' is-icon"><span class="fb">' + esc(it.icon || "") + "</span></span>";
+      }
+
+      tabs.innerHTML = items.map(function (it, i) {
+        var n = (it.reports || []).length + (it.file ? 1 : 0), f = (it.videos || []).filter(function (v) { return ytId(v.yt); }).length;
+        return '<button type="button" class="ptab" role="tab" data-i="' + i + '" id="tab-' + it._slug + '" aria-controls="ppanel">' +
+          pic(it, "ptab-pic") + '<span class="ptab-tx"><b>' + esc(it.title) + "</b><small>" +
+          (n ? n + " report" + (n === 1 ? "" : "s") : "Reports soon") + (f ? " · " + f + " film" + (f === 1 ? "" : "s") : "") +
+          "</small></span></button>";
       }).join("");
+
+      function show(i, scroll) {
+        var it = items[i]; if (!it) return;
+        [].forEach.call(tabs.children, function (b, k) { b.classList.toggle("on", k === i); b.setAttribute("aria-selected", k === i ? "true" : "false"); });
+        var reps = (it.reports || []).filter(function (r) { return r && r.file; });
+        var films = (it.videos || []).map(function (v) { return { id: ytId(v.yt), t: v.title, n: v.note }; }).filter(function (v) { return v.id; });
+
+        var html = '<div class="pp-head">' + pic(it, "pp-pic") +
+          '<div class="pp-tx"><span class="eyebrow">' + esc(it.icon ? it.icon + " " : "") + "Programme</span>" +
+          "<h2>" + esc(it.title) + "</h2>" + (it.sub ? '<p class="pp-sub">' + esc(it.sub) + "</p>" : "") +
+          (it.desc ? '<p class="lede">' + esc(it.desc) + "</p>" : "") +
+          '<div class="hero-cta">' +
+            (it.file ? '<span class="btn btn-green" role="button" tabindex="0" data-doc="' + esc(it.file) + '" data-title="' + esc(it.title) + '" data-sub="' + esc(it.sub || "") + '">Read the programme report</span>' : "") +
+            (films.length ? '<span class="btn btn-ghost" role="button" tabindex="0" data-video="' + esc(films[0].id) + '">&#9654; Watch the film</span>' : "") +
+          "</div></div></div>";
+
+        if (reps.length) {
+          html += '<div class="pp-sec"><h3>Reports <small>' + reps.length + "</small></h3>" +
+            '<div class="pp-reps">' + reps.map(function (r) {
+              return '<div class="pp-rep" role="button" tabindex="0" data-doc="' + esc(r.file) + '" data-title="' + esc(r.title) + '" data-sub="' + esc(r.when || "") + '">' +
+                '<span class="pdf-cover" data-cover="' + esc(r.file) + '"><span class="fb">📄</span><canvas></canvas></span>' +
+                "<span><b>" + esc(r.title) + "</b>" + (r.when ? "<small>" + esc(r.when) + "</small>" : "") + '<i>Open the report &rarr;</i></span></div>';
+            }).join("") + "</div></div>";
+        }
+        if (films.length) {
+          html += '<div class="pp-sec"><h3>Films <small>' + films.length + "</small></h3>" +
+            '<div class="pp-films">' + films.map(function (v) {
+              return '<div class="pp-film" role="button" tabindex="0" data-video="' + esc(v.id) + '">' +
+                '<span class="pp-thumb" style="background-image:url(https://i.ytimg.com/vi/' + esc(v.id) + '/hqdefault.jpg)">' + PLAY + "</span>" +
+                "<b>" + esc(v.t || "Watch the film") + "</b>" + (v.n ? "<small>" + esc(v.n) + "</small>" : "") + "</div>";
+            }).join("") + "</div></div>";
+        }
+        if (!reps.length && !films.length && !it.file) {
+          html += '<p class="pp-empty">Reports and films for this programme will be added soon.</p>';
+        }
+        panel.innerHTML = html;
+        panel.classList.remove("in"); void panel.offsetWidth; panel.classList.add("in");
+        if (window.CKB_renderCovers) window.CKB_renderCovers("#ppanel");
+        if (history.replaceState) history.replaceState(null, "", "#" + it._slug);
+        if (scroll) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      tabs.addEventListener("click", function (e) {
+        var b = e.target.closest(".ptab"); if (b) show(+b.getAttribute("data-i"), window.innerWidth < 760);
+      });
+      var start = 0, h = location.hash.slice(1);
+      items.forEach(function (it, i) { if (it._slug === h) start = i; });
+      show(start, false);
       CKB_reveals();
-      if (window.CKB_renderCovers) window.CKB_renderCovers("main");
+      if (window.CKB_renderCovers) window.CKB_renderCovers("#ptabs");
     });
   })();
   </script>

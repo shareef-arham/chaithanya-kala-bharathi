@@ -20,7 +20,7 @@
   var NAV = [
     { href: "index.html",       label: "Home",         key: "home" },
     { href: "about.html",       label: "About Us",     key: "about", sub: ABOUT_PAGES },
-    { href: "programs.html",    label: "Programs",     key: "programs" },
+    { href: "programs.html",    label: "Programmes",   key: "programs" },
     { href: "gallery.html",     label: "Gallery",      key: "gallery" },
     { href: "reports.html",     label: "Reports",      key: "reports" },
     { href: "contact.html",     label: "Contact",      key: "contact", sub: [
@@ -84,7 +84,7 @@
       "with disabilities.</p></div>" +
       "<div><h4>Explore</h4><ul>" +
       '<li><a href="about.html">About &amp; legal status</a></li>' +
-      '<li><a href="programs.html">Our programs</a></li>' +
+      '<li><a href="programs.html">Our programmes</a></li>' +
       '<li><a href="reports.html">Reports &amp; certificates</a></li>' +
       '<li><a href="gallery.html">Gallery</a></li>' +
       '<li><a href="contact.html#involved">Get involved</a></li>' +

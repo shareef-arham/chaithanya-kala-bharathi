@@ -8,3 +8,4 @@ server.log
 Thumbs.db
 
 .env*
+/assets/SRC-HOME.jpeg

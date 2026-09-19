@@ -800,3 +800,28 @@ h1,h2,h3,.h-title,.h-stat b,.h-imp b,.stat .n,.vol-year,.rep-strip b,.rep-spot h
 }
 .ptab-pic.pdf-cover,.pp-pic.pdf-cover{display:grid;place-items:center}
 .ptab-pic.pdf-cover.is-loaded,.pp-pic.pdf-cover.is-loaded{display:block}
+
+/* programme photos are wide field photographs: shown whole on the panel,
+   cropped to a wide frame on the tabs and the home cards */
+.ptab-pic{aspect-ratio:16/10}
+.pp-pic.has-img{aspect-ratio:auto;height:auto}
+.pp-pic.has-img img{height:auto}
+.pp-body{max-width:860px}
+.pp-body > p{color:var(--ink-soft);font-size:1.02rem;line-height:1.8;margin-bottom:1rem}
+.pp-body > p:first-child{font-family:var(--serif);font-size:1.2rem;line-height:1.65;color:var(--ink)}
+.pp-body h3{margin:1.7rem 0 .6rem;font-size:1.3rem;color:var(--green-d)}
+.pp-body h3::before{content:"";display:block;width:2rem;height:2px;background:var(--gold);margin-bottom:.7rem}
+.pp-points{list-style:none;display:grid;gap:.7rem;margin:.6rem 0 1rem}
+.pp-points li{position:relative;padding-left:1.4rem;color:var(--ink-soft);line-height:1.7}
+.pp-points li::before{content:"";position:absolute;left:0;top:.62rem;width:.5rem;height:.5rem;border-radius:50%;background:var(--gold)}
+.pp-points li b{color:var(--ink);font-weight:650}
+/* home: programme cards with a photo */
+#focus{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+a.card.prog-card{display:flex;flex-direction:column;text-decoration:none;color:inherit;padding:0;overflow:hidden}
+.prog-card-pic{display:block;aspect-ratio:16/10;overflow:hidden;background:var(--leaf)}
+.prog-card-pic img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+a.card.prog-card:hover .prog-card-pic img{transform:scale(1.05)}
+a.card.prog-card .ico{margin:1.4rem 1.4rem 0}
+a.card.prog-card h3,a.card.prog-card .sub,a.card.prog-card p,a.card.prog-card .open{margin-left:1.3rem;margin-right:1.3rem}
+a.card.prog-card h3{margin-top:1.1rem}
+a.card.prog-card .open{margin-top:auto;padding:.9rem 0 1.3rem}

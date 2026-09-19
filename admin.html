@@ -555,14 +555,18 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     host.innerHTML='<div style="border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem;margin-top:.6rem">'+
       '<div class="grid2">'+f("title","Title","e.g. Home for Senior Citizens")+f("icon","Icon (emoji — shown when there is no photo)")+'</div>'+
       f("sub","Sub-line","e.g. Caring for the senior citizens")+
-      f("desc","Description","",true)+
+      f("desc","Short description (also on the Home page card)","",true)+
+      '<div class="field"><label>Full write-up (shown on the programme tab)</label>'+
+        '<textarea id="pf_body" rows="14" placeholder="Paragraphs, headings and bullet points">'+esc(it.body||"")+'</textarea>'+
+        '<p class="hint" style="margin-top:.35rem">Leave a blank line between paragraphs. Start a line with <b>## </b> for a heading, '+
+        'and with <b>- </b> for a bullet point; in <b>- Name: text</b> the part before the colon is shown in bold.</p></div>'+
       '<div class="grid2">'+f("photo","Photo for the tab (Upload…)","leave empty to use the report's first page")+
-        f("file","Main programme report — PDF (Upload…)","optional")+'</div>'+
+        f("file","Main programme report — PDF (Upload…)","optional — the write-up usually replaces it")+'</div>'+
       '<h3 style="margin-top:1.2rem">Reports under this programme</h3>'+
       '<p class="hint">Each shows with its cover. Add one with <b>+ Add</b>, then <b>Upload…</b> the PDF in the box that opens.</p><div id="pf_reps"></div>'+
       '<h3 style="margin-top:1.2rem">Films</h3>'+
       '<p class="hint">Paste the YouTube link (or just its ID). The films play on the page, in a window over it.</p><div id="pf_vids"></div></div>';
-    ["title","icon","sub","desc","photo","file"].forEach(function(k){
+    ["title","icon","sub","desc","body","photo","file"].forEach(function(k){
       var el=document.getElementById("pf_"+k);
       el.addEventListener("input",function(){ it[k]=el.value.trim(); if(k==="title"||k==="icon") progPick(); });
     });

@@ -1,19 +1,20 @@
 {
- "intro": "CKB works across four core interventions in Kurnool and Nandyal districts. Each has a published report, opened directly on the page.",
+ "intro": "CKB works across its programmes in Kurnool and Nandyal districts. Choose a programme below to read about it, open its reports and watch its films.",
  "items": [
   {
    "icon": "🚐",
    "title": "Home for Senior Citizens",
    "sub": "Caring the Senior Citizens",
    "desc": "CKB has established a Home for the Senior Citizens in Velgode village of Nandyal District.  About 40 senior citizens of both genders are taken care in this centre.  \n\nOur Home for Senior Citizens stands as an urgent sanctuary to restore dignity, security, and warmth to these vulnerable elders. By offering safe shelter, regular nutritious meals, healthcare, and compassionate personal care, the home ensures that their twilight years are no longer spent struggling for survival on the pavements, but lived with comfort, respect, and peace.",
-   "file": ""
+   "file": "",
+   "photo": "assets/img/prog-senior-citizens.jpg"
   },
   {
    "icon": "🏫",
    "title": "School & Education",
    "sub": "Badi Bata — \"Back to School\" and child rights",
    "desc": "Enrolment drives that bring out-of-school children back into classrooms, supported by child-rights awareness in villages and follow-up with families and teachers.",
-   "file": "SchoolEducation.pdf",
+   "file": "",
    "reports": [
     {
      "file": "LITTLE-DROPS-REPORT.pdf",
@@ -45,14 +46,16 @@
      "title": "Study material and bicycles for girl-child education",
      "when": "SOS Enfants Abandonnés, Belgium"
     }
-   ]
+   ],
+   "photo": "assets/img/prog-school-education.jpg",
+   "body": "Promotion of quality education has been a cornerstone of Chaitanya Kala Bharathi since our inception. We believe that every child deserves the tools to excel, regardless of their socio-economic background.\n\n## Comprehensive student support\nWe provide students with the essential materials needed to perform with confidence and academic excellence. By ensuring every child has their own supplies, we eliminate the need for them to depend on others, fostering a sense of dignity and focus.\n- Essential Supplies: Provision of textbooks, reference books and notebooks to support classroom learning.\n- Learning Tools: Supplying school bags, geometry boxes, pens, pencils and water bottles to ensure students are fully prepared for the school day.\n- Focussed Care: We pay special attention to children from the most vulnerable backgrounds, including those from Jogini families and families living under vulnerable conditions, as well as orphans and semi-orphans.\n\n## Mobility & inclusion\nRecognising the physical barriers to education, CKB — with the support of funding agencies and like-minded individuals — enhances accessibility for those in need:\n- Bicycles for Girls: Facilitating safe and timely travel to school for girl children, reducing their reliance on expensive private transport.\n- Support for Special Needs: Providing tricycles to children with disabilities to improve their mobility and ensure they can reach their classrooms without hardship.\n\n## School infrastructure development\nBeyond individual support, CKB invests in the school environment itself to create a safe and conducive space for learning:\n- Furniture & Facilities: Supplying necessary furniture to improve classroom environments.\n- Clean Water & Sanitation: Enhancing school hygiene by digging borewells, erecting overhead tanks and installing taps to ensure a steady supply of drinking water.\n- Dignified Sanitation: Constructing separate toilet blocks for boys and girls to improve sanitary conditions and encourage consistent school attendance."
   },
   {
    "icon": "🤝",
    "title": "Community Welfare",
    "sub": "Tribal communities, Dalits and people with disabilities",
    "desc": "Support for the most marginalised households in the operational area, including access to entitlements, awareness and community organisation.",
-   "file": "CommunityWelfare.pdf",
+   "file": "",
    "reports": [
     {
      "file": "SAMADASANI-SUPPLY.pdf",
@@ -74,14 +77,16 @@
      "title": "Food kits for sanitation workers and volunteers",
      "when": "Shamdasani Foundation, Hong Kong · August 2023"
     }
-   ]
+   ],
+   "photo": "assets/img/prog-community-welfare.jpg",
+   "body": "The issues in each village, and of the communities living in those villages, differ from one to another. Chaitanya Kala Bharathi therefore focuses with specific attention on each village.\n\n- Clean Water Access: We address acute potable-water shortages by installing borewells and water cisterns. To date, we have established water facilities across 17 villages. We also prioritise the repair and restoration of non-functional bores, so that communities have reliable access to safe drinking water without the burden of travelling long distances.\n- Sanitation & Hygiene: To promote rural sanitation and eliminate open defecation, CKB facilitates the construction of Individual Household Latrines (IHHLs) — a vital step toward improving public health and dignity at the village level.\n- Elderly Care & Support: We remain deeply committed to the well-being of our senior citizens. By identifying their specific needs, we provide essential support including food supplies, new clothing, blankets and bedding.\n- Community Engagement: Through structured meetings and awareness camps, we educate and inspire community members to embrace their social responsibility and actively take part in local service activities."
   },
   {
    "icon": "🩺",
    "title": "Health & Nutrition",
    "sub": "Mother and child health, immunisation, fluorosis care",
    "desc": "Nutrition and immunisation support for mothers and infants, safe-delivery awareness, and dental, eye and general health check-up camps.",
-   "file": "HealthNutrition.pdf",
+   "file": "",
    "reports": [
     {
      "file": "SAMADASANI-report.pdf",
@@ -103,21 +108,25 @@
      "title": "Study material and food kits for children with thalassemia",
      "when": "Global Compassion Inc., USA"
     }
-   ]
+   ],
+   "photo": "assets/img/prog-health-nutrition.jpg",
+   "body": "Chaitanya Kala Bharathi places a profound emphasis on the health and nutritional well-being of the most marginalised families. Our work focuses on those often overlooked, including economically disadvantaged households, Basivini families, single-mother households and families living under vulnerable conditions.\n\n## Nutritional security & crisis support\nWe believe that no family should suffer from hunger. Our intervention ensures a bridge to food security through:\n- Immediate Relief: Distribution of dry ration kits to prevent starvation during periods of acute need.\n- Government Advocacy: Acting as a liaison to represent these families to government officials, ensuring they receive their rightful long-term state benefits and rations.\n- Targeted Nutrition: Providing specialised nutritional food packages designed to improve the health of vulnerable individuals.\n\n## Healthcare access & awareness\nBridging the gap between rural communities and quality medical care is a core priority:\n- Village Medical Camps: Organising free medical check-ups and providing essential medicines directly within the community.\n- Advanced Referrals: Assisting patients who need specialised diagnosis or treatment by referring them to higher medical institutions.\n- Capacity Building: Strengthening the local healthcare system by conducting specialised training for health workers.\n- Preventive Education: Holding awareness camps to educate youth and the wider community on critical health issues, including HIV/AIDS prevention.\n\n## Dignity in hygiene\nWe empower adolescent girls and young women by promoting personal health and menstrual hygiene:\n- Essential Supplies: Distributing sanitary napkins and hygiene kits (including soaps) to girls from economically poor backgrounds.\n- Education: Building hygiene awareness into our community outreach to break taboos and promote long-term health and dignity."
   },
   {
    "icon": "🌾",
    "title": "Economic Empowerment",
    "sub": "Livelihoods, farmer collectives and skills",
    "desc": "Livelihood support for marginalised families — skills, collective formation and market linkage for smallholder farmers.",
-   "file": "EconomicEmpowerment.pdf",
+   "file": "",
    "reports": [
     {
      "file": "BASKET-MAKING.pdf",
      "title": "A revolving fund for tribal basket makers",
      "when": "The Strathspey Charitable Trust, UK"
     }
-   ]
+   ],
+   "photo": "assets/img/prog-economic-empowerment.jpg",
+   "body": "Building self-reliance. At Chaitanya Kala Bharathi, we believe that sustainable change comes when need-based charity is combined with long-term economic empowerment. By providing the tools and training for financial independence, we help families break the cycle of poverty and build a secure future.\n\n## Empowering forest-dependent communities\nOur head office is situated amid dense forest regions, home to tribal communities including the Chenchu, Sugali and Koya. Historically dependent on forest produce, these families are now supported through sustainable income-generation initiatives:\n- Traditional Craftsmanship: We provide financial support for families to take up specialised work such as bamboo tatti making and basket weaving.\n- Sustainable Livelihoods: These initiatives turn traditional skills into reliable sources of daily earning, ensuring a steady income while respecting cultural heritage.\n\n## Collective productivity & marketing\nCKB promotes the power of unity through the formation of Self-Help Groups (SHGs). We empower these collectives by:\n- Capacity Building: Providing technical training to improve the quality and volume of their production.\n- Financial Assistance: Offering the capital needed to scale their collective enterprises.\n- Market Linkages: Facilitating direct connections to markets so their products receive a fair price, securing a sustainable income for every member family.\n\n## Entrepreneurship & skill development\nUnder our Social and Economic Empowerment sector, we foster a spirit of small-scale entrepreneurship:\n- Vocational Training: Running programmes for skills such as tailoring, which allow women and youth to become self-employed.\n- Micro-Enterprises: Helping families set up petty shops and other small businesses to diversify their household income.\n- Self-Employment: These interventions give the dignity of self-reliance, allowing families to manage their own financial well-being with confidence."
   }
  ]
 }

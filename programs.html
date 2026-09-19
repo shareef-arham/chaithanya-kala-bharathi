@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=29" />
+  <link rel="stylesheet" href="assets/css/style.css?v=30" />
 </head>
 <body data-page="programs">
   <div id="site-header"></div>
@@ -67,6 +67,29 @@
       if (m) return m[1];
       return /^[A-Za-z0-9_-]{11}$/.test(s) ? s : "";
     }
+    /* The programme write-up, as typed in admin:
+         a blank line starts a new paragraph,
+         "## Heading" makes a heading,
+         "- Name: text" makes a bullet whose "Name" is set in bold. */
+    function bodyHTML(txt) {
+      var out = [], list = [], para = [];
+      function flushP() { if (para.length) { out.push("<p>" + esc(para.join(" ")) + "</p>"); para = []; } }
+      function flushL() { if (list.length) { out.push('<ul class="pp-points">' + list.join("") + "</ul>"); list = []; } }
+      String(txt || "").split(/\r?\n/).forEach(function (line) {
+        var l = line.trim();
+        if (!l) { flushP(); flushL(); return; }
+        if (/^##\s+/.test(l)) { flushP(); flushL(); out.push("<h3>" + esc(l.replace(/^##\s+/, "")) + "</h3>"); return; }
+        if (/^[-•]\s+/.test(l)) {
+          flushP();
+          var t = l.replace(/^[-•]\s+/, ""), m = t.match(/^([^:]{2,48}):\s*(.+)$/);
+          list.push("<li>" + (m ? "<b>" + esc(m[1]) + "</b> " + esc(m[2]) : esc(t)) + "</li>");
+          return;
+        }
+        flushL(); para.push(l);
+      });
+      flushP(); flushL();
+      return out.join("");
+    }
     function slug(t, i) {
       return (String(t || "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "programme-" + (i + 1));
     }
@@ -98,7 +121,7 @@
 
       /* the picture for a programme: its photo, else its report's first page, else its icon */
       function pic(it, cls) {
-        if (it.photo) return '<span class="' + cls + '"><img src="' + esc(it.photo) + '" alt="" loading="lazy" /></span>';
+        if (it.photo) return '<span class="' + cls + ' has-img"><img src="' + esc(it.photo) + '" alt="" loading="lazy" /></span>';
         if (it.file) return '<span class="' + cls + ' pdf-cover" data-cover="' + esc(it.file) + '"><span class="fb">' + esc(it.icon || "") + "</span><canvas></canvas></span>";
         return '<span class="' + cls + ' is-icon"><span class="fb">' + esc(it.icon || "") + "</span></span>";
       }
@@ -125,6 +148,8 @@
             (it.file ? '<span class="btn btn-green" role="button" tabindex="0" data-doc="' + esc(it.file) + '" data-title="' + esc(it.title) + '" data-sub="' + esc(it.sub || "") + '">Read the programme report</span>' : "") +
             (films.length ? '<span class="btn btn-ghost" role="button" tabindex="0" data-video="' + esc(films[0].id) + '">&#9654; Watch the film</span>' : "") +
           "</div></div></div>";
+
+        if (it.body) html += '<div class="pp-sec pp-body">' + bodyHTML(it.body) + "</div>";
 
         if (reps.length) {
           html += '<div class="pp-sec"><h3>Reports <small>' + reps.length + "</small></h3>" +

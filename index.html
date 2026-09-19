@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=29" />
+  <link rel="stylesheet" href="assets/css/style.css?v=30" />
 </head>
 <body data-page="home">
   <div id="site-header"></div>
@@ -204,14 +204,18 @@
         document.getElementById("fLede").textContent = f.lede || "";
 
         /* the four interventions, each opening its own report */
-        document.getElementById("focus").innerHTML = (p.items || []).map(function (i) {
-          return '<div class="card" role="button" tabindex="0" data-doc="' + esc(i.file) +
-            '" data-title="' + esc(i.title) + '" data-sub="' + esc(i.sub || "") + '">' +
-            '<div class="ico">' + esc(i.icon || "") + "</div>" +
+        /* each programme card opens that programme's tab on the Programs page */
+        function pslug(t, k) {
+          return (String(t || "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "programme-" + (k + 1));
+        }
+        document.getElementById("focus").innerHTML = (p.items || []).map(function (i, k) {
+          return '<a class="card prog-card" href="programs.html#' + pslug(i.title, k) + '">' +
+            (i.photo ? '<span class="prog-card-pic"><img src="' + esc(i.photo) + '" alt="" loading="lazy" /></span>'
+                     : '<div class="ico">' + esc(i.icon || "") + "</div>") +
             "<h3>" + esc(i.title) + "</h3>" +
             '<div class="sub">' + esc(i.sub || "") + "</div>" +
             "<p>" + esc(i.desc || "") + "</p>" +
-            '<span class="open">Open report &rarr;</span></div>';
+            '<span class="open">Explore the programme &rarr;</span></a>';
         }).join("");
 
         document.getElementById("impact").innerHTML = (o.impact || []).map(function (i) {

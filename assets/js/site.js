@@ -218,3 +218,110 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount);
   else mount();
 })();
+
+/* ---- "Designed by Support2NGOs" credit under the footer ----
+   Clicking the name offers an e-mail, or a short WhatsApp message the visitor
+   types in the box (up to MAX characters). The WhatsApp
+   number is put together only when that option is clicked, so it never
+   shows on the page, in a link preview or as plain text in the source. */
+(function () {
+  var EMAIL = "supp2ngo@gmail.com", MAX = 200;   /* about one or two sentences */
+  function waNumber() { return ["91", "9440", "462", "232"].join(""); }
+
+  function css() {
+    if (document.getElementById("s2n-css")) return;
+    var s = document.createElement("style");
+    s.id = "s2n-css";
+    s.textContent =
+      ".s2n-credit{text-align:center;font-size:.8rem;opacity:.85;padding:.9rem 1rem 1.1rem;position:relative}" +
+      ".s2n-wrap{position:relative;display:inline-block}" +
+      ".s2n-name{font:inherit;font-weight:700;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}" +
+      ".s2n-name:hover,.s2n-name:focus-visible{opacity:.75}" +
+      ".s2n-pop{position:absolute;left:50%;bottom:calc(100% + 10px);transform:translateX(-50%);z-index:60;min-width:230px;" +
+        "background:#fff;color:#1d2b22;border-radius:12px;box-shadow:0 14px 40px -12px rgba(0,0,0,.35);padding:.5rem;text-align:left;font-size:.88rem}" +
+      ".s2n-pop[hidden]{display:none}" +
+      ".s2n-pop::after{content:'';position:absolute;left:50%;top:100%;margin-left:-7px;border:7px solid transparent;border-top-color:#fff}" +
+      ".s2n-pop b{display:block;padding:.35rem .6rem .45rem;font-size:.78rem;color:#5b6b61;font-weight:600}" +
+      ".s2n-opt{display:flex;align-items:center;gap:.6rem;width:100%;padding:.6rem .6rem;border:0;border-radius:8px;background:none;color:inherit;font:inherit;font-weight:600;cursor:pointer;text-decoration:none;text-align:left}" +
+      ".s2n-opt:hover,.s2n-opt:focus-visible{background:#eef3ee}" +
+      ".s2n-ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none;color:#fff}" +
+      ".s2n-ic svg{width:16px;height:16px;fill:currentColor}" +
+      ".s2n-mail .s2n-ic{background:#2f6f4f}.s2n-wa .s2n-ic{background:#25d366}" +
+      ".s2n-form{padding:.2rem .5rem .5rem}.s2n-form[hidden]{display:none}" +
+      ".s2n-form label{display:block;font-size:.8rem;font-weight:600;color:#3d4c43;margin:.2rem 0 .35rem}" +
+      ".s2n-form textarea{width:100%;box-sizing:border-box;min-height:74px;resize:vertical;font:inherit;font-size:.86rem;color:#1d2b22;background:#fff;border:1px solid #c9d4cc;border-radius:8px;padding:.5rem .6rem}" +
+      ".s2n-form textarea:focus{outline:2px solid #25d366;outline-offset:1px;border-color:#25d366}" +
+      ".s2n-row{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:.45rem}" +
+      ".s2n-count{font-size:.72rem;color:#6b7a70}" +
+      ".s2n-back{font:inherit;font-size:.8rem;color:#3d4c43;background:none;border:0;cursor:pointer;padding:.3rem .2rem;text-decoration:underline}" +
+      ".s2n-send{font:inherit;font-size:.82rem;font-weight:700;color:#fff;background:#25d366;border:0;border-radius:999px;padding:.45rem .95rem;cursor:pointer}" +
+      ".s2n-send:disabled{opacity:.45;cursor:default}" +
+      ".s2n-pop.s2n-writing{min-width:280px}";
+    document.head.appendChild(s);
+  }
+
+  function build(bar) {
+    if (!bar || document.querySelector(".s2n-credit")) return;
+    css();
+    var site = location.hostname.replace(/^www\./, "") || "the website";
+    var subject = encodeURIComponent("Website enquiry (from " + site + ")");
+    var box = document.createElement("div");
+    box.className = "s2n-credit";
+    box.innerHTML =
+      'This website is designed by <span class="s2n-wrap">' +
+        '<button type="button" class="s2n-name" aria-haspopup="true" aria-expanded="false">Support2NGOs</button>' +
+        '<span class="s2n-pop" role="menu" hidden><b>Contact Support2NGOs</b>' +
+          '<a class="s2n-opt s2n-mail" role="menuitem" href="mailto:' + EMAIL + "?subject=" + subject + '">' +
+            '<span class="s2n-ic"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg></span>Send an e-mail</a>' +
+          '<button type="button" class="s2n-opt s2n-wa" role="menuitem">' +
+            '<span class="s2n-ic"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .3-3.4-.7-2.9-1.2-4.7-4.1-4.9-4.3-.1-.2-1.2-1.6-1.2-3s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.2.1.6-.1 1.3z"/></svg></span>WhatsApp message</button>' +
+          '<span class="s2n-form" hidden>' +
+            '<label for="s2n-msg">Your message (a sentence or two)</label>' +
+            '<textarea id="s2n-msg" maxlength="' + MAX + '" placeholder="e.g. We would like a website for our NGO. Please contact us."></textarea>' +
+            '<span class="s2n-row"><button type="button" class="s2n-back">&larr; Back</button><span class="s2n-count">0 / ' + MAX + '</span>' +
+            '<button type="button" class="s2n-send" disabled>Send on WhatsApp</button></span>' +
+          "</span>" +
+        "</span></span>";
+    bar.parentNode.insertBefore(box, bar.nextSibling);
+
+    var btn = box.querySelector(".s2n-name"), pop = box.querySelector(".s2n-pop");
+    var menu = [].slice.call(pop.querySelectorAll("b, .s2n-opt")), form = pop.querySelector(".s2n-form");
+    var msg = form.querySelector("textarea"), count = form.querySelector(".s2n-count"), send = form.querySelector(".s2n-send");
+    function writing(on) {
+      menu.forEach(function (el) { el.hidden = on; el.style.display = on ? "none" : ""; });
+      form.hidden = !on; pop.classList.toggle("s2n-writing", on);
+      if (on) msg.focus();
+    }
+    function open(on) {
+      pop.hidden = !on; btn.setAttribute("aria-expanded", on ? "true" : "false");
+      if (!on) writing(false);
+    }
+    btn.addEventListener("click", function (e) { e.stopPropagation(); open(pop.hidden); });
+    pop.querySelector(".s2n-wa").addEventListener("click", function () { writing(true); });
+    form.querySelector(".s2n-back").addEventListener("click", function () { writing(false); });
+    msg.addEventListener("input", function () {
+      count.textContent = msg.value.length + " / " + MAX;
+      send.disabled = !msg.value.trim();
+    });
+    send.addEventListener("click", function () {
+      var text = msg.value.trim().slice(0, MAX);
+      if (!text) return;
+      window.open("https://wa.me/" + waNumber() + "?text=" + encodeURIComponent(text + "\n\n(from " + site + ")"), "_blank", "noopener");
+      msg.value = ""; count.textContent = "0 / " + MAX; send.disabled = true;
+      open(false);
+    });
+    document.addEventListener("click", function (e) { if (!box.contains(e.target)) open(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") open(false); });
+  }
+
+  /* the footer is drawn by script on most pages, so wait for it briefly */
+  var SEL = ".footer-bottom, .foot-base";
+  function tryBuild() { var bar = document.querySelector(SEL); if (bar) { build(bar); return true; } return false; }
+  function start() {
+    if (tryBuild()) return;
+    var mo = new MutationObserver(function () { if (tryBuild()) mo.disconnect(); });
+    mo.observe(document.body, { childList: true, subtree: true });
+    setTimeout(function () { mo.disconnect(); }, 8000);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+})();

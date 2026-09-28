@@ -221,7 +221,8 @@
 
 /* ---- "Designed by Support2NGOs" credit under the footer ----
    Clicking the name offers an e-mail, or a short WhatsApp message the visitor
-   types in the box (up to MAX characters). The WhatsApp
+   types in the box (up to MAX characters) together with their own e-mail or
+   phone number, so there is a way to reply. The WhatsApp
    number is put together only when that option is clicked, so it never
    shows on the page, in a link preview or as plain text in the source. */
 (function () {
@@ -249,6 +250,10 @@
       ".s2n-mail .s2n-ic{background:#2f6f4f}.s2n-wa .s2n-ic{background:#25d366}" +
       ".s2n-form{padding:.2rem .5rem .5rem}.s2n-form[hidden]{display:none}" +
       ".s2n-form label{display:block;font-size:.8rem;font-weight:600;color:#3d4c43;margin:.2rem 0 .35rem}" +
+      ".s2n-form input{width:100%;box-sizing:border-box;font:inherit;font-size:.86rem;color:#1d2b22;background:#fff;border:1px solid #c9d4cc;border-radius:8px;padding:.45rem .6rem}" +
+      ".s2n-form input:focus{outline:2px solid #25d366;outline-offset:1px;border-color:#25d366}" +
+      ".s2n-form label+input,.s2n-form label+textarea{margin-bottom:.35rem}" +
+      ".s2n-hint{display:block;font-size:.72rem;color:#b3261e;margin:-.15rem 0 .3rem}.s2n-hint[hidden]{display:none}" +
       ".s2n-form textarea{width:100%;box-sizing:border-box;min-height:74px;resize:vertical;font:inherit;font-size:.86rem;color:#1d2b22;background:#fff;border:1px solid #c9d4cc;border-radius:8px;padding:.5rem .6rem}" +
       ".s2n-form textarea:focus{outline:2px solid #25d366;outline-offset:1px;border-color:#25d366}" +
       ".s2n-row{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:.45rem}" +
@@ -263,8 +268,7 @@
   function build(bar) {
     if (!bar || document.querySelector(".s2n-credit")) return;
     css();
-    var site = location.hostname.replace(/^www\./, "") || "the website";
-    var subject = encodeURIComponent("Website enquiry (from " + site + ")");
+    var subject = encodeURIComponent("Website enquiry");
     var box = document.createElement("div");
     box.className = "s2n-credit";
     box.innerHTML =
@@ -278,6 +282,9 @@
           '<span class="s2n-form" hidden>' +
             '<label for="s2n-msg">Your message (a sentence or two)</label>' +
             '<textarea id="s2n-msg" maxlength="' + MAX + '" placeholder="e.g. We would like a website for our NGO. Please contact us."></textarea>' +
+            '<label for="s2n-contact">Your e-mail or phone number, so we can reply</label>' +
+            '<input id="s2n-contact" type="text" maxlength="80" autocomplete="email" placeholder="e.g. name@gmail.com or 98480 12345" />' +
+            '<span class="s2n-hint" hidden>Please enter a valid e-mail address or phone number.</span>' +
             '<span class="s2n-row"><button type="button" class="s2n-back">&larr; Back</button><span class="s2n-count">0 / ' + MAX + '</span>' +
             '<button type="button" class="s2n-send" disabled>Send on WhatsApp</button></span>' +
           "</span>" +
@@ -287,6 +294,14 @@
     var btn = box.querySelector(".s2n-name"), pop = box.querySelector(".s2n-pop");
     var menu = [].slice.call(pop.querySelectorAll("b, .s2n-opt")), form = pop.querySelector(".s2n-form");
     var msg = form.querySelector("textarea"), count = form.querySelector(".s2n-count"), send = form.querySelector(".s2n-send");
+    var who = form.querySelector("#s2n-contact"), hint = form.querySelector(".s2n-hint");
+    /* an e-mail address, or a phone number of 10 to 13 digits (spaces, dashes, brackets and + allowed) */
+    function contactOK() {
+      var v = who.value.trim();
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return true;
+      return /^\d{10,13}$/.test(v.replace(/[\s()+-]/g, ""));
+    }
+    function check() { send.disabled = !msg.value.trim() || !contactOK(); }
     function writing(on) {
       menu.forEach(function (el) { el.hidden = on; el.style.display = on ? "none" : ""; });
       form.hidden = !on; pop.classList.toggle("s2n-writing", on);
@@ -301,13 +316,15 @@
     form.querySelector(".s2n-back").addEventListener("click", function () { writing(false); });
     msg.addEventListener("input", function () {
       count.textContent = msg.value.length + " / " + MAX;
-      send.disabled = !msg.value.trim();
+      check();
     });
+    who.addEventListener("input", function () { hint.hidden = true; check(); });
+    who.addEventListener("blur", function () { hint.hidden = !who.value.trim() || contactOK(); });
     send.addEventListener("click", function () {
       var text = msg.value.trim().slice(0, MAX);
-      if (!text) return;
-      window.open("https://wa.me/" + waNumber() + "?text=" + encodeURIComponent(text + "\n\n(from " + site + ")"), "_blank", "noopener");
-      msg.value = ""; count.textContent = "0 / " + MAX; send.disabled = true;
+      if (!text || !contactOK()) { hint.hidden = contactOK(); return; }
+      window.open("https://wa.me/" + waNumber() + "?text=" + encodeURIComponent(text + "\n\nContact: " + who.value.trim()), "_blank", "noopener");
+      msg.value = ""; who.value = ""; count.textContent = "0 / " + MAX; send.disabled = true; hint.hidden = true;
       open(false);
     });
     document.addEventListener("click", function (e) { if (!box.contains(e.target)) open(false); });

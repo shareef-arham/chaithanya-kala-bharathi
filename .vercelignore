@@ -17,3 +17,4 @@ start.bat
 .env*.local
 scripts/set-password.js
 SET ADMIN PASSWORD.bat
+deploy.bat

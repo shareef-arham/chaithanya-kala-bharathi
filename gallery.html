@@ -69,7 +69,43 @@
       if (el && el.dataset.video) { e.preventDefault(); openVideo(el.dataset.video); }
     });
 
-    CKB_get("gallery.json").then(function (d) {
+    function ytId(s) {
+      s = String(s || "").trim();
+      var m = s.match(/(?:v=|youtu\.be\/|embed\/|shorts\/|live\/)([A-Za-z0-9_-]{11})/);
+      if (m) return m[1];
+      return /^[A-Za-z0-9_-]{11}$/.test(s) ? s : "";
+    }
+
+    /* A programme's film that names its report (Admin → Programs → Films → "Its
+       report") also appears here as one card with both. A film without a report,
+       a report without a film, and annual reports stay on the Programs page only;
+       anything the Gallery already shows is not repeated. These cards go above the
+       Gallery's own list, newest month first. */
+    function fromPrograms(P, d) {
+      var seen = {}, out = [];
+      function mark(k) { if (k) seen[String(k).toLowerCase()] = 1; }
+      function has(k) { return k && seen[String(k).toLowerCase()]; }
+      mark(d.featured && d.featured.videoId);
+      (d.moments || []).forEach(function (m) { mark(m.file); (m.videos || []).forEach(mark); });
+      (P.items || []).forEach(function (it) {
+        var reps = (it.reports || []).slice();
+        if (it.file) reps.push({ file: it.file, title: it.title });
+        (it.videos || []).forEach(function (v) {
+          var id = ytId(v.yt), r = v.report && reps.filter(function (x) { return x.file === v.report; })[0];
+          if (!id || !r || /annual report/i.test(r.title || "") || has(id) || has(r.file)) return;
+          mark(id); mark(r.file);
+          out.push({ title: r.title || v.title, when: r.when || it.title, blurb: v.note || "", videos: [id], file: r.file, date: v.date || "" });
+        });
+      });
+      return out.map(function (m, i) { return { m: m, i: i }; }).sort(function (a, b) {
+        var da = a.m.date || "", db = b.m.date || "";
+        if (da !== db) return !da ? 1 : !db ? -1 : da < db ? 1 : -1;
+        return a.i - b.i;
+      }).map(function (o) { return o.m; });
+    }
+
+    Promise.all([CKB_get("gallery.json"), CKB_get("programs.json")]).then(function (res) {
+      var d = res[0] || {};
       document.getElementById("gIntro").textContent = d.intro || "";
 
       /* featured film — only shown once a video ID has been added */
@@ -86,7 +122,7 @@
       /* Cards appear in the order the admin lists them. New ones are added at
          the top there, so the page reads newest first without needing a date
          on every entry — most of the older ones have none. */
-      var moments = (d.moments || []).slice();
+      var moments = fromPrograms(res[1] || {}, d).concat(d.moments || []);
 
       /* Twelve to a page. The page number lives in the address (#page=2), so
          Back, Forward and a shared link all land on the same page. */

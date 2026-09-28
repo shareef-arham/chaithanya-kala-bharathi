@@ -192,7 +192,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
   <!-- PROGRAMS -->
   <div class="panel" id="panel-programs">
     <h2>Programs &amp; interventions</h2>
-    <p class="hint">Each programme is a photo tab on the Programs page (and a card on the Home page). Pick a programme, change what you need &mdash; its photo, its main report, the reports listed under it and its films &mdash; then press <b>Save Programs</b>. Use <b>Upload…</b> beside a box to add a photo or a PDF.</p>
+    <p class="hint">Each programme is a photo tab on the Programs page (and a card on the Home page). Pick a programme, change what you need &mdash; its photo, its main report, the reports listed under it and its films &mdash; then press <b>Save Programs</b>. Use <b>Upload…</b> beside a box to add a photo or a PDF.<br>A film whose <b>Its report</b> names one of the programme's reports <b>also appears in the Gallery</b>, as one card with both, at the top (newest <b>Month</b> first). A film or report on its own, and annual reports, stay on the Programs page only.</p>
     <div class="saverow"><button class="btn btn-primary btn-sm" onclick="savePrograms()">Save Programs</button><span class="msg" id="msg-programs"></span></div>
     <div class="field"><label>Intro paragraph (top of the Programs page)</label><textarea id="p_intro"></textarea></div>
     <div class="field" style="display:flex;gap:.5rem;align-items:flex-end;flex-wrap:wrap">
@@ -422,6 +422,12 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
   document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeModalI(); });
 
   function fieldHTML(c,v){
+    if(c.type==="select"){
+      var opts=c.options(), cur=v==null?"":String(v);
+      if(cur && !opts.some(function(o){ return o.value===cur; })) opts.push({value:cur,label:cur});
+      return '<div class="field"><label>'+esc(c.label)+'</label><select id="m_'+c.key+'">'+
+        opts.map(function(o){ return '<option value="'+esc(o.value)+'"'+(o.value===cur?" selected":"")+'>'+esc(o.label)+'</option>'; }).join("")+'</select></div>';
+    }
     if(c.type==="textarea") return '<div class="field"><label>'+esc(c.label)+'</label><textarea id="m_'+c.key+'">'+esc(v==null?"":v)+'</textarea></div>';
     return '<div class="field"><label>'+esc(c.label)+'</label><input id="m_'+c.key+'" value="'+esc(v==null?"":v)+'"></div>';
   }
@@ -576,9 +582,19 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
     editor("pf_reps",it.reports,[
       {key:"title",label:"Title"},{key:"when",label:"Supporter / date"},{key:"file",label:"Report PDF filename"}
     ],"Report",null,{addToTop:true});
+    /* A film paired with one of this programme's reports also appears in the
+       Gallery as one card; a film left at "No report" shows only here. */
     editor("pf_vids",it.videos,[
-      {key:"title",label:"Title"},{key:"yt",label:"YouTube link or ID"},{key:"note",label:"One line about it"}
-    ],"Film",null,{addToTop:true});
+      {key:"title",label:"Title"},{key:"yt",label:"YouTube link or ID"},{key:"note",label:"One line about it"},
+      {key:"report",label:"Its report — pairs it with the film in the Gallery",type:"select",options:function(){
+        var o=[{value:"",label:"No report (film shows on the Programs page only)"}];
+        (it.file?[{file:it.file,title:"Programme report"}]:[]).concat(it.reports||[]).forEach(function(r){
+          if(r.file) o.push({value:r.file,label:(r.title||r.file)+" — "+r.file});
+        });
+        return o;
+      }},
+      {key:"date",label:"Month (YYYY-MM) — orders it in the Gallery, newest first"}
+    ],"Film",function(){ var d=new Date(); return {date:d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")}; },{addToTop:true});
   }
   window.progNew=function(){
     D.programs.items.push({icon:"✨",title:"New programme",sub:"",desc:"",photo:"",file:"",reports:[],videos:[]});

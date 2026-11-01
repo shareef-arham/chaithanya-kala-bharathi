@@ -12,15 +12,20 @@ rem =====================================================================
 title CKB - publishing to the live site...
 cd /d "%~dp0"
 
-where vercel >nul 2>nul || (
+rem --- Find Node.js even if Windows has not picked up its folder yet. ---
+if exist "%ProgramFiles%\nodejs\node.exe" set "PATH=%ProgramFiles%\nodejs;%APPDATA%\npm;%PATH%"
+if exist "%LOCALAPPDATA%\Programs\nodejs\node.exe" set "PATH=%LOCALAPPDATA%\Programs\nodejs;%APPDATA%\npm;%PATH%"
+where node >nul 2>nul || (
   echo.
-  echo   The "vercel" tool was not found on this computer.
-  echo   One-time setup is needed - see DEPLOY.md, "Option A".
-  echo   In short:  npm i -g vercel     then     vercel login
+  echo   Node.js is not installed. Install it from https://nodejs.org and run this again.
   echo.
   pause
   goto :eof
 )
+
+rem --- Always use the current Vercel tool. An older one installed on this ---
+rem --- computer (v59) does not accept new sign-ins and says "Not authorized". ---
+set "VC=npx --yes vercel@latest"
 
 rem --- Self-heal: if a previous run was closed mid-publish, put .git back. ---
 if exist ".git-during-publish" if not exist ".git" ren ".git-during-publish" ".git"
@@ -34,14 +39,14 @@ if exist ".git" ren ".git" ".git-during-publish"
 echo.
 echo   Publishing the CKB website...  (leave this window alone)
 echo.
-call vercel deploy --prod --yes
+call %VC% deploy --prod --yes
 if not errorlevel 1 goto :ok
 
 echo.
 echo   First try didn't go through - waiting 10 seconds and trying once more...
 timeout /t 10 /nobreak >nul
 echo.
-call vercel deploy --prod --yes
+call %VC% deploy --prod --yes
 if not errorlevel 1 goto :ok
 
 rem --- both tries failed ---

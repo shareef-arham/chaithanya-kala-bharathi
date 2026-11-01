@@ -9,3 +9,5 @@ Thumbs.db
 
 .env*
 /assets/SRC-HOME.jpeg
+node_modules/
+.vercel/
